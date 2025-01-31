@@ -1,0 +1,6 @@
+log
+This is a log file to:
+Each group will also keep a log, which describes their progress and meeting minutes and
+summaries. The log may be updated by the individual team members. You should keep
+the log in a text file log.txt alongside your code (the log file also goes through a proper
+versioning).
