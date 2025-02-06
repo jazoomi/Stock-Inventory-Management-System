@@ -1,6 +1,6 @@
 Stock Inventory Managment System
 
-** once forked, cd into backend folder and run  *"npm install"* and it should add all dependecies needed.**
+> ** once forked, cd into backend folder and run  *"npm install"* and it should add all dependecies needed.**
 
 Creating a customizable stock inventory Management software for business to use to keep track of inventory. Vision
 
