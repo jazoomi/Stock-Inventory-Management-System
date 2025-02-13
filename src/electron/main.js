@@ -7,8 +7,8 @@ let serverProcess;
 app.on("ready", () => {
     // Start Express 
     serverProcess = spawn("node", ["backend/server.js"], {
-        detached: true,
-        stdio: "ignore",
+        detached: false, // Express closes when Electron closes
+        stdio: "ignore", // Stops Express log flood
     });
 
     serverProcess.unref(); 
