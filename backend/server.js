@@ -1,5 +1,5 @@
-const express = require("express"); // express framework for http requests and responses
-const db = require("./database/db"); // getting the database connection that was exported in the other file
+import express from "express"; // express framework for http requests and responses
+import db from "./database/db.js"; // getting the database connection that was exported in the other file
 
 const app = express(); //creating the express app
 

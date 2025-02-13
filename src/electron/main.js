@@ -6,10 +6,12 @@ let serverProcess;
 
 app.on("ready", () => {
     // Start Express 
-    serverProcess = spawn("node", ["backend/server.js"], {
-        detached: false, // Express closes when Electron closes
-        stdio: "ignore", // Stops Express log flood
+    const serverPath = path.join(app.getAppPath(), "backend", "server.js");
+    serverProcess = spawn("node", [serverPath], {
+        detached: false,
+        stdio: "ignore",
     });
+    
 
     serverProcess.unref(); 
 
