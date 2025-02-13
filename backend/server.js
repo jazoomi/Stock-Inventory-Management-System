@@ -15,7 +15,13 @@ app.get("/raw-ingredients", (req, res) => { //making get, with endpoing /raw-ing
     })
 })
 //make get for assembled ingredient
-
+app.get("/assembled-ingredients", (req, res) => {
+    db.all("SELECT * FROM assembled_ingredients", [], (err, rows) => {
+        res.status(500).json({ error: err.message});
+        return;
+    })
+    res.json(rows);
+})
 //make get for combo meals
 
 
