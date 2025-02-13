@@ -22,15 +22,22 @@ app.get("/assembled-ingredients", (req, res) => {
     })
     res.json(rows);
 })
+
 //make get for combo meals
 
 
 //make post for raw ingredients
-
+app.post("/raw-ingredients", (req, res) => {
+    
+})
 //make post for assemlbed ingredients
-
+app.post("/assembled-ingredients", (req, res) => {
+    
+})
 //make post for combo meals
-
+app.post("/combo", (req, res) => {
+    
+})
 
 //not sure how correct this part is, i think it doesn't matter what port number.
 const PORT = 5000; 

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS assembled_ingredients(
     quantity INTEGER NOT NULL
 );
 -- combo deals table
-CREATE TABLE IF NOT EXISTS assembled_ingredients(
+CREATE TABLE IF NOT EXISTS combo(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     items TEXT NOT NULL, -- assmbled ingredients combined
