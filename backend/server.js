@@ -14,6 +14,16 @@ app.get("/raw-ingredients", (req, res) => { //making get, with endpoing /raw-ing
         res.json(rows); //sends back info in a JSON response.
     })
 })
+//make get for assembled ingredient
+
+//make get for combo meals
+
+
+//make post for raw ingredients
+
+//make post for assemlbed ingredients
+
+//make post for combo meals
 
 
 //not sure how correct this part is, i think it doesn't matter what port number.
