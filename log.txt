@@ -41,8 +41,8 @@ Task:
 Time spent on task:
 
 Joseph:
-Task:
-Time spent on task:
+Task: Create UI for assemble ingredients
+Time spent on task: 2 days
 
 Sadiq:
 Task:
