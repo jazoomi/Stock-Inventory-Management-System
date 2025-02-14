@@ -1,6 +1,6 @@
 // server.test.js
 import request from "supertest";
-import app from "../../backend/server.js";  // Adjust the path if needed
+import app from "../../backend/app.js";  // Adjust the path if needed
 
 
 describe("Server Endpoints", () => {
