@@ -63,4 +63,92 @@ describe("Server Endpoints", () => {
      expect(res.body.error).toBe("Enter all fields (name, quantity, unit and price)");
    });
  });
+ describe("PUT /raw-ingredients/:id", () => {
+    it("should update an existing raw ingredient", async () => {
+      // First create an ingredient to update
+      const createRes = await request(app)
+        .post("/raw-ingredients")
+        .send({
+          name: "ToUpdate",
+          quantity: 1,
+          unit: "pc",
+          price: 2
+        });
+      const createdId = createRes.body.id;
+ 
+ 
+      // Now update
+      const updateData = {
+        name: "Updated Name",
+        quantity: 10,
+        unit: "pcs",
+        price: 20
+      };
+ 
+ 
+      const updateRes = await request(app)
+        .put(`/raw-ingredients/${createdId}`)
+        .send(updateData);
+ 
+ 
+      expect(updateRes.statusCode).toBe(200);
+      expect(updateRes.body.message).toContain("Raw ingredients updated successfully");
+      // verify returned data
+      expect(updateRes.body).toMatchObject({
+        id: String(createdId),
+        ...updateData
+      });
+    });
+ 
+ 
+    it("should return 404 if the raw ingredient to update is not found", async () => {
+      const randomId = 99999; // presumably not existing
+      const updateData = {
+        name: "NotFoundName",
+        quantity: 10,
+        unit: "pcs",
+        price: 20
+      };
+ 
+ 
+      const res = await request(app)
+        .put(`/raw-ingredients/${randomId}`)
+        .send(updateData);
+ 
+ 
+      expect(res.statusCode).toBe(404);
+      expect(res.body.error).toBe("did not find raw ingredient with that id");
+    });
+  });
+ 
+ 
+  describe("DELETE /raw-ingredients/:id", () => {
+    it("should delete an existing raw ingredient", async () => {
+      // create one to delete
+      const createRes = await request(app)
+        .post("/raw-ingredients")
+        .send({
+          name: "ToDelete",
+          quantity: 2,
+          unit: "pcs",
+          price: 5
+        });
+      const createdId = createRes.body.id;
+ 
+ 
+      // now delete
+      const deleteRes = await request(app).delete(`/raw-ingredients/${createdId}`);
+      expect(deleteRes.statusCode).toBe(200);
+      expect(deleteRes.body.message).toBe("Raw ingredient deleted successfully");
+    });
+ 
+ 
+    it("should return 404 if trying to delete a non-existent raw ingredient", async () => {
+      const randomId = 99999;
+      const res = await request(app).delete(`/raw-ingredients/${randomId}`);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toBe("did not find that raw ingredient.");
+    });
+  });
+ 
 });
