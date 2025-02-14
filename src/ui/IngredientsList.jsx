@@ -9,6 +9,9 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
   // Stores edited data
   const [editedIngredient, setEditedIngredient] = useState({ ...ingredient });
 
+  // Ref to detect clicks outside the component
+  const cardRef = useRef(null);
+
   // Handles input changes and allows decimal values
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +21,51 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
       setEditedIngredient({ ...editedIngredient, [name]: "" });
       return;
     }
+
+    // Ensure price input allows decimals
+    if (name === "price") {
+      if (/^\d*\.?\d*$/.test(value)) { // Regex to allow only numbers and one decimal point
+        setEditedIngredient({ ...editedIngredient, [name]: value });
+      }
+      return;
+    }
+
+    // Ensure quantity input allows numbers
+    if (name === "quantity") {
+      if (/^\d*\.?\d*$/.test(value)) {
+        setEditedIngredient({ ...editedIngredient, [name]: value });
+      }
+      return;
+    }
+
     setEditedIngredient({ ...editedIngredient, [name]: value });
   };
+
+  // Detect click outside the card and save changes
+  const handleClickOutside = (event) => {
+    if (cardRef.current && !cardRef.current.contains(event.target)) {
+      if (JSON.stringify(ingredient) !== JSON.stringify(editedIngredient)) {
+        // Convert price & quantity to float before saving
+        onSave({
+          ...editedIngredient,
+          price: editedIngredient.price ? parseFloat(editedIngredient.price) : 0,
+          quantity: editedIngredient.quantity ? parseFloat(editedIngredient.quantity) : 0,
+        });
+      }
+      setIsEditing(false); // Exit edit mode
+    }
+  };
+
+  // Add/remove click event listener when editing
+  useEffect(() => {
+    if (isEditing) {
+      setTimeout(() => document.addEventListener("click", handleClickOutside), 0);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [isEditing, editedIngredient]);
 
   return (
     <div className="ingredient-card" ref={cardRef} onClick={() => !isEditing && setIsEditing(true)}>
@@ -96,6 +142,17 @@ const IngredientList = () => {
       setNewIngredient({ name: "", quantity: "", unit: "", price: "" }); // Reset input fields
     })
     .catch((err) => console.error("Error adding ingredient:", err));
+  };
+
+  // Handle deleting an ingredient
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/raw-ingredients/${id}`, {
+      method: "DELETE",
+    })
+    .then(() => {
+      fetchIngredients(); // Re-fetch ingredient list after deletion
+    })
+    .catch((err) => console.error("Error deleting ingredient:", err));
   };
 
   return (
