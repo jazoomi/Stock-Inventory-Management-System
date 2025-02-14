@@ -4,3 +4,60 @@ Each group will also keep a log, which describes their progress and meeting minu
 summaries. The log may be updated by the individual team members. You should keep
 the log in a text file log.txt alongside your code (the log file also goes through a proper
 versioning).
+
+- - - - - - Meeting Jan 13 - - - - - - -
+All members met and discussed various possible projects.
+The team evaluated the potential of each project through feasibility, resources, and needs of potential customers.
+The final decision was made by assessing goals, capabilities, and time constraints.
+
+The features of the project were then created including cost management, recipe and combo creation, dynamic 
+price updates, profits, and UI features.
+
+- - - - - - Meeting Jan 13 - - - - - - -
+Entire group began discussions on vision, planning, and user stories.
+These meeting was to primarily create questions to ask the customer in a future meeting.
+These questions were created to better understand user needs, stories, and expectations.
+
+- - - - - - Meeting Jan 20 - - - - - - -
+Continued discussion on vision.
+Clearly defined vision by using specific goals and a focused strategy, ensuring that every team member is aligned with the same objectives.
+
+- - - - - - Meeting Jan 27 - - - - - - -
+Defined user stories from interview with customer.
+Each user story was allocated a cost along with a priority.
+
+- - - - - - Meeting Feb 3 - - - - - - -
+Allocated front-end tasks, back-end tasks, and user stories to each group member.
+Decided on using react/javascript for front end work.
+
+- - - - - - Meeting Feb 10 - - - - - - -
+Group check in
+Johnmark:
+Task:
+Time spent on task:
+
+Nickrod:
+Task:
+Time spent on task:
+
+Joseph:
+Task:
+Time spent on task:
+
+Sadiq:
+Task:
+Time spent on task:
+
+Vrinda:
+Task: Created combo meals
+Time spent on task:
+
+Ryan:
+Task:
+Time spent on task:
+
+
+
+
+
+
