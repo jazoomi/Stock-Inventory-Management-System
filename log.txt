@@ -53,8 +53,9 @@ Task: Created combo meals
 Time spent on task: 2 days
 
 Ryan:
-Task:
-Time spent on task:
+Task: Unit tests
+Time spent on task: 2 days
+
 
 
 
