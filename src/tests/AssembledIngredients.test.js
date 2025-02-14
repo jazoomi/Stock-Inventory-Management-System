@@ -117,4 +117,33 @@ describe("Server Endpoints", () => {
       expect(res.body.error).toBe("did not find assembled ingredient with that id");
     });
   });
+
+  describe("DELETE /assembled-ingredients/:id", () => {
+    it("should delete an existing assembled ingredient", async () => {
+      const createRes = await request(app)
+        .post("/assembled-ingredients")
+        .send({
+          name: "ToDeleteAssembled",
+          quantity: 2,
+          recipe: "recipe text",
+          price: 10
+        });
+      const createdId = createRes.body.id;
+ 
+ 
+      const deleteRes = await request(app)
+        .delete(`/assembled-ingredients/${createdId}`);
+      expect(deleteRes.statusCode).toBe(200);
+      expect(deleteRes.body.message).toBe("assembled ingredient deleted successfully");
+    });
+ 
+ 
+    it("should return 404 if assembled ingredient does not exist", async () => {
+      const randomId = 99999;
+      const res = await request(app).delete(`/assembled-ingredients/${randomId}`);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toBe("did not find that asssembled ingredient.");
+    });
+  });
+ 
 });
