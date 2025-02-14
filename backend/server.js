@@ -17,8 +17,10 @@ app.get("/raw-ingredients", (req, res) => { //making get, with endpoing /raw-ing
 //make get for assembled ingredient
 app.get("/assembled-ingredients", (req, res) => {
     db.all("SELECT * FROM assembled_ingredients", [], (err, rows) => {
-        res.status(500).json({ error: err.message});
-        return;
+        if (err){
+            res.status(500).json({error: err.message});
+            return;
+        }
     })
     res.json(rows);
 })
@@ -26,8 +28,10 @@ app.get("/assembled-ingredients", (req, res) => {
 //make get for combo meals
 app.get("/combo", (req, res) => {
     db.all("SELECT * FROM combo", [], (err, rows) => {
-        res.status(500).json({error: err.message});
-        return;
+        if (err){
+            res.status(500).json({error: err.message});
+            return;
+        }
     })
     res.json(rows);
 })
@@ -39,7 +43,7 @@ app.post("/raw-ingredients", (req, res) => {
     if (!name || !quantity || !unit || !price) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const SQL = "INSERT INTO raw_ingredients (name, quantity, unit, price) VALUES(?, ?, ?, ?)";
+    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price) VALUES(?, ?, ?, ?)";
     const params = [name, quantity, unit, price];
 
     db.run(sql, params, function (err) {
@@ -57,7 +61,7 @@ app.post("/assembled-ingredients", (req, res) => {
     if (!name || !quantity || !recipe || !price) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const SQL = "INSERT INTO raw_ingredients (name, quantity, recipe, price) VALUES(?, ?, ?, ?)";
+    const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price) VALUES(?, ?, ?, ?)";
     const params = [name, quantity, recipe, price];
 
     db.run(sql, params, function (err) {
@@ -75,7 +79,7 @@ app.post("/combo", (req, res) => {
     if (!name || !items || !price) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const SQL = "INSERT INTO raw_ingredients (name, items, price) VALUES(?, ?, ?, ?)";
+    const sql = "INSERT INTO combo (name, items, price) VALUES(?, ?, ?)";
     const params = [name, items, price];
 
     db.run(sql, params, function (err) {
