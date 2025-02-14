@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/electron/main",
   "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "dev:react": "vite",
     "dev:electron": "electron .",
     "build": "vite build",
