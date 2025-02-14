@@ -92,6 +92,57 @@ app.post("/combo", (req, res) => {
     });
     
 });
+//delete for raw 
+app.delete("/raw-ingredients/:id", (req, res) => {
+    const {id} = req.params; // takes the id from the endpoint param and deconstructs it
+
+    const sql = "DELETE FROM raw_ingredients WHERE id = ?" //sql query to delete
+    db.run(sql, [id], function(err) { 
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if(this.changes === 0){
+            return res.status(404).json({message: "did not find that raw ingredient."})
+        }
+        res.status(200).json({ message: "Raw ingredient deleted successfully" });
+
+    });
+});
+
+//delete for raw 
+app.delete("/assembled-ingredients/:id", (req, res) => {
+    const {id} = req.params; // takes the id from the endpoint param and deconstructs it
+
+    const sql = "DELETE FROM assembled_ingredients WHERE id = ?" //sql query to delete
+    db.run(sql, [id], function(err) { 
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if(this.changes === 0){
+            return res.status(404).json({message: "did not find that asssembled ingredient."})
+        }
+        res.status(200).json({ message: "assembled ingredient deleted successfully" });
+
+    });
+});
+
+//delete for raw 
+app.delete("/combo/:id", (req, res) => {
+    const {id} = req.params; // takes the id from the endpoint param and deconstructs it
+
+    const sql = "DELETE FROM combo WHERE id = ?" //sql query to delete
+    db.run(sql, [id], function(err) { 
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if(this.changes === 0){
+            return res.status(404).json({message: "did not find that combo."})
+        }
+        res.status(200).json({ message: "combo deleted successfully" });
+
+    });
+});
+
 
 //not sure how correct this part is, i think it doesn't matter what port number.
 const PORT = 5000; 
