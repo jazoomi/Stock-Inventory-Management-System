@@ -1,13 +1,18 @@
 import './App.css'
 import IngredientList from './IngredientsList'
+import IngredientsManager from './IngredientsManager'
 
 function App() {
 
   return (
     <>
-    <div>
-      <IngredientList/>
-    </div>
+      <div className="App">
+        <h>Guests</h>
+        <IngredientList/>
+        <IngredientsManager/>
+        
+
+      </div>
     </>
   )
 }
