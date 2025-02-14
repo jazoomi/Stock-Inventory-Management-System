@@ -149,7 +149,7 @@ app.put("/raw-ingredients/:id", (req, res) => {
     if (!name || !quantity || !unit || !price){
         return res.status(400).json({error: "Pls put all info"});
     }
-    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ? price = ? WHERE id = ?";
+    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ? WHERE id = ?";
     const params = [name, quantity, unit, price, id];
 
     db.run(sql, params, function (err) {
@@ -170,7 +170,7 @@ app.put("/assembled-ingredients/:id", (req, res) => {
     if (!name || !quantity || !recipe || !price){
         return res.status(400).json({error: "Pls put all info"});
     }
-    const sql = "UPDATE assembled_ingredients set name = ?, quantity = ?, recipe = ? price = ? WHERE id = ?";
+    const sql = "UPDATE assembled_ingredients set name = ?, quantity = ?, recipe = ?, price = ? WHERE id = ?";
     const params = [name, quantity, recipe, price, id];
 
     db.run(sql, params, function (err) {
@@ -180,7 +180,7 @@ app.put("/assembled-ingredients/:id", (req, res) => {
         if (this.changes === 0){
             return res.status(404).json({error: "did not find assembled ingredient with that id"});
         }
-        res.status(200).json({message: "assembled ingredients updated successfully:", id, name, recipe, unit, price})
+        res.status(200).json({message: "assembled ingredients updated successfully:", id, name, quantity, recipe, price})
 
     });
 });
@@ -201,7 +201,7 @@ app.put("/combo/:id", (req, res) => {
         if (this.changes === 0){
             return res.status(404).json({error: "did not find combo with that id"});
         }
-        res.status(200).json({message: "combo updated successfully:", id, name, items, unit})
+        res.status(200).json({message: "combo updated successfully:", id, name, items, price})
 
     });
 });
