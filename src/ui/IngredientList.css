@@ -1,0 +1,52 @@
+.ingredient-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding-left: 20px;
+}
+
+.ingredient-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    width: 250px;
+    text-align: left;
+    min-height: 70px; /* Ensures height remains constant */
+}
+
+.ingredient-card h3,
+.ingredient-card p,
+.ingredient-card input {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.ingredient-card input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    text-align: left;
+    box-sizing: border-box;
+    height: 24px; /* Fixed height for consistency */
+}
+
+.ingredient-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+.ingredient-details input,
+.ingredient-details p {
+    flex: 1;
+    text-align: left;
+    min-width: 50px;
+    height: 24px; /* Match height of normal text */
+    line-height: 24px;
+}
