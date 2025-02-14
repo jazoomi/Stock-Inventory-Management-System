@@ -34,14 +34,56 @@ app.get("/combo", (req, res) => {
 
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
+    const { name, quantity, unit, price} = req.body;
+
+    if (!name || !quantity || !unit || !price) {
+        return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
+    }
+    const SQL = "INSERT INTO raw_ingredients (name, quantity, unit, price) VALUES(?, ?, ?, ?)";
+    const params = [name, quantity, unit, price];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        res.status(201).json({ id: this.lastID, name, quantity, unit, price});
+    });
     
-})
+});
 //make post for assemlbed ingredients
 app.post("/assembled-ingredients", (req, res) => {
+    const { name, quantity, recipe, price} = req.body;
+
+    if (!name || !quantity || !recipe || !price) {
+        return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
+    }
+    const SQL = "INSERT INTO raw_ingredients (name, quantity, recipe, price) VALUES(?, ?, ?, ?)";
+    const params = [name, quantity, recipe, price];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        res.status(201).json({ id: this.lastID, name, quantity, recipe, price});
+    });
     
 })
 //make post for combo meals
 app.post("/combo", (req, res) => {
+    const { name, items, price} = req.body;
+
+    if (!name || !items || !price) {
+        return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
+    }
+    const SQL = "INSERT INTO raw_ingredients (name, items, price) VALUES(?, ?, ?, ?)";
+    const params = [name, items, price];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        res.status(201).json({ id: this.lastID, name, items, price});
+    });
     
 })
 

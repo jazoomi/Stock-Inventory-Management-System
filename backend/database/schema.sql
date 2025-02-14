@@ -11,9 +11,10 @@ CREATE TABLE IF NOT EXISTS raw_ingredients(
 CREATE TABLE IF NOT EXISTS assembled_ingredients(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    quantity INTEGER NOT NULL
     recipe TEXT NOT NULL, -- raw ingredients combined 
     price FLOAT NOT NULL, -- combinging prices of raws
-    quantity INTEGER NOT NULL
+    
 );
 -- combo deals table
 CREATE TABLE IF NOT EXISTS combo(
