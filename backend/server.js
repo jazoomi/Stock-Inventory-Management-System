@@ -24,7 +24,13 @@ app.get("/assembled-ingredients", (req, res) => {
 })
 
 //make get for combo meals
-
+app.get("/combo", (req, res) => {
+    db.all("SELECT * FROM combo", [], (err, rows) => {
+        res.status(500).json({error: err.message});
+        return;
+    })
+    res.json(rows);
+})
 
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
