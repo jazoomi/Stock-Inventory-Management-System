@@ -50,7 +50,7 @@ Time spent on task:
 
 Vrinda:
 Task: Created combo meals
-Time spent on task:
+Time spent on task: 2 days
 
 Ryan:
 Task:
