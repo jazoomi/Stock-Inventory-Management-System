@@ -10,10 +10,11 @@ app.get("/raw-ingredients", (req, res) => { //making get, with endpoing /raw-ing
         if(err){ //err is for if an error occured, otherwise rows has all the info.
             res.status(500).json({ error: err.message});
             return;
+        
         }
         res.json(rows); //sends back info in a JSON response.
-    })
-})
+    });
+});
 //make get for assembled ingredient
 app.get("/assembled-ingredients", (req, res) => {
     db.all("SELECT * FROM assembled_ingredients", [], (err, rows) => {
@@ -21,9 +22,10 @@ app.get("/assembled-ingredients", (req, res) => {
             res.status(500).json({error: err.message});
             return;
         }
-    })
-    res.json(rows);
-})
+        res.json(rows);
+    });
+
+});
 
 //make get for combo meals
 app.get("/combo", (req, res) => {
@@ -32,9 +34,9 @@ app.get("/combo", (req, res) => {
             res.status(500).json({error: err.message});
             return;
         }
-    })
-    res.json(rows);
-})
+        res.json(rows);
+    });
+});
 
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
@@ -59,7 +61,7 @@ app.post("/assembled-ingredients", (req, res) => {
     const { name, quantity, recipe, price} = req.body;
 
     if (!name || !quantity || !recipe || !price) {
-        return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
+        return res.status(400).json({error: "Enter all fields (name, quantity, recipe and price)"});
     }
     const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price) VALUES(?, ?, ?, ?)";
     const params = [name, quantity, recipe, price];
@@ -71,13 +73,13 @@ app.post("/assembled-ingredients", (req, res) => {
         res.status(201).json({ id: this.lastID, name, quantity, recipe, price});
     });
     
-})
+});
 //make post for combo meals
 app.post("/combo", (req, res) => {
     const { name, items, price} = req.body;
 
     if (!name || !items || !price) {
-        return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
+        return res.status(400).json({error: "Enter all fields (name, items, and price)"});
     }
     const sql = "INSERT INTO combo (name, items, price) VALUES(?, ?, ?)";
     const params = [name, items, price];
@@ -89,7 +91,7 @@ app.post("/combo", (req, res) => {
         res.status(201).json({ id: this.lastID, name, items, price});
     });
     
-})
+});
 
 //not sure how correct this part is, i think it doesn't matter what port number.
 const PORT = 5000; 
