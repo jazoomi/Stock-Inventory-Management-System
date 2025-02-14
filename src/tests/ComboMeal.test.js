@@ -86,7 +86,33 @@ describe("GET /combo", () => {
         });
       });
     });
-   
-
+    describe("DELETE /combo/:id", () => {
+        it("should delete an existing combo meal", async () => {
+          const createRes = await request(app)
+            .post("/combo")
+            .send({
+              name: "ComboToDelete",
+              items: "Hotdog, Soda",
+              price: 7
+            });
+          const createdId = createRes.body.id;
+     
+     
+          const deleteRes = await request(app).delete(`/combo/${createdId}`);
+          expect(deleteRes.statusCode).toBe(200);
+          expect(deleteRes.body.message).toBe("combo deleted successfully");
+        });
+     
+     
+        it("should return 404 if combo meal does not exist", async () => {
+          const randomId = 99999;
+          const res = await request(app).delete(`/combo/${randomId}`);
+          expect(res.statusCode).toBe(404);
+          expect(res.body.message).toBe("did not find that combo.");
+        });
+    });
+     
+     
 });
+     
 
