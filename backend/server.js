@@ -143,6 +143,68 @@ app.delete("/combo/:id", (req, res) => {
     });
 });
 
+app.put("/raw-ingredients/:id", (req, res) => {
+    const {id} = req.params;
+    const {name, quantity, unit, price} = req.body;
+    if (!name || !quantity || !unit || !price){
+        return res.status(400).json({error: "Pls put all info"});
+    }
+    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ? price = ? WHERE id = ?";
+    const params = [name, quantity, unit, price, id];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if (this.changes === 0){
+            return res.status(404).json({error: "did not find raw ingredient with that id"});
+        }
+        res.status(200).json({message: "Raw ingredients updated successfully:", id, name, quantity, unit, price})
+
+    });
+});
+
+app.put("/assembled-ingredients/:id", (req, res) => {
+    const {id} = req.params;
+    const {name, quantity, recipe, price} = req.body;
+    if (!name || !quantity || !recipe || !price){
+        return res.status(400).json({error: "Pls put all info"});
+    }
+    const sql = "UPDATE assembled_ingredients set name = ?, quantity = ?, recipe = ? price = ? WHERE id = ?";
+    const params = [name, quantity, recipe, price, id];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if (this.changes === 0){
+            return res.status(404).json({error: "did not find assembled ingredient with that id"});
+        }
+        res.status(200).json({message: "assembled ingredients updated successfully:", id, name, recipe, unit, price})
+
+    });
+});
+
+app.put("/combo/:id", (req, res) => {
+    const {id} = req.params;
+    const {name, items, price} = req.body;
+    if (!name || !items || !price){
+        return res.status(400).json({error: "Pls put all info"});
+    }
+    const sql = "UPDATE combo set name = ?, items = ?, price = ? WHERE id = ?";
+    const params = [name, items, price, id];
+
+    db.run(sql, params, function (err) {
+        if (err){
+            return res.status(500).json({error: err.message});
+        }
+        if (this.changes === 0){
+            return res.status(404).json({error: "did not find combo with that id"});
+        }
+        res.status(200).json({message: "combo updated successfully:", id, name, items, unit})
+
+    });
+});
 
 //not sure how correct this part is, i think it doesn't matter what port number.
 const PORT = 5000; 
