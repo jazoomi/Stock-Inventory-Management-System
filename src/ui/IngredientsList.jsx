@@ -102,7 +102,7 @@ const IngredientList = () => {
 
   // Fetch ingredients
   const fetchIngredients = () => {
-    fetch("http://localhost:5000/raw-ingredients")
+    fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
@@ -115,7 +115,7 @@ const IngredientList = () => {
 
   // Handle saving an edited ingredient
   const handleSave = (updatedIngredient) => {
-    fetch(`http://localhost:5000/raw-ingredients/${updatedIngredient.id}`, {
+    fetch(`http://localhost:3001/raw-ingredients/${updatedIngredient.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedIngredient),
@@ -128,7 +128,7 @@ const IngredientList = () => {
 
   // Handle adding a new ingredient
   const handleAddIngredient = () => {
-    fetch("http://localhost:5000/raw-ingredients", { 
+    fetch("http://localhost:3001/raw-ingredients", { 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -146,7 +146,7 @@ const IngredientList = () => {
 
   // Handle deleting an ingredient
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/raw-ingredients/${id}`, {
+    fetch(`http://localhost:3001/raw-ingredients/${id}`, {
       method: "DELETE",
     })
     .then(() => {

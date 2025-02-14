@@ -10,7 +10,7 @@ const AssembledIngredients = () => {
 
   // Fetch ingredients from the backend
   useEffect(() => {
-    fetch("http://localhost:5000/raw-ingredients")
+    fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
