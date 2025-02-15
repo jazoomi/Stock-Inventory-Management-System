@@ -34,6 +34,7 @@ Decided on using react/javascript for front end work.
 Group check in
 Johnmark:
 Task: Creating general sketchs for how the project should look like. Front-end UI for formulas used to calculate different costs, savings and spending.
+planned time for task: 2 days
 Time spent on task: 2 days
 
 Nickrod:
