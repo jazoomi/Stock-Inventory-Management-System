@@ -33,8 +33,8 @@ Decided on using react/javascript for front end work.
 - - - - - - Meeting Feb 10 - - - - - - -
 Group check in
 Johnmark:
-Task:
-Time spent on task:
+Task: Creating general sketchs for how the project should look like. Front-end UI for formulas used to calculate different costs, savings and spending.
+Time spent on task: 2 days
 
 Nickrod:
 Task: Setting up electron, and frontned UI for Adding, Removing, and Editing ingredients.
