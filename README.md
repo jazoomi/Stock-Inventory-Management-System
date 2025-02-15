@@ -1,7 +1,16 @@
 Stock Inventory Managment System
 
->> ** once forked, cd into backend folder and run  *"npm install"* and it should add all dependecies needed.**
+>> once forked, cd into repo, and run the following:
+```sh
+# Install dependencies
+npm i
 
+# Build the project
+npm run build
+
+# Run Electron in development mode
+npm run dev:electron
+```
 Creating a customizable stock inventory Management software for business to use to keep track of inventory. Vision
 
 Comprehensive Food Cost Tracking System with Combo Creation Overview: We request the development of a comprehensive food cost tracking system for our restaurant. This system should allow us to meticulously track the costs of all ingredients, assemble recipes, and create combos to accurately calculate food costs. Additionally, the system should provide real-time updates, profit calculations, and markup visualizations, ensuring we have a precise understanding of our financials and can make informed decisions for small primarily small businesses.
