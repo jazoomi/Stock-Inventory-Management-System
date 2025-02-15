@@ -42,7 +42,7 @@ planned time for task: 4 days
 Time spent on task: 2 days
 
 Joseph:
-Task: Create UI for assemble ingredients
+Task: Create frontend UI for assemble ingredients, create and work on Wiki
 planned time for task: 3 days 
 Time spent on task: 2 days
 
