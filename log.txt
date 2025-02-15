@@ -38,20 +38,25 @@ Time spent on task:
 
 Nickrod:
 Task: Setting up electron, and frontned UI for Adding, Removing, and Editing ingredients.
+planned time for task: 4 days 
 Time spent on task: 2 days
 
 Joseph:
 Task: Create UI for assemble ingredients
+planned time for task: 3 days 
 Time spent on task: 2 days
 
 Sadiq:
-Task: Worked on backend for get, post, put and delete endpoints. created database via sql schema.  
+Task: Worked on backend for get, post, put and delete endpoints. created database via sql schema. 
+planned time for task: 3 days 
 Time spent on task: 2 days
 
 Vrinda:
 Task: Created combo meals
+planned time for task: 1 days 
 Time spent on task: 2 days
 
 Ryan:
 Task: Unit tests
+planned time for task: 2 days 
 Time spent on task: 2 days
