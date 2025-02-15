@@ -45,8 +45,8 @@ Task: Create UI for assemble ingredients
 Time spent on task: 2 days
 
 Sadiq:
-Task:
-Time spent on task:
+Task: Worked on backend for get, post, put and delete endpoints. created database via sql schema.  
+Time spent on task: 2 days
 
 Vrinda:
 Task: Created combo meals
