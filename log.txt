@@ -37,8 +37,8 @@ Task:
 Time spent on task:
 
 Nickrod:
-Task:
-Time spent on task:
+Task: Setting up electron, and frontned UI for Adding, Removing, and Editing ingredients.
+Time spent on task: 2 days
 
 Joseph:
 Task: Create UI for assemble ingredients
@@ -55,10 +55,3 @@ Time spent on task: 2 days
 Ryan:
 Task: Unit tests
 Time spent on task: 2 days
-
-
-
-
-
-
-
