@@ -1,6 +1,6 @@
 Stock Inventory Managment System
 
->> once forked, cd into repo, and run the following:
+>> once the repository is cloned, cd into repo, and run the following:
 ```sh
 # Install dependencies
 npm i
