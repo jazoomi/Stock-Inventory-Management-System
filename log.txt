@@ -61,3 +61,10 @@ Ryan:
 Task: Unit tests
 planned time for task: 2 days 
 Time spent on task: 2 days
+
+- - - - - - Update Feb 21 - - - - - - -
+
+Johnmark:
+Task: Created hompage and seperate tabs for each feature of our app. Margins/Cenetering issue that needs to be resolved
+planned time for task: 1 day
+Time spent on tas: 1 day
