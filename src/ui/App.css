@@ -1,1 +1,39 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: left; /* Center content vertically */
+    height: 100vh; /* Full viewport height */
+    text-align: center;
+}
 
+.top-nav {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px;
+}
+
+.top-nav button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+    
+.top-nav button:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.page-content {
+    margin-top: 20px;
+    flex: 1; /* This allows the content area to grow and fill space */
+    display: flex; /* Flexbox for centering */
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center the content */
+    justify-content: center; /* Center the content vertically */
+}
