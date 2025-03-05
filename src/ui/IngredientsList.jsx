@@ -214,6 +214,9 @@ fetch("http://localhost:3001/raw-ingredients", {
         />
         <button onClick={handleAddIngredient}>Add Ingredient</button>
       </div>
+
+      <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
+
     </div>
   );
 };
