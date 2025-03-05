@@ -68,3 +68,34 @@ Johnmark:
 Task: Created hompage and seperate tabs for each feature of our app. Margins/Cenetering issue that needs to be resolved
 planned time for task: 1 day
 Time spent on task: 1 day
+
+- - - - - - Meeting Mar 03 - - - - - - -
+Johnmark:
+Task: Adding Total Cost Calculator at the end of each page not including Home and Cost Calculator
+planned time for task: 3 days
+Time spent on task: 	
+
+Nickrod:
+Task: 
+planned time for task:  
+Time spent on task: 
+
+Joseph:
+Task: 
+planned time for task:  
+Time spent on task: 
+
+Sadiq:
+Task: 
+planned time for task:
+Time spent on task: 
+
+Vrinda:
+Task: 
+planned time for task: 
+Time spent on task: 
+
+Ryan:
+Task: Importing Ingredients as csv/xlsx
+planned time for task: 
+Time spent on task: 
