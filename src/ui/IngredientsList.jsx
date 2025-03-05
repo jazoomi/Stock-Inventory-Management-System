@@ -141,20 +141,25 @@ const IngredientList = () => {
 
   // Handle adding a new ingredient
   const handleAddIngredient = () => {
-    fetch("http://localhost:3001/raw-ingredients", { 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...newIngredient,
-        price: newIngredient.price ? parseFloat(newIngredient.price) : 0, // Convert before sending
-        quantity: newIngredient.quantity ? parseFloat(newIngredient.quantity) : 0, 
-      }),
-    })
-    .then(() => {
-      fetchIngredients(); // Re-fetch ingredient list after adding
-      setNewIngredient({ name: "", quantity: "", unit: "", price: "" }); // Reset input fields
-    })
-    .catch((err) => console.error("Error adding ingredient:", err));
+fetch("http://localhost:3001/raw-ingredients", { 
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    ...newIngredient,
+    price: parseFloat(newIngredient.price) || 0,
+    quantity: parseFloat(newIngredient.quantity) || 0,
+  }),
+})
+.then((res) => res.json())
+.then((addedIngredient) => {
+  setIngredients((prevIngredients) => {
+    const updatedIngredients = [...prevIngredients, addedIngredient];
+    calculateTotalCost(updatedIngredients);
+    return updatedIngredients;
+  });
+})
+.catch((err) => console.error("Error adding ingredient:", err));
+
   };
 
   // Handle deleting an ingredient
