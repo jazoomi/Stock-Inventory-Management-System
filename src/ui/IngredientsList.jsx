@@ -40,8 +40,8 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
         // Convert price & quantity to float before saving
         onSave({
           ...editedIngredient,
-          price: editedIngredient.price ? parseFloat(editedIngredient.price) : 0,
-          quantity: editedIngredient.quantity ? parseFloat(editedIngredient.quantity) : 0,
+          price: parseFloat(editedIngredient.price) || 0,
+          quantity: parseFloat(editedIngredient.quantity) || 0,
         });
       }
       setIsEditing(false); // Exit edit mode
