@@ -19,7 +19,7 @@ const IngredientsManager = () => {
 
   return (
     <div>
-      <h1>Ingredients Manager</h1>
+      <h1>Recipe Manager</h1>
       <AssembledIngredients ingredients={ingredients} />
     </div>
   );
