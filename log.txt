@@ -99,3 +99,10 @@ Ryan:
 Task: Importing Ingredients as csv/xlsx
 planned time for task: 
 Time spent on task: 
+
+
+- - - - - - - Mar 05 - - - - - - -
+Johnmark:
+Task: Changed wrong header title from Ingredients Manager --> Recipe Manager
+planned time for task: 10 min
+Time spent on task: 5 min	
