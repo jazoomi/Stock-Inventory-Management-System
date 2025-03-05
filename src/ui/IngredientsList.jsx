@@ -104,9 +104,13 @@ const IngredientList = () => {
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
-      .then((data) => setIngredients(data))
+      .then((data) => {
+        setIngredients(data);
+        calculateTotalCost(data);
+      })
       .catch((err) => console.error("Error fetching ingredients:", err));
   };
+  
 
   // Fetch ingredients on mount
   useEffect(() => {
