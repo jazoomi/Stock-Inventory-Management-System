@@ -113,6 +113,8 @@ const IngredientList = () => {
     fetchIngredients();
   }, []);
 
+  const [totalCost, setTotalCost] = useState(0); // Total cost of all ingredients constant
+
   // Handle saving an edited ingredient
   const handleSave = (updatedIngredient) => {
     fetch(`http://localhost:3001/raw-ingredients/${updatedIngredient.id}`, {
