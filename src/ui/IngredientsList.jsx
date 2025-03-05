@@ -23,16 +23,8 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
     }
 
     // Ensure price input allows decimals
-    if (name === "price") {
+    if (name === "price" || name === "quantity") {
       if (/^\d*\.?\d*$/.test(value)) { // Regex to allow only numbers and one decimal point
-        setEditedIngredient({ ...editedIngredient, [name]: value });
-      }
-      return;
-    }
-
-    // Ensure quantity input allows numbers
-    if (name === "quantity") {
-      if (/^\d*\.?\d*$/.test(value)) {
         setEditedIngredient({ ...editedIngredient, [name]: value });
       }
       return;
