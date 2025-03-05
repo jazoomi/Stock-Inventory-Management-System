@@ -15,7 +15,7 @@ function App() {
 
         <button onClick={() => setActivePage("home")}>Home</button>
         <button onClick={() => setActivePage("ingredient-list")}>Ingredient List</button>
-        <button onClick={() => setActivePage("ingredients-manager")}>Ingredients Manager</button>
+        <button onClick={() => setActivePage("ingredients-manager")}>Recipe Manager</button>
         <button onClick={() => setActivePage("combo-meal")}>Combo Meal</button>
         <button onClick={() => setActivePage("cost-calculator")}>Cost Calculator</button>
       </nav>
