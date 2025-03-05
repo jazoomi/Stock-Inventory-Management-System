@@ -50,3 +50,12 @@
     height: 24px; /* Match height of normal text */
     line-height: 24px;
 }
+
+.total-cost {
+    border: 1px solid #3853dc; /* Border color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Padding inside the box */
+    margin-top: 20px; /* Space above the total cost box */
+    width: fit-content; /* Adjust the width to fit the content */
+  }
+  
