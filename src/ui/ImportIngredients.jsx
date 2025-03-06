@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 const ImportIngredients = ({ refreshIngredients }) => {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [triggerUpdate, setTriggerUpdate] = useState(false) //to force rerender
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -29,15 +30,19 @@ const ImportIngredients = ({ refreshIngredients }) => {
                     price: Price || 0
                 }));
 
-                for(const ingredient of formattedData){
-                    await fetch("http://localhost:3001/raw-ingredients", {
+                await Promise.all(formattedData.map(ingredient => 
+                    fetch("http://localhost:3001/raw-ingredients", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(ingredient),
-                });
-            }
-            alert("Ingredients imported successfully!");
-                refreshIngredients(); // Refresh the ingredient list
+                })
+            ))
+
+                alert("Ingredients imported successfully!");
+                setFile(null);
+                refreshIngredients(); 
+                setTriggerUpdate(prev => !prev); //force state change
+
             } catch (error) {
                 alert("Error uploading file");
                 console.error(error);
@@ -50,7 +55,8 @@ const ImportIngredients = ({ refreshIngredients }) => {
     };
 
     return (
-        <div>
+        //key is used to force rerender
+        <div key={triggerUpdate}>
             <input 
                 type="file" 
                 accept=".csv, .xlsx" 

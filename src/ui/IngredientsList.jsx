@@ -154,7 +154,7 @@ const IngredientList = () => {
         <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
         <button onClick={handleAddIngredient}>Add Ingredient</button>
         <p>Or</p>
-        <ImportIngredients />
+        <ImportIngredients refreshIngredients={fetchIngredients}/>
       </div>
   
       <div className="total-cost">
