@@ -199,7 +199,7 @@ const AssembledIngredients = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Ingredients</th>
+                <th>Ingredients (Name & Cost)</th>
                 <th>Preparation Price ($)</th>
                 <th>Percentage (%)</th>
                 <th>Selling Price ($)</th>
@@ -210,7 +210,15 @@ const AssembledIngredients = () => {
               {assembledMeals.map((meal) => (
                 <tr key={meal.id}>
                   <td>{meal.name}</td>
-                  <td>{meal.ingredients.map(ingredient => ingredient.name).join(", ")}</td>
+                  <td>
+                    <ul>
+                      {meal.ingredients.map((ingredient) => (
+                        <li key={ingredient.id}>
+                          {ingredient.name} - ${ingredient.price.toFixed(2)} {ingredient.unit ? `per ${ingredient.unit}` : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
                   <td>${meal.preparationPrice.toFixed(2)}</td>
                   <td>{meal.percentage}%</td>
                   <td>${meal.sellingPrice.toFixed(2)}</td>
@@ -224,6 +232,23 @@ const AssembledIngredients = () => {
           </table>
         </div>
       )}
+
+      {assembledMeals.length > 0 && (
+        <div style={{
+          border: "2px solid black",
+          padding: "10px",
+          width: "300px",
+          marginTop: "20px",
+          borderRadius: "10px",
+          backgroundColor: "#f9f9f9",
+          fontWeight: "bold"
+        }}>
+          <p>Total Preparation Price = ${assembledMeals.reduce((sum, meal) => sum + meal.preparationPrice, 0).toFixed(2)}</p>
+          <p>Total Selling Price = ${assembledMeals.reduce((sum, meal) => sum + meal.sellingPrice, 0).toFixed(2)}</p>
+          <p>Total Margin = ${(assembledMeals.reduce((sum, meal) => sum + (meal.sellingPrice - meal.preparationPrice), 0)).toFixed(2)}</p>
+        </div>
+      )}
+
     </div>
   );
 };
