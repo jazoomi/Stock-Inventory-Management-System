@@ -1,25 +1,52 @@
 import { useState } from "react";
+import * as XLSX from "xlsx";
 
-const ImportIngredients = ({ onFileUpload }) => {
+const ImportIngredients = ({ refreshIngredients }) => {
     const [file, setFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (!file) return alert("Please select a file");
+        setUploading(true);
 
-        const formData = new FormData();
-        formData.append("file", file);
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            try {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: "array" });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-        fetch("http://localhost:3001/raw-ingredients", {
-            method: "POST",
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(result => alert(result.message))
-        .catch(error => alert("Error uploading file"));
+                // Convert the data to match the API field names
+                const formattedData = jsonData.map(({ Name, Amount, "Unit/Measurement": Unit, Price }) => ({
+                    name: Name,
+                    quantity: Amount || 0,
+                    unit: Unit,
+                    price: Price || 0
+                }));
+
+                for(const ingredient of formattedData){
+                    await fetch("http://localhost:3001/raw-ingredients", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(ingredient),
+                });
+            }
+            alert("Ingredients imported successfully!");
+                refreshIngredients(); // Refresh the ingredient list
+            } catch (error) {
+                alert("Error uploading file");
+                console.error(error);
+            } finally {
+                setUploading(false);
+            }
+        };
+
+        reader.readAsArrayBuffer(file);
     };
 
     return (
@@ -34,7 +61,7 @@ const ImportIngredients = ({ onFileUpload }) => {
             <button onClick={() => document.getElementById("fileInput").click()}>
                 Import Ingredients
             </button>
-            {file && <button onClick={handleUpload}>Upload</button>}
+            {file && <button onClick={handleUpload} disabled={uploading}>{uploading ? "Uploading..." : "Upload"}</button>}
         </div>
     );
 };
