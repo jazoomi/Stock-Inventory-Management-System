@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./IngredientList.css";
+import "./ImportIngredients";
+import ImportIngredients from "./ImportIngredients";
 
 const IngredientCard = ({ ingredient, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -151,6 +153,8 @@ const IngredientList = () => {
         <input type="text" placeholder="Unit/Measurement" value={newIngredient.unit} onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })} />
         <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
         <button onClick={handleAddIngredient}>Add Ingredient</button>
+        <p>Or</p>
+        <ImportIngredients />
       </div>
   
       <div className="total-cost">
