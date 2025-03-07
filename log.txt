@@ -86,9 +86,9 @@ planned time for task:
 Time spent on task: 
 
 Sadiq:
-Task: 
-planned time for task:
-Time spent on task: 
+Task: Added more UI for better easy of acess by adding a Drop down menu on input field
+planned time for task: 1 day 
+Time spent on task:  1 day
 
 Vrinda:
 Task: 
