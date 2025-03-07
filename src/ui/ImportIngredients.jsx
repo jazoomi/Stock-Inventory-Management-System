@@ -49,6 +49,8 @@ const ImportIngredients = ({ refreshIngredients }) => {
 
                 if (uniqueIngredients.length === 0) {
                     alert("No new ingredients to import. All already exist in the database.");
+                    setFile(null);
+                    document.getElementById("fileInput").value = "";
                     setUploading(false);
                     return;
                 }
@@ -62,7 +64,17 @@ const ImportIngredients = ({ refreshIngredients }) => {
             ))
 
                 alert("Ingredients imported successfully!");
+                //refresh existing ingredients right after upload
+                fetch("http://localhost:3001/raw-ingredients")
+                .then((res) => res.json())
+                .then((data) => {
+                    const names = new Set(data.map(item => item.name?.toLowerCase()));
+                    setExistingIngredients(names);
+                })
+                .catch((err) => console.error("Error fetching updated ingredients:", err));
+
                 setFile(null);
+                document.getElementById("fileInput").value = "";
                 refreshIngredients(); 
 
             } catch (error) {
