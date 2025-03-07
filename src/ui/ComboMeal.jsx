@@ -2,13 +2,67 @@ import React, { useState, useEffect } from 'react';
 import './ComboMeal.css';
 
 const ComboMeal = () => {
+  const [rawIngredients, setRawIngredients] = useState([]);
   const [assembledMeals, setAssembledMeals] = useState([]);
-  const [selectedMeals, setSelectedMeals] = useState([]);
+  const [selectedRawIngredients, setSelectedRawIngredients] = useState([]);
+  const [selectedAssembledMeals, setSelectedAssembledMeals] = useState([]);
   const [comboName, setComboName] = useState('');
   const [comboPrice, setComboPrice] = useState('');
   const [savedCombos, setSavedCombos] = useState([]);
 
+  // Fetch raw ingredients from the DB and compute sellingPrice = price * quantity
+  const fetchRawIngredients = () => {
+    fetch("http://localhost:3001/raw-ingredients")
+      .then((res) => res.json())
+      .then((data) => {
+        const ingredients = data.map(item => ({
+          id: item.id,
+          name: item.name,
+          // Use the total cost as price: price * quantity
+          sellingPrice: parseFloat(item.price) * parseFloat(item.quantity),
+          type: "raw"
+        }));
+        setRawIngredients(ingredients);
+      })
+      .catch(err => console.error("Error fetching raw ingredients:", err));
+  };
 
+  // Fetch assembled meals from the DB
+  const fetchAssembledMeals = () => {
+    fetch("http://localhost:3001/assembled-ingredients")
+      .then((res) => res.json())
+      .then((data) => {
+        const meals = data.map(m => ({
+          id: m.id,
+          name: m.name,
+          sellingPrice: parseFloat(m.price),
+          type: "assembled"
+        }));
+        setAssembledMeals(meals);
+      })
+      .catch(err => console.error("Error fetching assembled meals:", err));
+  };
+
+  // Fetch saved combos from the DB
+  const fetchSavedCombos = () => {
+    fetch("http://localhost:3001/combo")
+      .then((res) => res.json())
+      .then((data) => {
+        // 'items' is stored as a JSON string in the DB; parse it.
+        const combos = data.map(combo => ({
+          ...combo,
+          meals: JSON.parse(combo.items)
+        }));
+        setSavedCombos(combos);
+      })
+      .catch(err => console.error("Error fetching saved combos:", err));
+  };
+
+  useEffect(() => {
+    fetchRawIngredients();
+    fetchAssembledMeals();
+    fetchSavedCombos();
+  }, []);
   // Calculate original price
   const calculateOriginalTotal = () => {
     return selectedMeals.reduce((total, meal) => total + meal.sellingPrice, 0);
