@@ -66,7 +66,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
             <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
               {/* select option for units */}
               <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
-                <option value="empty">Please Select</option>
+                <option value="">Please Select</option>
                 <option value="g">g</option>
                 <option value="kg">kg</option>
                 <option value="mL">mL</option>
@@ -75,15 +75,15 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
                 <option value="units">units</option>
                 <option value="cups">cups</option>
                 <option value="Oz">Oz</option>
-                <option value="">Other - specify</option>
+                <option value="other">Other - specify</option>
             </select>
 
-            {editedIngredient.unit === "" && (
+            {editedIngredient.unit === "other" && (
               <input
                 type="text"
-                name="unit"
+                name="unitSpecification"
                 placeholder="Specify unit"
-                value={editedIngredient.unit}
+                value={editedIngredient.unitSpecification}
                 onChange={handleChange}
               />
             )}
@@ -267,7 +267,7 @@ const IngredientList = () => {
           value={newIngredient.unit}
           onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}
         >
-          <option value="empty">Please Select</option>
+          <option value="">Please Select</option>
           <option value="g">g</option>
           <option value="kg">kg</option>
           <option value="mL">mL</option>
@@ -276,15 +276,15 @@ const IngredientList = () => {
           <option value="units">units</option>
           <option value="cups">cups</option>
           <option value="Oz">Oz</option>
-          <option value="">Other - specify</option>
+          <option value="other">Other - specify</option>
         </select>
 
-        {newIngredient.unit === "" && (
+        {newIngredient.unit === "other" && (
           <input
             type="text"
-            name="Unit/Measrument"
+            name="unitSpecification"
             placeholder="Specify unit"
-            value={newIngredient.unit}
+            value={newIngredient.unitSpecification}
             onChange={(e) => setNewIngredient({ ...newIngredient, unitSpecification: e.target.value })}
           />
         )}
