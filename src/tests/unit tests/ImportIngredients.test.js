@@ -57,4 +57,23 @@ describe("ImportIngredients unit tests", () => {
         expect(setFileMock).toHaveBeenCalledWith(fileMock);
         expect(setFileNameMock).toHaveBeenCalledWith("test.xlsx");
     });
+
+    test("handleFileChange doesnt accept files larger than 2MB", () => {
+        const largeFileMock = new File(["A".repeat(3 * 1024 * 1024)], "large.xlsx", {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        const result = handleFileChange(largeFileMock, setFileMock, setFileNameMock);
+
+        expect(result.error).toBe("File size exceeds 2MB. Please upload a smaller file.");
+        expect(setFileMock).not.toHaveBeenCalled();
+        expect(setFileNameMock).not.toHaveBeenCalled();
+    });
+
+    test("handleRemoveFile clears file and fileName", () => {
+        handleRemoveFile(setFileMock, setFileNameMock);
+
+        expect(setFileMock).toHaveBeenCalledWith(null);
+        expect(setFileNameMock).toHaveBeenCalledWith("");
+    });
 });
