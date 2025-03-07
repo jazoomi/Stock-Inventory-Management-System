@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./IngredientList.css";
-import "./ImportIngredients";
 import ImportIngredients from "./ImportIngredients";
 
 const IngredientCard = ({ ingredient, onSave, onDelete }) => {
@@ -14,7 +13,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
       setEditedIngredient({ ...editedIngredient, [name]: "" });
       return;
     }
-    if (name === "price" || name === "quantity") {
+    if (name === "price" || name === "quantity" || name === "threshold") {
       if (/^\d*\.?\d*$/.test(value)) {
         setEditedIngredient({ ...editedIngredient, [name]: value });
       }
@@ -26,11 +25,14 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
   const handleClickOutside = (event) => {
     if (cardRef.current && !cardRef.current.contains(event.target)) {
       if (JSON.stringify(ingredient) !== JSON.stringify(editedIngredient)) {
-        onSave({
+        // Parse values as numbers, not strings
+        const savedIngredient = {
           ...editedIngredient,
           price: parseFloat(editedIngredient.price) || 0,
           quantity: parseFloat(editedIngredient.quantity) || 0,
-        });
+          threshold: parseFloat(editedIngredient.threshold) || 0,
+        };
+        onSave(savedIngredient);
       }
       setIsEditing(false);
     }
@@ -45,15 +47,29 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing, editedIngredient]);
 
+  // Ensure both are parsed as numbers for comparison
+  const quantityNum = parseFloat(ingredient.quantity);
+  const thresholdNum = parseFloat(ingredient.threshold);
+  // Only consider it low if we have valid numbers and quantity is below threshold
+  const isLow = !isNaN(quantityNum) && !isNaN(thresholdNum) && quantityNum < thresholdNum;
+
   return (
-    <div className="ingredient-card" ref={cardRef} onClick={() => !isEditing && setIsEditing(true)}>
+    <div
+      className={`ingredient-card ${isLow ? 'low-stock' : ''}`}
+      ref={cardRef}
+      onClick={() => !isEditing && setIsEditing(true)}
+    >
       {isEditing ? (
         <>
           <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
           <div className="ingredient-details">
-            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} />
-            <input type="text" name="unit" value={editedIngredient.unit} onChange={handleChange} />
-            <input type="text" name="price" value={editedIngredient.price} onChange={handleChange} />
+            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
+            <input type="text" name="unit" value={editedIngredient.unit} onChange={handleChange} placeholder="Unit" />
+            <input type="text" name="price" value={editedIngredient.price} onChange={handleChange} placeholder="Price" />
+          </div>
+          <div className="threshold-container">
+            <input type="text" name="threshold" value={editedIngredient.threshold} onChange={handleChange} placeholder="Threshold" />
+            <span>Notify when below this amount</span>
           </div>
         </>
       ) : (
@@ -61,7 +77,11 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
           <h3>{ingredient.name}</h3>
           <div className="ingredient-details">
             <p>{ingredient.quantity} {ingredient.unit}</p>
-            <p>${Number(ingredient.price).toFixed(2)}</p>
+            <p>${parseFloat(ingredient.price).toFixed(2)}</p>
+          </div>
+          <div className="threshold-info">
+            <p>Threshold: {ingredient.threshold} {ingredient.unit}</p>
+            {isLow && <span className="stock-warning">Low Stock!</span>}
           </div>
         </>
       )}
@@ -72,15 +92,31 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
 
 const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
-  const [newIngredient, setNewIngredient] = useState({ name: "", quantity: "", unit: "", price: "" });
+  const [newIngredient, setNewIngredient] = useState({
+    name: "",
+    quantity: "",
+    unit: "",
+    price: "",
+    threshold: ""
+  });
   const [totalCost, setTotalCost] = useState(0);
+  const [notification, setNotification] = useState(null);
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => {
-        setIngredients(data);
-        calculateTotalCost(data);
+        // Ensure all numeric fields are actually parsed as numbers
+        const processedData = data.map(item => ({
+          ...item,
+          quantity: parseFloat(item.quantity) || 0,
+          threshold: parseFloat(item.threshold) || 0,
+          price: parseFloat(item.price) || 0
+        }));
+        
+        setIngredients(processedData);
+        calculateTotalCost(processedData);
+        checkLowStockItems(processedData);
       })
       .catch((err) => console.error("Error fetching ingredients:", err));
   };
@@ -89,60 +125,112 @@ const IngredientList = () => {
     fetchIngredients();
   }, []);
 
+  // Calculate total cost whenever ingredients change
+  useEffect(() => {
+    calculateTotalCost(ingredients);
+  }, [ingredients]);
+
+  // Check for low stock items whenever ingredients change
+  useEffect(() => {
+    if (ingredients.length > 0) {
+      checkLowStockItems(ingredients);
+    }
+  }, [ingredients]);
+
   const calculateTotalCost = (ingredientList) => {
-    const total = ingredientList.reduce((sum, ingredient) => sum + (ingredient.price * ingredient.quantity), 0);
+    const total = ingredientList.reduce((sum, ingredient) => {
+      // Ensure price and quantity are treated as numbers
+      const price = parseFloat(ingredient.price) || 0;
+      const quantity = parseFloat(ingredient.quantity) || 0;
+      return sum + (price * quantity);
+    }, 0);
+    
     setTotalCost(total);
   };
 
+  const checkLowStockItems = (ingredients) => {
+    // Filter for items with quantity below threshold
+    const lowItems = ingredients.filter(item => {
+      const quantity = parseFloat(item.quantity);
+      const threshold = parseFloat(item.threshold);
+      // Only return true if both values are valid numbers and quantity is below threshold
+      return !isNaN(quantity) && !isNaN(threshold) && threshold > 0 && quantity < threshold;
+    });
+    
+    if (lowItems.length > 0) {
+      const itemNames = lowItems.map(item => item.name).join(', ');
+      setNotification(`Low stock alert: ${itemNames}`);
+    } else {
+      setNotification(null);
+    }
+  };
+
   const handleSave = (updatedIngredient) => {
+    // Update local state immediately for better UX
+    setIngredients(prevIngredients =>
+      prevIngredients.map(ingredient =>
+        ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
+      )
+    );
+
+    // Then update server
     fetch(`http://localhost:3001/raw-ingredients/${updatedIngredient.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedIngredient),
     })
-    .then(() => fetchIngredients())
     .catch((err) => console.error("Error updating ingredient:", err));
   };
 
   const handleAddIngredient = () => {
-    fetch("http://localhost:3001/raw-ingredients", { 
+    const preparedIngredient = {
+      ...newIngredient,
+      price: parseFloat(newIngredient.price) || 0,
+      quantity: parseFloat(newIngredient.quantity) || 0,
+      threshold: parseFloat(newIngredient.threshold) || 0,
+    };
+
+    fetch("http://localhost:3001/raw-ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...newIngredient,
-        price: parseFloat(newIngredient.price) || 0,
-        quantity: parseFloat(newIngredient.quantity) || 0,
-      }),
+      body: JSON.stringify(preparedIngredient),
     })
     .then((res) => res.json())
     .then((addedIngredient) => {
-      setIngredients((prevIngredients) => {
-        const updatedIngredients = [...prevIngredients, addedIngredient];
-        calculateTotalCost(updatedIngredients);
-        return updatedIngredients;
-      });
+      // Update the ingredients list with the new ingredient from the server
+      setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
+      // The useEffect hook will handle calculating the new total cost
     })
     .catch((err) => console.error("Error adding ingredient:", err));
 
-    setNewIngredient({ name: "", quantity: "", unit: "", price: "" });
+    setNewIngredient({ name: "", quantity: "", unit: "", price: "", threshold: "" });
   };
 
   const handleDelete = (id) => {
-    setIngredients((prevIngredients) => {
-      const updatedIngredients = prevIngredients.filter(ingredient => ingredient.id !== id);
-      calculateTotalCost(updatedIngredients);
-      return updatedIngredients;
-    });
+    // Update local state first for immediate response
+    setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
+    // The useEffect hook will handle recalculating the total cost
 
     fetch(`http://localhost:3001/raw-ingredients/${id}`, {
       method: "DELETE",
     })
-    .then(() => fetchIngredients())
     .catch((err) => console.error("Error deleting ingredient:", err));
+  };
+
+  // Close notification
+  const closeNotification = () => {
+    setNotification(null);
   };
 
   return (
     <div className="ingredient-list">
+      {notification && (
+        <div className="notification">
+          <p>{notification}</p>
+          <button className="close-btn" onClick={closeNotification}>×</button>
+        </div>
+      )}
+      
       {ingredients.map((ingredient) => (
         <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
       ))}
@@ -152,6 +240,7 @@ const IngredientList = () => {
         <input type="text" placeholder="Amount" value={newIngredient.quantity} onChange={(e) => setNewIngredient({ ...newIngredient, quantity: e.target.value })} />
         <input type="text" placeholder="Unit/Measurement" value={newIngredient.unit} onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })} />
         <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
+        <input type="text" placeholder="Threshold" value={newIngredient.threshold} onChange={(e) => setNewIngredient({ ...newIngredient, threshold: e.target.value })} />
         <button onClick={handleAddIngredient}>Add Ingredient</button>
         <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients}/>
@@ -162,6 +251,6 @@ const IngredientList = () => {
       </div>
     </div>
   );
-}  
+};
 
 export default IngredientList;
