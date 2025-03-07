@@ -95,20 +95,35 @@ const ComboMeal = () => {
     }
   };
 
+  // Save the combo to the DB
   const handleSaveCombo = () => {
-    if (!comboName || selectedMeals.length === 0 || !comboPrice) {
-      alert('Please enter a combo name, select meals, and set a price');
+    if (!comboName || selectedItems.length === 0 || !comboPrice) {
+      alert('Please enter a combo name, select items, and set a price');
       return;
     }
 
-    const newCombo = {
-      id: Date.now(),
+    const payload = {
       name: comboName,
-      meals: selectedMeals,
-      originalTotal: calculateOriginalTotal(),
-      comboPrice: parseFloat(comboPrice),
-      savings: calculateSavings()
+      // Save selected items as a JSON string
+      items: JSON.stringify(selectedItems),
+      price: parseFloat(comboPrice)
     };
+
+    fetch("http://localhost:3001/combo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(() => {
+        fetchSavedCombos();
+        // Reset selections and form fields
+        setComboName('');
+        setSelectedRawIngredients([]);
+        setSelectedAssembledMeals([]);
+        setComboPrice('');
+      })
+      .catch(err => console.error("Error saving combo:", err));
   };
 
   const handleDeleteCombo = (comboId) => {
