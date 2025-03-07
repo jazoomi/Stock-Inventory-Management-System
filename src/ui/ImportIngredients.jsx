@@ -106,6 +106,12 @@ const ImportIngredients = ({ refreshIngredients }) => {
         reader.readAsArrayBuffer(file);
     };
 
+    const handleRemoveFile = () => {
+        setFile(null);
+        setFileName("");
+        document.getElementById("fileInput").value = ""; // Reset file input field
+    };
+
     return (
         <div>
             <input 
@@ -118,7 +124,14 @@ const ImportIngredients = ({ refreshIngredients }) => {
             <button onClick={() => document.getElementById("fileInput").click()}>
                 Import Ingredients
             </button>
-            {fileName && <span style={{ marginLeft: "10px", fontWeight: "bold", color: "#333333"  }}>{fileName}</span>}
+            {fileName && (
+                <div style={{ marginLeft: "10px", fontWeight: "bold", color: "#333333"  }}>
+                    <span>{fileName}</span>
+                    <button onClick={handleRemoveFile} style={{ marginLeft: "10px", marginTop:"10px", marginBottom:"10px", backgroundColor: "#808080", color: "white"}}>
+                        Remove
+                    </button>
+                </div>
+            )}
             {file && <button onClick={handleUpload} disabled={uploading} style={{ marginLeft: "10px" }}>{uploading ? "Uploading..." : "Upload"}</button>}
         </div>
     );
