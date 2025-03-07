@@ -36,6 +36,51 @@ describe("Integration Tests DB", () => {
         expect(response.body.length).toBeGreaterThan(0);
     });
 
+    test("create an assembled meal", async () => {
+        const mealPayload = {
+            name: "Salad",
+            quantity: 1,
+            recipe: JSON.stringify({
+                ingredients: [{ id: rawIngredientId, name: "Tomato", price: 5.99 }],
+                preparationPrice: 5.99,
+                percentage: "20"
+            }),
+            price: 7.19
+        };
+
+        const response = await request(app)
+            .post("/assembled-ingredients")
+            .send(mealPayload)
+            .expect(201);
+
+        expect(response.body).toHaveProperty("id");
+        assembledMealId = response.body.id;
+    });
+
+    test("get assembled meals", async () => {
+        const response = await request(app)
+            .get("/assembled-ingredients")
+            .expect(200);
+
+        expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    test("delete an assembled meal", async () => {
+        const response = await request(app)
+            .delete(`/assembled-ingredients/${assembledMealId}`)
+            .expect(200);
+
+        expect(response.body.message).toContain("deleted successfully");
+    });
+
+    test("make sure assembled meal is deleted", async () => {
+        const response = await request(app)
+            .get("/assembled-ingredients")
+            .expect(200);
+
+        expect(response.body.some(item => item.id === assembledMealId)).toBe(false);
+    });
+
     test("delete a raw ingredient", async () => {
         const response = await request(app)
             .delete(`/raw-ingredients/${rawIngredientId}`)
