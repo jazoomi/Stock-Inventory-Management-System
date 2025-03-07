@@ -6,85 +6,102 @@ const AssembledIngredients = () => {
   const [mealName, setMealName] = useState("");
   const [mealPercentage, setMealPercentage] = useState("");
   const [assembledMeals, setAssembledMeals] = useState([]);
-  const [editMeal, setEditMeal] = useState(null); // State to track which meal is being edited
+  const [editMeal, setEditMeal] = useState(null); // Track which meal is being edited
 
-  // Fetch ingredients from DB
+  // 1. Fetch raw ingredients from DB
   useEffect(() => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
-  
+
     // Also fetch assembled meals from DB
     fetchAssembledMeals();
   }, []);
 
-// fetch assembled meals from DB
-const fetchAssembledMeals = () => {
-  fetch("http://localhost:3001/assembled-ingredients")
-    .then((res) => res.json())
-    .then((data) => {
-      const meals = data.map((item) => {
-        let parsedRecipe = {};
-        try {
-          parsedRecipe = JSON.parse(item.recipe); // recipe is JSON with extra info
-        } catch (err) {
-          console.error("Error parsing recipe for item:", item.id, err);
-        }
+  // 2. Helper to fetch assembled meals from DB
+  const fetchAssembledMeals = () => {
+    fetch("http://localhost:3001/assembled-ingredients")
+      .then((res) => res.json())
+      .then((data) => {
+        // Convert each DB row into our local shape
+        const meals = data.map((item) => {
+          let parsedRecipe = {};
+          try {
+            parsedRecipe = JSON.parse(item.recipe); // recipe is JSON with extra info
+          } catch (err) {
+            console.error("Error parsing recipe for item:", item.id, err);
+          }
 
-        return {
-          id: item.id,
-          name: item.name,
-          sellingPrice: parseFloat(item.price) || 0,
-          preparationPrice: parsedRecipe.preparationPrice || 0,
-          percentage: parsedRecipe.percentage || "",
-          ingredients: parsedRecipe.ingredients || [],
-        };
-      });
-      setAssembledMeals(meals);
-    })
-    .catch((err) => console.error("Error fetching assembled meals:", err));
-};
+          return {
+            id: item.id,
+            name: item.name,
+            // We'll store final selling price in 'price' column
+            sellingPrice: parseFloat(item.price) || 0,
+            // We store the rest inside the recipe JSON
+            preparationPrice: parsedRecipe.preparationPrice || 0,
+            percentage: parsedRecipe.percentage || "",
+            ingredients: parsedRecipe.ingredients || [],
+          };
+        });
+        setAssembledMeals(meals);
+      })
+      .catch((err) => console.error("Error fetching assembled meals:", err));
+  };
 
-
-  // Handle ingredient selection
+  // 3. Toggle ingredient selection
   const toggleIngredient = (ingredient) => {
     if (selectedIngredients.some((item) => item.id === ingredient.id)) {
-      setSelectedIngredients(selectedIngredients.filter((item) => item.id !== ingredient.id));
+      setSelectedIngredients(
+        selectedIngredients.filter((item) => item.id !== ingredient.id)
+      );
     } else {
       setSelectedIngredients([...selectedIngredients, ingredient]);
     }
   };
 
-  // Calculate total price of selected ingredients
+  // 4. Calculate total price of selected raw ingredients
   const calculateTotalPrice = () => {
-    return selectedIngredients.reduce((total, ingredient) => total + ingredient.price, 0);
+    return selectedIngredients.reduce(
+      (total, ingredient) => total + ingredient.price,
+      0
+    );
   };
 
-  // Calculate selling price based on percentage
+  // 5. Calculate selling price based on percentage
   const calculateSellingPrice = () => {
     const totalPrice = calculateTotalPrice();
     const percentage = parseFloat(mealPercentage) || 0;
-    return totalPrice + (totalPrice * (percentage / 100)); // Add percentage to total price
+    // Add percentage to total price
+    return totalPrice + totalPrice * (percentage / 100);
   };
 
-  // Handle saving the assembled meal
+  // 6. Create or update an assembled meal
   const handleAssembleMeal = () => {
     if (!mealName || selectedIngredients.length === 0 || mealPercentage === "") {
-      alert("Please enter a meal name, select at least one ingredient, and provide a percentage.");
+      alert(
+        "Please enter a meal name, select at least one ingredient, and provide a percentage."
+      );
       return;
     }
 
     const preparationPrice = calculateTotalPrice();
     const sellingPrice = calculateSellingPrice();
 
-    const newMeal = {
-      id: Date.now(), // Temporary ID
+    // We'll store everything in the DB:
+    // - name = mealName
+    // - quantity = 1 (arbitrary for 'meal' concept)
+    // - recipe = JSON with { ingredients, preparationPrice, percentage }
+    // - price = sellingPrice
+    const payload = {
       name: mealName,
-      preparationPrice: preparationPrice,
-      percentage: mealPercentage,
-      sellingPrice: sellingPrice,
-      ingredients: selectedIngredients,
+      quantity: 1,
+      recipe: JSON.stringify({
+        ingredients: selectedIngredients,
+        preparationPrice: preparationPrice,
+        percentage: mealPercentage,
+      }),
+      price: sellingPrice,
     };
 
     if (editMeal) {
@@ -101,6 +118,7 @@ const fetchAssembledMeals = () => {
           return res.json();
         })
         .then(() => {
+          // After updating, re-fetch or update local state
           fetchAssembledMeals();
           setEditMeal(null); // exit edit mode
         })
@@ -119,22 +137,37 @@ const fetchAssembledMeals = () => {
           return res.json();
         })
         .then(() => {
+          // Refresh list
           fetchAssembledMeals();
         })
         .catch((err) => console.error(err));
     }
-    
 
-    // Reset fields
+    // Reset form fields
     setMealName("");
     setMealPercentage("");
     setSelectedIngredients([]);
   };
 
-  // Handle edit button click
+  // 7. Delete a meal from DB
+  const handleDeleteMeal = (id) => {
+    fetch(`http://localhost:3001/assembled-ingredients/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error deleting assembled meal");
+        }
+        // Refresh or update local state
+        fetchAssembledMeals();
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // 8. Start editing a meal
   const handleEditMeal = (meal) => {
-    setEditMeal(meal); // Set the meal to be edited
-    setMealName(meal.name); // Set form fields to meal values
+    setEditMeal(meal);
+    setMealName(meal.name);
     setMealPercentage(meal.percentage);
     setSelectedIngredients(meal.ingredients);
   };
@@ -190,7 +223,9 @@ const fetchAssembledMeals = () => {
               <td>
                 <input
                   type="checkbox"
-                  checked={selectedIngredients.some((item) => item.id === ingredient.id)}
+                  checked={selectedIngredients.some(
+                    (item) => item.id === ingredient.id
+                  )}
                   onChange={() => toggleIngredient(ingredient)}
                 />
               </td>
@@ -199,7 +234,7 @@ const fetchAssembledMeals = () => {
         </tbody>
       </table>
 
-      {/* Show selected ingredients with detailed tags */}
+      {/* Show selected ingredients */}
       <h3>Selected Ingredients</h3>
       <table border="1" style={{ width: "100%", marginBottom: "20px" }}>
         <thead>
@@ -220,15 +255,19 @@ const fetchAssembledMeals = () => {
         </tbody>
       </table>
 
-      {/* Show total ingredients' names and total cost */}
       {selectedIngredients.length > 0 && (
         <div>
-          <p><strong>Total Ingredients:</strong> {selectedIngredients.map((ingredient) => ingredient.name).join(", ")}</p>
-          <p><strong>Total Cost:</strong> ${calculateTotalPrice().toFixed(2)}</p>
+          <p>
+            <strong>Total Ingredients:</strong>{" "}
+            {selectedIngredients.map((ingredient) => ingredient.name).join(", ")}
+          </p>
+          <p>
+            <strong>Total Cost:</strong> ${calculateTotalPrice().toFixed(2)}
+          </p>
         </div>
       )}
 
-      {/* Save Meal Button */}
+      {/* Save or Update Meal */}
       <button onClick={handleAssembleMeal}>
         {editMeal ? "Update Meal" : "Save Meal"}
       </button>
@@ -256,7 +295,9 @@ const fetchAssembledMeals = () => {
                     <ul>
                       {meal.ingredients.map((ingredient) => (
                         <li key={ingredient.id}>
-                          {ingredient.name} - ${ingredient.price.toFixed(2)} {ingredient.unit ? `per ${ingredient.unit}` : ""}
+                          {ingredient.name} - $
+                          {ingredient.price.toFixed(2)}{" "}
+                          {ingredient.unit ? `per ${ingredient.unit}` : ""}
                         </li>
                       ))}
                     </ul>
@@ -266,7 +307,9 @@ const fetchAssembledMeals = () => {
                   <td>${meal.sellingPrice.toFixed(2)}</td>
                   <td>
                     <button onClick={() => handleEditMeal(meal)}>Edit</button>
-                    <button onClick={() => handleDeleteMeal(meal.id)}>Delete</button>
+                    <button onClick={() => handleDeleteMeal(meal.id)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -277,17 +320,37 @@ const fetchAssembledMeals = () => {
 
       {/* Display Total Preparation, Selling Price, and Margin */}
       {assembledMeals.length > 0 && (
-        <div style={{
-          border: "2px solid #3853dc",
-          padding: "10px",
-          width: "300px",
-          marginTop: "20px",
-          borderRadius: "10px",
-          fontWeight: "bold"
-        }}>
-          <p>Total Preparation Price = ${assembledMeals.reduce((sum, meal) => sum + meal.preparationPrice, 0).toFixed(2)}</p>
-          <p>Total Selling Price = ${assembledMeals.reduce((sum, meal) => sum + meal.sellingPrice, 0).toFixed(2)}</p>
-          <p>Total Margin = ${(assembledMeals.reduce((sum, meal) => sum + (meal.sellingPrice - meal.preparationPrice), 0)).toFixed(2)}</p>
+        <div
+          style={{
+            border: "2px solid #3853dc",
+            padding: "10px",
+            width: "300px",
+            marginTop: "20px",
+            borderRadius: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          <p>
+            Total Preparation Price = $
+            {assembledMeals
+              .reduce((sum, meal) => sum + meal.preparationPrice, 0)
+              .toFixed(2)}
+          </p>
+          <p>
+            Total Selling Price = $
+            {assembledMeals
+              .reduce((sum, meal) => sum + meal.sellingPrice, 0)
+              .toFixed(2)}
+          </p>
+          <p>
+            Total Margin = $
+            {assembledMeals
+              .reduce(
+                (sum, meal) => sum + (meal.sellingPrice - meal.preparationPrice),
+                0
+              )
+              .toFixed(2)}
+          </p>
         </div>
       )}
     </div>
