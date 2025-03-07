@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const ImportIngredients = ({ refreshIngredients }) => {
     const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState("");
     const [uploading, setUploading] = useState(false);
     const [existingIngredients, setExistingIngredients] = useState(new Set()); // Store existing names
 
@@ -19,7 +20,22 @@ const ImportIngredients = ({ refreshIngredients }) => {
     }, []);
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        if (!e.target.files || e.target.files.length === 0) {
+            return;
+        }
+        const selectedFile = e.target.files[0];
+        //if (!selectedFile) return;
+        console.log("Selected File:", selectedFile.name);
+        if (selectedFile.size > MAX_FILE_SIZE) {
+            alert("File size exceeds 2MB. Please upload a smaller file.");
+            setFile(null);
+            setFileName(""); // Clear file name
+            e.target.value = ""; // Reset input field
+            return;
+        }
+
+        setFile(selectedFile);
+        setFileName(selectedFile.name); // display file name
     };
 
     const handleUpload = async () => {
@@ -50,6 +66,7 @@ const ImportIngredients = ({ refreshIngredients }) => {
                 if (uniqueIngredients.length === 0) {
                     alert("No new ingredients to import. All already exist in the database.");
                     setFile(null);
+                    setFileName(""); 
                     document.getElementById("fileInput").value = "";
                     setUploading(false);
                     return;
@@ -74,6 +91,7 @@ const ImportIngredients = ({ refreshIngredients }) => {
                 .catch((err) => console.error("Error fetching updated ingredients:", err));
 
                 setFile(null);
+                setFileName("");
                 document.getElementById("fileInput").value = "";
                 refreshIngredients(); 
 
@@ -100,7 +118,8 @@ const ImportIngredients = ({ refreshIngredients }) => {
             <button onClick={() => document.getElementById("fileInput").click()}>
                 Import Ingredients
             </button>
-            {file && <button onClick={handleUpload} disabled={uploading}>{uploading ? "Uploading..." : "Upload"}</button>}
+            {fileName && <span style={{ marginLeft: "10px", fontWeight: "bold", color: "#333333"  }}>{fileName}</span>}
+            {file && <button onClick={handleUpload} disabled={uploading} style={{ marginLeft: "10px" }}>{uploading ? "Uploading..." : "Upload"}</button>}
         </div>
     );
 };
