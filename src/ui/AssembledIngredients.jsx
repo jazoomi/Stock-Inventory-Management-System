@@ -233,14 +233,14 @@ const AssembledIngredients = () => {
         </div>
       )}
 
+      {/* Display Total Preparation, Selling Price, and Margin */}
       {assembledMeals.length > 0 && (
         <div style={{
-          border: "2px solid black",
+          border: "2px solid #3853dc",
           padding: "10px",
           width: "300px",
           marginTop: "20px",
           borderRadius: "10px",
-          backgroundColor: "#f9f9f9",
           fontWeight: "bold"
         }}>
           <p>Total Preparation Price = ${assembledMeals.reduce((sum, meal) => sum + meal.preparationPrice, 0).toFixed(2)}</p>
@@ -248,7 +248,6 @@ const AssembledIngredients = () => {
           <p>Total Margin = ${(assembledMeals.reduce((sum, meal) => sum + (meal.sellingPrice - meal.preparationPrice), 0)).toFixed(2)}</p>
         </div>
       )}
-
     </div>
   );
 };
