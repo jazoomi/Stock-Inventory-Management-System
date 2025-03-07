@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 
 const ImportIngredients = ({ refreshIngredients }) => {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
-    const [triggerUpdate, setTriggerUpdate] = useState(false) //to force rerender
+    const [existingIngredients, setExistingIngredients] = useState(new Set()); // Store existing names
+
+    // Fetch existing ingredient names 
+    useEffect(() => {
+        fetch("http://localhost:3001/raw-ingredients")
+            .then((res) => res.json()) 
+            .then((data) => {
+                console.log;
+                const names = new Set(data.map(item => item.name.toLowerCase())); // Store lowercase names for case-insensitive matching
+                setExistingIngredients(names);
+            })
+            .catch((err) => console.error("Error fetching ingredients:", err));
+    }, []);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -25,12 +37,23 @@ const ImportIngredients = ({ refreshIngredients }) => {
                 // Convert the data to match the API field names
                 const formattedData = jsonData.map(({ Name, Amount, "Unit/Measurement": Unit, Price }) => ({
                     name: Name,
-                    quantity: Amount || 0,
+                    quantity: Amount,
                     unit: Unit,
-                    price: Price || 0
+                    price: Price
                 }));
 
-                await Promise.all(formattedData.map(ingredient => 
+                 // Remove duplicates (skip if the name already exists in the DB)
+                 const uniqueIngredients = formattedData.filter(item => 
+                    !existingIngredients.has(item.name.toLowerCase())
+                );
+
+                if (uniqueIngredients.length === 0) {
+                    alert("No new ingredients to import. All already exist in the database.");
+                    setUploading(false);
+                    return;
+                }
+
+                await Promise.all(uniqueIngredients.map(ingredient => 
                     fetch("http://localhost:3001/raw-ingredients", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -41,7 +64,6 @@ const ImportIngredients = ({ refreshIngredients }) => {
                 alert("Ingredients imported successfully!");
                 setFile(null);
                 refreshIngredients(); 
-                setTriggerUpdate(prev => !prev); //force state change
 
             } catch (error) {
                 alert("Error uploading file");
@@ -55,8 +77,7 @@ const ImportIngredients = ({ refreshIngredients }) => {
     };
 
     return (
-        //key is used to force rerender
-        <div key={triggerUpdate}>
+        <div>
             <input 
                 type="file" 
                 accept=".csv, .xlsx" 
