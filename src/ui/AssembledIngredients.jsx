@@ -8,22 +8,44 @@ const AssembledIngredients = () => {
   const [assembledMeals, setAssembledMeals] = useState([]);
   const [editMeal, setEditMeal] = useState(null); // State to track which meal is being edited
 
-  // Fetch ingredients from the backend
+  // Fetch ingredients from DB
   useEffect(() => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
-
-    // Load saved assembled meals from localStorage
-    const savedMeals = JSON.parse(localStorage.getItem("assembledMeals")) || [];
-    setAssembledMeals(savedMeals);
+  
+    // Also fetch assembled meals from DB
+    fetchAssembledMeals();
   }, []);
 
-  // Save assembled meals to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("assembledMeals", JSON.stringify(assembledMeals));
-  }, [assembledMeals]);
+// fetch assembled meals from DB
+const fetchAssembledMeals = () => {
+  fetch("http://localhost:3001/assembled-ingredients")
+    .then((res) => res.json())
+    .then((data) => {
+      const meals = data.map((item) => {
+        let parsedRecipe = {};
+        try {
+          parsedRecipe = JSON.parse(item.recipe); // recipe is JSON with extra info
+        } catch (err) {
+          console.error("Error parsing recipe for item:", item.id, err);
+        }
+
+        return {
+          id: item.id,
+          name: item.name,
+          sellingPrice: parseFloat(item.price) || 0,
+          preparationPrice: parsedRecipe.preparationPrice || 0,
+          percentage: parsedRecipe.percentage || "",
+          ingredients: parsedRecipe.ingredients || [],
+        };
+      });
+      setAssembledMeals(meals);
+    })
+    .catch((err) => console.error("Error fetching assembled meals:", err));
+};
+
 
   // Handle ingredient selection
   const toggleIngredient = (ingredient) => {
@@ -66,27 +88,47 @@ const AssembledIngredients = () => {
     };
 
     if (editMeal) {
-      // Update existing meal if we're in edit mode
-      const updatedMeals = assembledMeals.map((meal) =>
-        meal.id === editMeal.id ? { ...meal, ...newMeal } : meal
-      );
-      setAssembledMeals(updatedMeals);
-      setEditMeal(null); // Reset edit mode
+      // Update existing meal (PUT)
+      fetch(`http://localhost:3001/assembled-ingredients/${editMeal.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Error updating assembled meal");
+          }
+          return res.json();
+        })
+        .then(() => {
+          fetchAssembledMeals();
+          setEditMeal(null); // exit edit mode
+        })
+        .catch((err) => console.error(err));
     } else {
-      // Save new meal if not in edit mode
-      setAssembledMeals([...assembledMeals, newMeal]);
+      // Create new meal (POST)
+      fetch("http://localhost:3001/assembled-ingredients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Error creating assembled meal");
+          }
+          return res.json();
+        })
+        .then(() => {
+          fetchAssembledMeals();
+        })
+        .catch((err) => console.error(err));
     }
+    
 
     // Reset fields
     setMealName("");
     setMealPercentage("");
     setSelectedIngredients([]);
-  };
-
-  // Handle deleting a meal
-  const handleDeleteMeal = (id) => {
-    const updatedMeals = assembledMeals.filter((meal) => meal.id !== id);
-    setAssembledMeals(updatedMeals);
   };
 
   // Handle edit button click

@@ -8,20 +8,6 @@ const ComboMeal = () => {
   const [comboPrice, setComboPrice] = useState('');
   const [savedCombos, setSavedCombos] = useState([]);
 
-  // get local meals
-  useEffect(() => {
-    const loadMeals = () => {
-      const savedAssembledMeals = JSON.parse(localStorage.getItem('assembledMeals')) || [];
-      setAssembledMeals(savedAssembledMeals);
-    };
-
-    // Load initial data
-    loadMeals();
-    
-    // Set up interval to check for updates
-    const interval = setInterval(loadMeals, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Calculate original price
   const calculateOriginalTotal = () => {
@@ -61,17 +47,6 @@ const ComboMeal = () => {
       comboPrice: parseFloat(comboPrice),
       savings: calculateSavings()
     };
-
-    // Save
-    const existingCombos = JSON.parse(localStorage.getItem('savedCombos')) || [];
-    const updatedCombos = [...existingCombos, newCombo];
-    localStorage.setItem('savedCombos', JSON.stringify(updatedCombos));
-    setSavedCombos(updatedCombos);
-
-    // Reset
-    setComboName('');
-    setSelectedMeals([]);
-    setComboPrice('');
   };
 
   const handleDeleteCombo = (comboId) => {
@@ -79,12 +54,6 @@ const ComboMeal = () => {
     localStorage.setItem('savedCombos', JSON.stringify(updatedCombos));
     setSavedCombos(updatedCombos);
   };
-
-  // Load saved combos
-  useEffect(() => {
-    const savedComboMeals = JSON.parse(localStorage.getItem('savedCombos')) || [];
-    setSavedCombos(savedComboMeals);
-  }, []);
 
   return (
     <div className="combo-meal-container">
