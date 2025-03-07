@@ -14,16 +14,7 @@ const AssembledIngredients = () => {
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
-
-    // Load saved assembled meals from localStorage
-    const savedMeals = JSON.parse(localStorage.getItem("assembledMeals")) || [];
-    setAssembledMeals(savedMeals);
-  }, []);
-
-  // Save assembled meals to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("assembledMeals", JSON.stringify(assembledMeals));
-  }, [assembledMeals]);
+  });
 
   // Handle ingredient selection
   const toggleIngredient = (ingredient) => {
@@ -81,12 +72,6 @@ const AssembledIngredients = () => {
     setMealName("");
     setMealPercentage("");
     setSelectedIngredients([]);
-  };
-
-  // Handle deleting a meal
-  const handleDeleteMeal = (id) => {
-    const updatedMeals = assembledMeals.filter((meal) => meal.id !== id);
-    setAssembledMeals(updatedMeals);
   };
 
   // Handle edit button click
