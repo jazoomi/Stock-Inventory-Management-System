@@ -27,4 +27,28 @@ describe("Integration Tests DB", () => {
         expect(response.body).toHaveProperty("id");
         rawIngredientId = response.body.id; // Store for later
     });
+
+    test("retrieve raw ingredients", async () => {
+        const response = await request(app)
+            .get("/raw-ingredients")
+            .expect(200);
+
+        expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    test("delete a raw ingredient", async () => {
+        const response = await request(app)
+            .delete(`/raw-ingredients/${rawIngredientId}`)
+            .expect(200);
+
+        expect(response.body.message).toContain("deleted successfully");
+    });
+
+    test("make sure raw ingredient is deleted", async () => {
+        const response = await request(app)
+            .get("/raw-ingredients")
+            .expect(200);
+
+        expect(response.body.some(item => item.id === rawIngredientId)).toBe(false);
+    });
 });
