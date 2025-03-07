@@ -63,6 +63,7 @@ const ComboMeal = () => {
     fetchAssembledMeals();
     fetchSavedCombos();
   }, []);
+  
   // Calculate original price
   const calculateOriginalTotal = () => {
     return selectedMeals.reduce((total, meal) => total + meal.sellingPrice, 0);
@@ -76,14 +77,21 @@ const ComboMeal = () => {
     return ((originalTotal - newTotal) / originalTotal * 100).toFixed(1);
   };
 
-  const toggleMealSelection = (meal) => {
-    if (selectedMeals.some(selected => selected.id === meal.id)) {
-      setSelectedMeals(selectedMeals.filter(selected => selected.id !== meal.id));
+  // Toggle selection for raw ingredients
+  const toggleRawSelection = (ingredient) => {
+    if (selectedRawIngredients.some(item => item.id === ingredient.id)) {
+      setSelectedRawIngredients(selectedRawIngredients.filter(item => item.id !== ingredient.id));
     } else {
-      setSelectedMeals([...selectedMeals, meal]);
-      // Set initial combo price to sum of selected meals
-      const newTotal = [...selectedMeals, meal].reduce((total, m) => total + m.sellingPrice, 0);
-      setComboPrice(newTotal.toFixed(2));
+      setSelectedRawIngredients([...selectedRawIngredients, ingredient]);
+    }
+  };
+
+  // Toggle selection for assembled meals
+  const toggleAssembledSelection = (meal) => {
+    if (selectedAssembledMeals.some(item => item.id === meal.id)) {
+      setSelectedAssembledMeals(selectedAssembledMeals.filter(item => item.id !== meal.id));
+    } else {
+      setSelectedAssembledMeals([...selectedAssembledMeals, meal]);
     }
   };
 
