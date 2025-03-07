@@ -97,8 +97,8 @@ Time spent on task:
 
 Ryan:
 Task: Importing Ingredients as csv/xlsx
-planned time for task: 
-Time spent on task: 
+planned time for task: 1 day
+Time spent on task: 1 day
 
 
 - - - - - - - Mar 05 - - - - - - -
