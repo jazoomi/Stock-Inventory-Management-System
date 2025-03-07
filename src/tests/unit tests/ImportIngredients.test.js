@@ -76,4 +76,33 @@ describe("ImportIngredients unit tests", () => {
         expect(setFileMock).toHaveBeenCalledWith(null);
         expect(setFileNameMock).toHaveBeenCalledWith("");
     });
+
+    test("handleUpload calls API and with valid upload returns successfully", async () => {
+        const fetchMock = jest.fn(() =>
+            Promise.resolve({ ok: true, json: () => Promise.resolve({ message: "Uploaded successfully" }) })
+        );
+
+        const result = await handleUpload(fileMock, fetchMock);
+
+        expect(result.success).toBe(true);
+        expect(fetchMock).toHaveBeenCalledWith("http://localhost:3001/raw-ingredients", expect.any(Object));
+    });
+
+    test("handleUpload returns error when no file is selected", async () => {
+        const fetchMock = jest.fn();
+
+        const result = await handleUpload(null, fetchMock);
+
+        expect(result.error).toBe("No file selected");
+        expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    test("handleUpload returns error when API call doesnt work", async () => {
+        const fetchMock = jest.fn(() => Promise.resolve({ ok: false }));
+
+        const result = await handleUpload(fileMock, fetchMock);
+
+        expect(result.error).toBe("Upload failed");
+        expect(fetchMock).toHaveBeenCalled();
+    });
 });
