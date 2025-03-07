@@ -69,12 +69,12 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
               <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
                 <option value="g">g</option>
                 <option value="kg">kg</option>
-                <option value="mL">kg</option>
+                <option value="mL">mL</option>
                 <option value="L">L</option>
-                <option value="slices">kg</option>
-                <option value="units">kg</option>
-                <option value="cups">kg</option>
-                <option value="Oz">kg</option>
+                <option value="slices">slices</option>
+                <option value="units">units</option>
+                <option value="cups">cups</option>
+                <option value="Oz">Oz</option>
             </select>
 
             {editedIngredient.unit === "other" && (
@@ -268,12 +268,12 @@ const IngredientList = () => {
         >
           <option value="g">g</option>
           <option value="kg">kg</option>
-          <option value="mL">kg</option>
+          <option value="mL">mL</option>
           <option value="L">L</option>
-          <option value="slices">kg</option>
-          <option value="units">kg</option>
-          <option value="cups">kg</option>
-          <option value="Oz">kg</option>
+          <option value="slices">slices</option>
+          <option value="units">units</option>
+          <option value="cups">cups</option>
+          <option value="Oz">Oz</option>
           <option value="other">Other - specify</option>
         </select>
 
