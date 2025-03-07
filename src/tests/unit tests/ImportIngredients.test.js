@@ -37,3 +37,24 @@ const handleUpload = async (file, fetchMock) => {
 
     return { success: true };
 };
+
+describe("ImportIngredients unit tests", () => {
+    let fileMock, setFileMock, setFileNameMock;
+
+    beforeEach(() => {
+        fileMock = new File(["test"], "test.xlsx", {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        setFileMock = jest.fn();
+        setFileNameMock = jest.fn();
+    });
+
+    test("handleFileChange sets file and fileName correctly", () => {
+        const result = handleFileChange(fileMock, setFileMock, setFileNameMock);
+
+        expect(result.success).toBe(true);
+        expect(setFileMock).toHaveBeenCalledWith(fileMock);
+        expect(setFileNameMock).toHaveBeenCalledWith("test.xlsx");
+    });
+});
