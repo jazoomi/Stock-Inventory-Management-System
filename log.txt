@@ -91,9 +91,9 @@ planned time for task: 1 day
 Time spent on task:  1 day
 
 Vrinda:
-Task: 
-planned time for task: 
-Time spent on task: 
+Task: Added notification update for if amount is less than threshold.
+planned time for task: 1 day
+Time spent on task: 2 days
 
 Ryan:
 Task: Importing Ingredients as csv/xlsx
