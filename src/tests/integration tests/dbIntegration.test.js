@@ -65,6 +65,49 @@ describe("Integration Tests DB", () => {
         expect(response.body.length).toBeGreaterThan(0);
     });
 
+    test("create a combo meal", async () => {
+        const comboPayload = {
+            name: "Lunch Combo",
+            items: JSON.stringify([
+                { id: rawIngredientId, name: "Tomato", sellingPrice: 5.99 },
+                { id: assembledMealId, name: "Salad", sellingPrice: 7.19 }
+            ]),
+            price: 12.00
+        };
+
+        const response = await request(app)
+            .post("/combo")
+            .send(comboPayload)
+            .expect(201);
+
+        expect(response.body).toHaveProperty("id");
+        comboId = response.body.id; 
+    });
+
+    test("get saved combos", async () => {
+        const response = await request(app)
+            .get("/combo")
+            .expect(200);
+
+        expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    test("delete a combo meal", async () => {
+        const response = await request(app)
+            .delete(`/combo/${comboId}`)
+            .expect(200);
+
+        expect(response.body.message).toContain("deleted successfully");
+    });
+
+    test("make sure combo meal is deleted", async () => {
+        const response = await request(app)
+            .get("/combo")
+            .expect(200);
+
+        expect(response.body.some(item => item.id === comboId)).toBe(false);
+    });
+
     test("delete an assembled meal", async () => {
         const response = await request(app)
             .delete(`/assembled-ingredients/${assembledMealId}`)
