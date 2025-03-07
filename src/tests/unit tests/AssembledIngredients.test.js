@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../../backend/app.js";
+import app from "../../../backend/app.js";
 
 
 describe("Server Endpoints", () => {
