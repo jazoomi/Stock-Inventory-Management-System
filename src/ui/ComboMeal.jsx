@@ -273,7 +273,36 @@ const ComboMeal = () => {
           </table>
         </div>
       )}
-    </div>
+
+      {/* Total Cost and Tax section at the bottom */}
+ <div className="total-cost-box total-cost"> {/* Apply total-cost class */}
+          <h3>Total Costs</h3>
+          <div className="total-costs">
+          <div>
+          <label>Total Cost (Raw): $</label>
+          <span>{calculateOriginalTotal().toFixed(2)}</span>
+          </div>
+          <div>
+          <label>Total Cost (Sale): $</label>
+          <span>{totalCostSale || '0.00'}</span>
+          </div>
+          <div>
+          <label>Tax (%):</label>
+          <input 
+          type="text" 
+          value={tax} 
+          onChange={(e) => {
+            if (/^\d*\.?\d*$/.test(e.target.value)) {
+              setTax(e.target.value);
+              updateTotalCostSale(comboPrice, e.target.value); // Update total sale when tax changes
+            }
+          }} 
+          />
+          </div>
+          </div>
+          </div>
+          </div>
+    
   );
 };
 
