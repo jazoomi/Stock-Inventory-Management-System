@@ -71,9 +71,9 @@ Time spent on task: 1 day
 
 - - - - - - Meeting Mar 03 - - - - - - -
 Johnmark:
-Task: Adding Total Cost Calculator at the end of each page not including Home and Cost Calculator
+Task: Adding Total Cost Calculator at the end of Ingredients List and Combo Meal, not including Home and Cost Calculator. Added Tax calculator, Total Cost, and Total Cost (Raw) for Combo Meal. Formatted all formuals at bottom of each page to look similar. 
 planned time for task: 3 days
-Time spent on task: 	
+Time spent on task: 2 days	
 
 Nickrod:
 Task: 
