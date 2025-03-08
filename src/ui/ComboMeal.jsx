@@ -224,6 +224,7 @@ const ComboMeal = () => {
                   onChange={(e) => {
                     if (/^\d*\.?\d*$/.test(e.target.value)) {
                       setComboPrice(e.target.value);
+                      updateTotalCostSale(e.target.value, tax); // Update total sale cost when combo price changes
                     }
                   }}
                 />
