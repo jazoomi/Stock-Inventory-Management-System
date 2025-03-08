@@ -81,7 +81,7 @@ planned time for task: 2 days
 Time spent on task: 1 day
 
 Joseph:
-Task: Cost Calculator, Total Raw Cost, Percentage Markup for Recipe Manager
+Task: Add total preparation cost automatic calculation, total selling cost automatic calculation, and total margin automatic calculation. Percentage Markup for Recipe Manager. Add the costs of all the ingredients for each recipe.
 planned time for task: 2 days
 Time spent on task: 2 days
 
