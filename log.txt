@@ -72,7 +72,7 @@ Time spent on task: 1 day
 - - - - - - Meeting Mar 03 - - - - - - -
 Johnmark:
 Task: Adding Total Cost Calculator at the end of Ingredients List and Combo Meal, not including Home and Cost Calculator. Added Tax calculator, Total Cost, and Total Cost (Raw) for Combo Meal. Formatted all formuals at bottom of each page to look similar. 
-planned time for task: 3 days
+planned time for task: 2 days
 Time spent on task: 2 days	
 
 Nickrod:
@@ -81,9 +81,9 @@ planned time for task: 2 days
 Time spent on task: 1 day
 
 Joseph:
-Task: 
-planned time for task:  
-Time spent on task: 
+Task: Cost Calculator, Total Raw Cost, Percentage Markup for Recipe Manager
+planned time for task: 2 days
+Time spent on task: 2 days
 
 Sadiq:
 Task: Added more UI for better easy of acess by adding a Drop down menu on input field. developed UML diagram
