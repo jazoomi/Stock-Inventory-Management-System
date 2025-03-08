@@ -121,6 +121,40 @@ const ComboMeal = () => {
       return;
     }
 
+    const handleSaveCombo = () => {
+      if (!comboName || selectedItems.length === 0 || !comboPrice) {
+        alert('Please enter a combo name, select items, and set a price');
+        return;
+      }
+    
+      // Calculate price after tax
+      const priceAfterTax = parseFloat(comboPrice) + (parseFloat(comboPrice) * (parseFloat(tax) / 100) || 0);
+    
+      const payload = {
+        name: comboName,
+        items: JSON.stringify(selectedItems),
+        price: priceAfterTax.toFixed(2) // Save total price after tax
+      };
+    
+      fetch("http://localhost:3001/combo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(() => {
+        fetchSavedCombos();
+        setComboName('');
+        setSelectedRawIngredients([]);
+        setSelectedAssembledMeals([]);
+        setComboPrice('');
+        setTax(''); // Reset tax when saving
+        setTotalCostSale(''); // Reset total cost sale when saving
+      })
+      .catch(err => console.error("Error saving combo:", err));
+    };    
+
+
     const payload = {
       name: comboName,
       // Save selected items as a JSON string
