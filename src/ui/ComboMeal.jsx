@@ -9,6 +9,9 @@ const ComboMeal = () => {
   const [comboName, setComboName] = useState('');
   const [comboPrice, setComboPrice] = useState('');
   const [savedCombos, setSavedCombos] = useState([]);
+  const [tax, setTax] = useState(''); // State for tax input
+  const [totalCostSale, setTotalCostSale] = useState(''); // State for total cost sale
+
 
   // Fetch raw ingredients from the DB and compute sellingPrice = price * quantity
   const fetchRawIngredients = () => {
