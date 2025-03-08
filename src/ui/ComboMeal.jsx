@@ -302,8 +302,7 @@ const ComboMeal = () => {
           </div>
           </div>
           </div>
-    
-  );
+  );  
 };
 
 export default ComboMeal;
