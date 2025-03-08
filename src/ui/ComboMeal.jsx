@@ -121,12 +121,6 @@ const ComboMeal = () => {
       return;
     }
 
-    const handleSaveCombo = () => {
-      if (!comboName || selectedItems.length === 0 || !comboPrice) {
-        alert('Please enter a combo name, select items, and set a price');
-        return;
-      }
-    
       // Calculate price after tax
       const priceAfterTax = parseFloat(comboPrice) + (parseFloat(comboPrice) * (parseFloat(tax) / 100) || 0);
     
