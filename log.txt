@@ -76,9 +76,9 @@ planned time for task: 3 days
 Time spent on task: 2 days	
 
 Nickrod:
-Task: 
-planned time for task:  
-Time spent on task: 
+Task: Backend implementation of both assembled ingredients and combo meal pages (integration with the database, now saves info to DB)
+planned time for task: 2 days
+Time spent on task: 1 day
 
 Joseph:
 Task: 
