@@ -76,6 +76,13 @@ const ComboMeal = () => {
     setComboPrice(total.toFixed(2));
   }, [selectedItems]);
 
+  const updateTotalCostSale = (comboPrice, tax) => {
+    const price = parseFloat(comboPrice) || 0;
+    const taxAmount = (price * parseFloat(tax) / 100) || 0;
+    const totalSale = (price + taxAmount).toFixed(2);
+    setTotalCostSale(totalSale);
+  };
+  
   // Toggle selection for raw ingredients
   const toggleRawSelection = (ingredient) => {
     if (selectedRawIngredients.some(item => item.id === ingredient.id)) {
