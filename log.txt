@@ -105,4 +105,12 @@ Time spent on task: 1 day
 Johnmark:
 Task: Changed wrong header title from Ingredients Manager --> Recipe Manager
 planned time for task: 10 min
-Time spent on task: 5 min	
+Time spent on task: 5 min
+
+
+- - - - - - - Mar 10 - - - - - - -
+Johnmark:
+Task: Added 2 test cases for ComboMeal. 1) verify total price includes tax when saving combo and 2) ensure combo retrieval includes total price with tax
+planned time for task: 2 hours
+Time spent on task: 1 hour 15 min
+	
