@@ -111,7 +111,27 @@ describe("GET /combo", () => {
           expect(res.body.message).toBe("did not find that combo.");
         });
     });
-     
+
+    describe("POST /combo", () => {
+      it("should correctly calculate total price with tax", async () => {
+        const newCombo = {
+          name: "Test Combo with Tax",
+          items: "Burger, Fries, Soda",
+          price: 15,
+          tax: 10 // 10% tax
+        };
+        
+        const expectedPriceAfterTax = 15 + (15 * 0.10);
+  
+        const res = await request(app)
+          .post("/combo")
+          .send(newCombo);
+  
+        expect(res.statusCode).toBe(201);
+        expect(res.body).toHaveProperty("id");
+        expect(parseFloat(res.body.price)).toBeCloseTo(expectedPriceAfterTax, 2);
+      });
+    }); 
      
 });
      
