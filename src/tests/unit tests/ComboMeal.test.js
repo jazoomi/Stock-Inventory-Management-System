@@ -131,7 +131,32 @@ describe("GET /combo", () => {
         expect(res.body).toHaveProperty("id");
         expect(parseFloat(res.body.price)).toBeCloseTo(expectedPriceAfterTax, 2);
       });
-    }); 
+    });
+    
+    describe("GET /combo", () => {
+      it("should return a combo meal with correct price after tax", async () => {
+        const newCombo = {
+          name: "Saved Combo with Tax",
+          items: "Pizza, Wings",
+          price: 20,
+          tax: 15 // 15% tax
+        };
+        
+        const createRes = await request(app)
+          .post("/combo")
+          .send(newCombo);
+        
+        const createdId = createRes.body.id;
+        const expectedPriceAfterTax = 20 + (20 * 0.15);
+        
+        const getRes = await request(app).get("/combo");
+        expect(getRes.statusCode).toBe(200);
+        
+        const savedCombo = getRes.body.find(combo => combo.id === createdId);
+        expect(savedCombo).toBeDefined();
+        expect(parseFloat(savedCombo.price)).toBeCloseTo(expectedPriceAfterTax, 2);
+      });
+    });
      
 });
      
