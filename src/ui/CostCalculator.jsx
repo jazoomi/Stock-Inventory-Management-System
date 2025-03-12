@@ -22,6 +22,14 @@ const CostCalculator = () => {
       </div>
 
       <div className="formula-box">
+        <h3>Combo Tax Calculation</h3>
+        <p>Determines the total cost of the combo with tax.</p>
+        <code>
+          {"total cost = (original cost * tax_value %) + original cost;"}
+        </code>
+      </div>
+
+      <div className="formula-box">
         <h3>Ingredient Price Calculation</h3>
         <p>Stores ingredient prices and calculates their total cost in a meal.</p>
         <code>
