@@ -53,6 +53,14 @@ const CostCalculator = () => {
         </code>
       </div>
 
+      <div className="formula-box">
+        <h3>Selling Price Calculation</h3>
+        <p>Determines the final selling price of a meal based on a percentage markup.</p>
+        <code>
+          {" sellingPrice = total ingredient cost + (total ingredient cost * percentage / 100);"}
+        </code>
+      </div>
+
     </div>
   );
 };
