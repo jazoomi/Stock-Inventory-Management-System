@@ -25,11 +25,10 @@ const AssembledIngredients = () => {
     fetch("http://localhost:3001/assembled-ingredients")
       .then((res) => res.json())
       .then((data) => {
-        // Convert each DB row into our local shape
         const meals = data.map((item) => {
           let parsedRecipe = {};
           try {
-            parsedRecipe = JSON.parse(item.recipe); // recipe is JSON with extra info
+            parsedRecipe = JSON.parse(item.recipe);
           } catch (err) {
             console.error("Error parsing recipe for item:", item.id, err);
           }
@@ -37,9 +36,7 @@ const AssembledIngredients = () => {
           return {
             id: item.id,
             name: item.name,
-            // We'll store final selling price in 'price' column
             sellingPrice: parseFloat(item.price) || 0,
-            // We store the rest inside the recipe JSON
             preparationPrice: parsedRecipe.preparationPrice || 0,
             percentage: parsedRecipe.percentage || "",
             ingredients: parsedRecipe.ingredients || [],
@@ -73,7 +70,6 @@ const AssembledIngredients = () => {
   const calculateSellingPrice = () => {
     const totalPrice = calculateTotalPrice();
     const percentage = parseFloat(mealPercentage) || 0;
-    // Add percentage to total price
     return totalPrice + totalPrice * (percentage / 100);
   };
 
@@ -89,11 +85,6 @@ const AssembledIngredients = () => {
     const preparationPrice = calculateTotalPrice();
     const sellingPrice = calculateSellingPrice();
 
-    // We'll store everything in the DB:
-    // - name = mealName
-    // - quantity = 1 (arbitrary for 'meal' concept)
-    // - recipe = JSON with { ingredients, preparationPrice, percentage }
-    // - price = sellingPrice
     const payload = {
       name: mealName,
       quantity: 1,
@@ -106,7 +97,6 @@ const AssembledIngredients = () => {
     };
 
     if (editMeal) {
-      // Update existing meal (PUT)
       fetch(`http://localhost:3001/assembled-ingredients/${editMeal.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -119,13 +109,11 @@ const AssembledIngredients = () => {
           return res.json();
         })
         .then(() => {
-          // After updating, re-fetch or update local state
           fetchAssembledMeals();
-          setEditMeal(null); // exit edit mode
+          setEditMeal(null);
         })
         .catch((err) => console.error(err));
     } else {
-      // Create new meal (POST)
       fetch("http://localhost:3001/assembled-ingredients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -138,13 +126,11 @@ const AssembledIngredients = () => {
           return res.json();
         })
         .then(() => {
-          // Refresh list
           fetchAssembledMeals();
         })
         .catch((err) => console.error(err));
     }
 
-    // Reset form fields
     setMealName("");
     setMealPercentage("");
     setSelectedIngredients([]);
@@ -159,7 +145,6 @@ const AssembledIngredients = () => {
         if (!res.ok) {
           throw new Error("Error deleting assembled meal");
         }
-        // Refresh or update local state
         fetchAssembledMeals();
       })
       .catch((err) => console.error(err));
@@ -208,7 +193,7 @@ const AssembledIngredients = () => {
         </label>
       </div>
 
-      {/*  Add search bar */}
+      {/* Add search bar */}
       <div className="search-container">
         <input
           type="text"
@@ -218,9 +203,8 @@ const AssembledIngredients = () => {
         />
         {/* Display message if no ingredients found */}
         {filteredIngredients.length === 0 && searchQuery && (
-          <span style={{ color: 'red', marginLeft: '10px' }}> No ingredient or recipe found</span>
+          <span style={{ color: 'red', marginLeft: '10px' }}> No ingredient found</span>
         )}
-
       </div>
 
       {/* Ingredient Selection Table */}
@@ -235,7 +219,7 @@ const AssembledIngredients = () => {
           </tr>
         </thead>
         <tbody>
-          {ingredients.map((ingredient) => (
+          {filteredIngredients.map((ingredient) => (
             <tr key={ingredient.id}>
               <td>{ingredient.name}</td>
               <td>${ingredient.price.toFixed(2)}</td>
