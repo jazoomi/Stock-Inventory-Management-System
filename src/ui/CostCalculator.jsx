@@ -35,7 +35,12 @@ const CostCalculator = () => {
       formula: "totalIngredientCost = P * Q",
       explanation: "Stores ingredient prices and calculates their total cost in a meal."
     },
-    
+    {
+      key: "ingredientUpdate",
+      formula: "updatedIngredient = { price: validPrice, quantity: validQuantity }",
+      explanation:
+        "Ensures ingredient prices and quantities are stored correctly after edits."
+    },
 
 
 
