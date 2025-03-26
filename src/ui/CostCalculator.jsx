@@ -62,15 +62,9 @@ const CostCalculator = () => {
       </div>
 
       <div className="formula-box">
-        <h3>Total Cost Summary</h3>
-        <p>Displays total preparation cost, selling price, and profit margin.</p>
-        <code>
-          {" totalPreparationPrice = sum of all meal preparation prices;"}
-        </code>
-        <code>
-          {" totalSellingPrice = sum of all meal selling prices;"}
-        </code>
-        <code>
+        <h3>Total Margin</h3>
+        <p>Displays total profit margin.</p>
+      <code>
           {" totalMargin = totalSellingPrice - totalPreparationPrice;"}
         </code>
       </div>
