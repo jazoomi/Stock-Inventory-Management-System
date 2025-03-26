@@ -105,7 +105,10 @@ const ComboMeal = () => {
     if (originalTotal === 0) return 0;
 
     const savings = totalAfterTax - originalTotal;
-    return ((savings / originalTotal) * 100).toFixed(1);
+    return {
+      percentage: ((savings / originalTotal) * 100).toFixed(1),
+      dollar: savings.toFixed(2)
+    };
   };
 
   const handleSaveCombo = () => {
