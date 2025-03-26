@@ -12,6 +12,7 @@ const ComboMeal = () => {
   const [tax, setTax] = useState('');
   const [totalCostSale, setTotalCostSale] = useState('');
   const [searchQuery, setSearchQuery] = useState(''); 
+  const [showDollarSavings, setShowDollarSavings] = useState(false);
   
   const fetchRawIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
