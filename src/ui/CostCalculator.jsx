@@ -46,6 +46,12 @@ const CostCalculator = () => {
       formula: "preparationPrice = Σ P_i",
       explanation: "Determines the total cost of ingredients used in meal preparation."
     },
+    {
+      key: "sellingPrice",
+      formula: "sellingPrice = C + (C * markupPercentage / 100)",
+      explanation:
+        "Determines the final selling price of a meal based on a percentage markup."
+    },
 
 
 
