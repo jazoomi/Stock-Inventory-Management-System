@@ -187,6 +187,13 @@ describe("GET /combo", () => {
       expect(res.body.every(ingredient => ingredient.name.includes(searchQuery))).toBe(true);
     });
 
+    it("should return an empty array if no raw ingredients match the search query", async () => {
+      const searchQuery = "NonExistentIngredient"; // A query that should return no results
+      const res = await request(app).get(`/raw-ingredients?search=${searchQuery}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toBeDefined();
+      expect(res.body.length).toBe(0); // Ensure no results are returned
+    });
   });
 
 
