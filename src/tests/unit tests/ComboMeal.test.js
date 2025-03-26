@@ -157,6 +157,26 @@ describe("GET /combo", () => {
         expect(parseFloat(savedCombo.price)).toBeCloseTo(expectedPriceAfterTax, 2);
       });
     });
+
+      // Assuming you have a route to get all raw ingredients
+  describe("GET /raw-ingredients", () => {
+    it("should return a list of raw ingredients", async () => {
+      const res = await request(app).get("/raw-ingredients");
+      expect(res.statusCode).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+    
      
 });
      
