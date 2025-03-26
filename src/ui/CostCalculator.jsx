@@ -12,6 +12,20 @@ const CostCalculator = () => {
     <div className="cost-calculator">
       <h2>Cost Calculation Formulas</h2>
 
+{[
+    {
+      key: "originalTotal",
+      formula: "originalTotal = Σ P_i",
+      explanation:
+        "Original Total = Start with 0; for each selected meal, add its selling price to the total (if no price, add 0); the final total is the sum of all prices."
+    },
+    
+
+
+
+
+
+]}
       <div className="formula-box">
         <h3>Original Total Price Calculation</h3>
         <p>Calculates the total price of selected meals before applying a combo discount.</p>
