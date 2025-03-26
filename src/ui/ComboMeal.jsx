@@ -96,11 +96,15 @@ const ComboMeal = () => {
     return selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
   };
 
+  // Updated calculateSavings function
   const calculateSavings = () => {
     const originalTotal = calculateOriginalTotal();
-    const newTotal = parseFloat(comboPrice) || 0;
+    const totalAfterTax = parseFloat(totalCostSale) || 0;
+
     if (originalTotal === 0) return 0;
-    return ((originalTotal - newTotal) / originalTotal * 100).toFixed(1);
+
+    const savings = totalAfterTax - originalTotal;
+    return ((savings / originalTotal) * 100).toFixed(1);
   };
 
   const handleSaveCombo = () => {
@@ -263,7 +267,7 @@ const ComboMeal = () => {
             <tbody>
               {savedCombos.map(combo => {
                 const originalTotal = combo.meals.reduce((sum, item) => sum + item.sellingPrice, 0);
-                const savings = originalTotal ? ((originalTotal - combo.price) / originalTotal * 100).toFixed(1) : 0;
+                const savings = originalTotal ? ((combo.price - originalTotal) / originalTotal * 100).toFixed(1) : 0;
                 return (
                   <tr key={combo.id}>
                     <td>{combo.name}</td>
