@@ -37,3 +37,43 @@
     align-items: center; /* Center the content */
     justify-content: center; /* Center the content vertically */
 }
+
+/* Ensure the whole app takes the full height and width */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+.header {
+    background-color: #282c34; /* Dark header */
+    padding: 20px;
+    color: white;
+    text-align: center; 
+}
+
+/* Main content area */
+.main-content {
+    flex: 1; /* Allows the main content to expand */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    background-color: #121212; /* Main background color */
+    color: white; /* Text color */
+}
+
+/* Formula box styles */
+.formula-box {
+    border: 2px solid transparent; /* Default border */
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border 0.3s ease-in-out; /* Border transition */
+}
+
+.formula-box:hover {
+    border-color: lightblue; /* Change border color on hover */
+}
