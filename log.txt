@@ -121,4 +121,15 @@ Task: Added formula for tax calculation on CostCalculation.jsx
 planned time for task: 10 min
 Time spent on task: 5 min
 
+
+
+- - - - - - Meeting Mar 24 - - - - - - -
+Johnmark:
+Task 1: Updated Cost Calculator tab
+planned time: 1 hour
+time spent on task: 30mins
+Task 2: Fix alignment issue with app
+planned time: 2 hours
+time spent: ~ 1 hour
+
 	
