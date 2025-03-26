@@ -9,12 +9,10 @@ const ComboMeal = () => {
   const [comboName, setComboName] = useState('');
   const [comboPrice, setComboPrice] = useState('');
   const [savedCombos, setSavedCombos] = useState([]);
-  const [tax, setTax] = useState(''); // State for tax input
-  const [totalCostSale, setTotalCostSale] = useState(''); // State for total cost sale
+  const [tax, setTax] = useState('');
+  const [totalCostSale, setTotalCostSale] = useState('');
   const [searchQuery, setSearchQuery] = useState(''); 
-
-
-  // Fetch raw ingredients from the DB and compute sellingPrice = price * quantity
+  
   const fetchRawIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
@@ -22,7 +20,6 @@ const ComboMeal = () => {
         const ingredients = data.map(item => ({
           id: item.id,
           name: item.name,
-          // Use the total cost as price: price * quantity
           sellingPrice: parseFloat(item.price) * parseFloat(item.quantity),
           type: "raw"
         }));
@@ -31,7 +28,6 @@ const ComboMeal = () => {
       .catch(err => console.error("Error fetching raw ingredients:", err));
   };
 
-  // Fetch assembled meals from the DB
   const fetchAssembledMeals = () => {
     fetch("http://localhost:3001/assembled-ingredients")
       .then((res) => res.json())
@@ -47,12 +43,10 @@ const ComboMeal = () => {
       .catch(err => console.error("Error fetching assembled meals:", err));
   };
 
-  // Fetch saved combos from the DB
   const fetchSavedCombos = () => {
     fetch("http://localhost:3001/combo")
       .then((res) => res.json())
       .then((data) => {
-        // 'items' is stored as a JSON string in the DB; parse it.
         const combos = data.map(combo => ({
           ...combo,
           meals: JSON.parse(combo.items)
@@ -68,10 +62,8 @@ const ComboMeal = () => {
     fetchSavedCombos();
   }, []);
 
-  // Combine the selected raw ingredients and assembled meals
   const selectedItems = [...selectedRawIngredients, ...selectedAssembledMeals];
 
-  // Automatically update combo price when selections change
   useEffect(() => {
     const total = selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
     setComboPrice(total.toFixed(2));
@@ -83,8 +75,7 @@ const ComboMeal = () => {
     const totalSale = (price + taxAmount).toFixed(2);
     setTotalCostSale(totalSale);
   };
-  
-  // Toggle selection for raw ingredients
+
   const toggleRawSelection = (ingredient) => {
     if (selectedRawIngredients.some(item => item.id === ingredient.id)) {
       setSelectedRawIngredients(selectedRawIngredients.filter(item => item.id !== ingredient.id));
@@ -93,7 +84,6 @@ const ComboMeal = () => {
     }
   };
 
-  // Toggle selection for assembled meals
   const toggleAssembledSelection = (meal) => {
     if (selectedAssembledMeals.some(item => item.id === meal.id)) {
       setSelectedAssembledMeals(selectedAssembledMeals.filter(item => item.id !== meal.id));
@@ -102,12 +92,10 @@ const ComboMeal = () => {
     }
   };
 
-  // Calculate the original total of the selected items
   const calculateOriginalTotal = () => {
     return selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
   };
 
-  // Calculate percentage savings
   const calculateSavings = () => {
     const originalTotal = calculateOriginalTotal();
     const newTotal = parseFloat(comboPrice) || 0;
@@ -120,16 +108,15 @@ const ComboMeal = () => {
       alert('Please enter a combo name, select items, and set a price');
       return;
     }
-  
-    // Calculate price after tax
+
     const priceAfterTax = parseFloat(comboPrice) + (parseFloat(comboPrice) * (parseFloat(tax) / 100) || 0);
     
     const payload = {
       name: comboName,
       items: JSON.stringify(selectedItems),
-      price: priceAfterTax.toFixed(2) // Save the total price after tax
+      price: priceAfterTax.toFixed(2)
     };
-  
+
     fetch("http://localhost:3001/combo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -142,23 +129,21 @@ const ComboMeal = () => {
       setSelectedRawIngredients([]);
       setSelectedAssembledMeals([]);
       setComboPrice('');
-      setTax(''); // Reset tax when saving
-      setTotalCostSale(''); // Reset total cost sale when saving
+      setTax('');
+      setTotalCostSale('');
     })
     .catch(err => console.error("Error saving combo:", err));
   };
-  
-  
-   // Delete a combo from the DB
-   const handleDeleteCombo = (comboId) => {
-   fetch(`http://localhost:3001/combo/${comboId}`, {
-   method: "DELETE",
-   })
-   .then(() => fetchSavedCombos())
-   .catch(err => console.error("Error deleting combo:", err));
-   };  
 
-   const filteredRawIngredients = rawIngredients.filter(ingredient =>
+  const handleDeleteCombo = (comboId) => {
+    fetch(`http://localhost:3001/combo/${comboId}`, {
+      method: "DELETE",
+    })
+    .then(() => fetchSavedCombos())
+    .catch(err => console.error("Error deleting combo:", err));
+  };
+
+  const filteredRawIngredients = rawIngredients.filter(ingredient =>
     ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -194,7 +179,7 @@ const ComboMeal = () => {
         {/* Section for Raw Ingredients */}
         <h3>Select Raw Ingredients for Combo</h3>
         <div className="meal-selection">
-          {rawIngredients.map(ingredient => (
+          {filteredRawIngredients.map(ingredient => (
             <div
               key={ingredient.id}
               className={`meal-card ${selectedRawIngredients.some(item => item.id === ingredient.id) ? 'selected' : ''}`}
@@ -216,7 +201,7 @@ const ComboMeal = () => {
         {/* Section for Assembled Meals */}
         <h3>Select Assembled Meals for Combo</h3>
         <div className="meal-selection">
-          {assembledMeals.map(meal => (
+          {filteredAssembledMeals.map(meal => (
             <div
               key={meal.id}
               className={`meal-card ${selectedAssembledMeals.some(item => item.id === meal.id) ? 'selected' : ''}`}
@@ -247,7 +232,7 @@ const ComboMeal = () => {
                   onChange={(e) => {
                     if (/^\d*\.?\d*$/.test(e.target.value)) {
                       setComboPrice(e.target.value);
-                      updateTotalCostSale(e.target.value, tax); // Update total sale cost when combo price changes
+                      updateTotalCostSale(e.target.value, tax);
                     }
                   }}
                 />
@@ -298,33 +283,33 @@ const ComboMeal = () => {
       )}
 
       {/* Total Cost and Tax section at the bottom */}
- <div className="total-cost-box total-cost"> {/* Apply total-cost class */}
-          <h3>Total Costs</h3>
-          <div className="total-costs">
+      <div className="total-cost-box total-cost">
+        <h3>Total Costs</h3>
+        <div className="total-costs">
           <div>
-          <label>Total Cost (Raw): $</label>
-          <span>{calculateOriginalTotal().toFixed(2)}</span>
-          </div>
-          <div>
-          <label>Total Cost (Sale): $</label>
-          <span>{totalCostSale || '0.00'}</span>
+            <label>Total Cost (Raw): $</label>
+            <span>{calculateOriginalTotal().toFixed(2)}</span>
           </div>
           <div>
-          <label>Tax (%):</label>
-          <input 
-          type="text" 
-          value={tax} 
-          onChange={(e) => {
-            if (/^\d*\.?\d*$/.test(e.target.value)) {
-              setTax(e.target.value);
-              updateTotalCostSale(comboPrice, e.target.value); // Update total sale when tax changes
-            }
-          }} 
-          />
+            <label>Total Cost (Sale): $</label>
+            <span>{totalCostSale || '0.00'}</span>
           </div>
+          <div>
+            <label>Tax (%):</label>
+            <input 
+              type="text" 
+              value={tax} 
+              onChange={(e) => {
+                if (/^\d*\.?\d*$/.test(e.target.value)) {
+                  setTax(e.target.value);
+                  updateTotalCostSale(comboPrice, e.target.value);
+                }
+              }} 
+            />
           </div>
-          </div>
-          </div>
+        </div>
+      </div>
+    </div>
   );  
 };
 
