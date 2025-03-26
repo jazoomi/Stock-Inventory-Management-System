@@ -41,6 +41,11 @@ const CostCalculator = () => {
       explanation:
         "Ensures ingredient prices and quantities are stored correctly after edits."
     },
+    {
+      key: "preparationPrice",
+      formula: "preparationPrice = Σ P_i",
+      explanation: "Determines the total cost of ingredients used in meal preparation."
+    },
 
 
 
