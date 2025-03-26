@@ -208,6 +208,17 @@ const AssembledIngredients = () => {
         </label>
       </div>
 
+      {/*  Add search bar */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search for ingredients..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+
+      </div>
+
       {/* Ingredient Selection Table */}
       <h3>Select Ingredients</h3>
       <table border="1" style={{ width: "100%", marginBottom: "20px" }}>
