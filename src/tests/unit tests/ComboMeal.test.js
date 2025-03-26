@@ -207,15 +207,15 @@ describe("GET /combo", () => {
       expect(res.body.every(meal => meal.name.includes(searchQuery))).toBe(true);
     });
 
-
-
-
-
-
-
-
-
     
+    it("should return an empty array if no assembled meals match the search query", async () => {
+      const searchQuery = "NonExistentMeal"; // A query that should return no results
+      const res = await request(app).get(`/assembled-ingredients?search=${searchQuery}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toBeDefined();
+      expect(res.body.length).toBe(0); // Ensure no results are returned
+    });
+  });
      
 });
      
