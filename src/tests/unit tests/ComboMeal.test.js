@@ -196,6 +196,17 @@ describe("GET /combo", () => {
     });
   });
 
+  // Test the search functionality for assembled meals
+  describe("Search Assembled Meals", () => {
+    it("should return filtered assembled meals based on search query", async () => {
+      const searchQuery = "Pizza"; // Assuming you have an assembled meal named "Pizza"
+      const res = await request(app).get(`/assembled-ingredients?search=${searchQuery}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toBeDefined();
+      expect(res.body.length).toBeGreaterThan(0); // Ensure some results are returned
+      expect(res.body.every(meal => meal.name.includes(searchQuery))).toBe(true);
+    });
+
 
 
 
