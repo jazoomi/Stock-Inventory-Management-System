@@ -216,6 +216,10 @@ const AssembledIngredients = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        {/* Display message if no ingredients found */}
+        {filteredIngredients.length === 0 && searchQuery && (
+          <span style={{ color: 'red', marginLeft: '10px' }}> No ingredient or recipe found</span>
+        )}
 
       </div>
 
