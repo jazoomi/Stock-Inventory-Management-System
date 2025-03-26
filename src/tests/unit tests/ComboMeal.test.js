@@ -176,6 +176,18 @@ describe("GET /combo", () => {
       });
     });
 
+      // Test the search functionality for raw ingredients
+  describe("Search Raw Ingredients", () => {
+    it("should return filtered raw ingredients based on search query", async () => {
+      const searchQuery = "Tomato"; // Assuming you have a raw ingredient named "Tomato"
+      const res = await request(app).get(`/raw-ingredients?search=${searchQuery}`);
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toBeDefined();
+      expect(res.body.length).toBeGreaterThan(0); // Ensure some results are returned
+      expect(res.body.every(ingredient => ingredient.name.includes(searchQuery))).toBe(true);
+    });
+
+  });
 
 
 
