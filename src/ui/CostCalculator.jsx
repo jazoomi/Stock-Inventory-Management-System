@@ -44,6 +44,15 @@ const CostCalculator = () => {
           {" updatedIngredient = { ...ingredient, price: if price is a number, keep it; otherwise set it to 0, quantity: if quantity is a number, keep it; otherwise set it to 0 };"}
         </code>
       </div>
+
+      <div className="formula-box">
+        <h3>Preparation Price Calculation</h3>
+        <p>Determines the total cost of ingredients used in meal preparation.</p>
+        <code>
+          {" preparationPrice = sum of selected ingredient prices;"}
+        </code>
+      </div>
+
     </div>
   );
 };
