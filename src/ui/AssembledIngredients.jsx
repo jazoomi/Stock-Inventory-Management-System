@@ -7,6 +7,7 @@ const AssembledIngredients = () => {
   const [mealPercentage, setMealPercentage] = useState("");
   const [assembledMeals, setAssembledMeals] = useState([]);
   const [editMeal, setEditMeal] = useState(null); // Track which meal is being edited
+  const [searchQuery, setSearchQuery] = useState("");
 
   // 1. Fetch raw ingredients from DB
   useEffect(() => {
