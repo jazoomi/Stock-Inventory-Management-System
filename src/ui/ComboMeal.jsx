@@ -185,7 +185,10 @@ const ComboMeal = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-
+          {/* Display message if no ingredients or meals found */}
+          {(filteredRawIngredients.length === 0 && filteredAssembledMeals.length === 0 && searchQuery) && (
+            <span style={{ color: 'red', marginLeft: '10px' }}>X No ingredient or meal found</span>
+          )}
         </div>
 
         {/* Section for Raw Ingredients */}
