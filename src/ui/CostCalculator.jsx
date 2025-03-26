@@ -52,6 +52,12 @@ const CostCalculator = () => {
       explanation:
         "Determines the final selling price of a meal based on a percentage markup."
     },
+    {
+      key: "totalMargin",
+      formula: "totalMargin = totalSellingPrice - totalPreparationPrice",
+      explanation:
+        "Displays total profit margin."
+    }
 
 
 
