@@ -25,7 +25,11 @@ const CostCalculator = () => {
       explanation:
         "Determines the percentage of savings when purchasing a combo meal."
     },
-
+    {
+      key: "comboTax",
+      formula: "totalCost = originalCost + (originalCost * taxRate)",
+      explanation: "Determines the total cost of the combo with tax."
+    },
 
 
 
