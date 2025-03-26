@@ -246,6 +246,10 @@ const IngredientList = () => {
     setNotification(null);
   };
 
+  const filteredIngredients = ingredients.filter(ingredient =>
+    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="ingredient-list">
       {notification && (
