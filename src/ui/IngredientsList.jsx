@@ -124,6 +124,7 @@ const IngredientList = () => {
   });
   const [totalCost, setTotalCost] = useState(0);
   const [notification, setNotification] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
