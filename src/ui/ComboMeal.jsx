@@ -246,7 +246,9 @@ const ComboMeal = () => {
                 />
               </div>
               {comboPrice && (
-                <p>Savings: {calculateSavings()}%</p>
+                <p onClick={() => setShowDollarSavings(!showDollarSavings)} style={{ cursor: 'pointer' }}> 
+                Savings: {showDollarSavings ? `$${savings.dollar}` : `${savings.percentage}%`}
+                </p>
               )}
             </div>
             <button onClick={handleSaveCombo}>Save Combo</button>
@@ -264,7 +266,7 @@ const ComboMeal = () => {
                 <th>Included Items</th>
                 <th>Original Total</th>
                 <th>Combo Price</th>
-                <th>Savings</th>
+                <th>Profit</th>
                 <th>Actions</th>
               </tr>
             </thead>
