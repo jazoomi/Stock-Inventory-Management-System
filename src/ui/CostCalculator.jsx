@@ -1,6 +1,13 @@
 import React from "react";
 
 const CostCalculator = () => {
+
+  const [expanded, setExpanded] = useState({});
+
+  const toggleExplanation = (key) => {
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   return (
     <div className="cost-calculator">
       <h2>Cost Calculation Formulas</h2>
