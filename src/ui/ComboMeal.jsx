@@ -177,6 +177,17 @@ const ComboMeal = () => {
           onChange={(e) => setComboName(e.target.value)}
         />
 
+        {/* Add search bar */}
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search for ingredients or meals..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+
+        </div>
+
         {/* Section for Raw Ingredients */}
         <h3>Select Raw Ingredients for Combo</h3>
         <div className="meal-selection">
