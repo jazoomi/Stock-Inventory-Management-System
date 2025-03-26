@@ -119,3 +119,14 @@ button {
 button:hover {
     background-color: #535bf2;
 }
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Adjust as needed */
+  }
+  
+  .search-container span {
+    margin-left: 10px;
+    color: red; /* This will ensure the message is red */
+  }
