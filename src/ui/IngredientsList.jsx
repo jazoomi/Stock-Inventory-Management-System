@@ -258,6 +258,16 @@ const IngredientList = () => {
           <button className="close-btn" onClick={closeNotification}>×</button>
         </div>
       )}
+        <input
+        type="text"
+        placeholder="Search for an ingredient..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+      />
+
+      {filteredIngredients.map((ingredient) => (
+        <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
+      ))}
       
       {ingredients.map((ingredient) => (
         <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
