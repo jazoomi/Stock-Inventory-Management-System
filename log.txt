@@ -131,5 +131,8 @@ time spent on task: 30mins
 Task 2: Fix alignment issue with app
 planned time: 2 hours
 time spent: ~ 1 hour
+Task 3: Create search bar for IngredientsList, RecipeManager and ComboMeals. Search for diff ingredients, recipes or combos. Will notify if any of them arent there.
+planned time: 2 hours
+time spent: 1 hour
 
 	
