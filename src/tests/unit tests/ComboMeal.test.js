@@ -167,6 +167,15 @@ describe("GET /combo", () => {
     });
   });
 
+    // Assuming you have a route to get all assembled meals
+    describe("GET /assembled-ingredients", () => {
+      it("should return a list of assembled meals", async () => {
+        const res = await request(app).get("/assembled-ingredients");
+        expect(res.statusCode).toBe(200);
+        expect(Array.isArray(res.body)).toBe(true);
+      });
+    });
+
 
 
 
