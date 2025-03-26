@@ -19,7 +19,12 @@ const CostCalculator = () => {
       explanation:
         "Original Total = Start with 0; for each selected meal, add its selling price to the total (if no price, add 0); the final total is the sum of all prices."
     },
-    
+    {
+      key: "comboSavings",
+      formula: "savings = ((originalTotal - comboPrice) / originalTotal) * 100",
+      explanation:
+        "Determines the percentage of savings when purchasing a combo meal."
+    },
 
 
 
