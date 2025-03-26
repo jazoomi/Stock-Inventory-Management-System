@@ -173,6 +173,10 @@ const AssembledIngredients = () => {
     setSelectedIngredients(meal.ingredients);
   };
 
+  const filteredIngredients = ingredients.filter(ingredient =>
+    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <h2>Assemble a Meal</h2>
