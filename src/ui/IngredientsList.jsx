@@ -25,7 +25,6 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
   const handleClickOutside = (event) => {
     if (cardRef.current && !cardRef.current.contains(event.target)) {
       if (JSON.stringify(ingredient) !== JSON.stringify(editedIngredient)) {
-        // Parse values as numbers, not strings
         const savedIngredient = {
           ...editedIngredient,
           price: parseFloat(editedIngredient.price) || 0,
@@ -47,10 +46,8 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing, editedIngredient]);
 
-  // Ensure both are parsed as numbers for comparison
   const quantityNum = parseFloat(ingredient.quantity);
   const thresholdNum = parseFloat(ingredient.threshold);
-  // Only consider it low if we have valid numbers and quantity is below threshold
   const isLow = !isNaN(quantityNum) && !isNaN(thresholdNum) && quantityNum < thresholdNum;
 
   return (
@@ -64,18 +61,17 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
           <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
           <div className="ingredient-details">
             <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
-              {/* select option for units */}
-              <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
-                <option value="">Please Select</option>
-                <option value="g">g</option>
-                <option value="kg">kg</option>
-                <option value="mL">mL</option>
-                <option value="L">L</option>
-                <option value="slices">slices</option>
-                <option value="units">units</option>
-                <option value="cups">cups</option>
-                <option value="Oz">Oz</option>
-                <option value="other">Other - specify</option>
+            <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
+              <option value="">Please Select</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="mL">mL</option>
+              <option value="L">L</option>
+              <option value="slices">slices</option>
+              <option value="units">units</option>
+              <option value="cups">cups</option>
+              <option value="Oz">Oz</option>
+              <option value="other">Other - specify</option>
             </select>
 
             {editedIngredient.unit === "other" && (
@@ -130,7 +126,6 @@ const IngredientList = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => {
-        // Ensure all numeric fields are actually parsed as numbers
         const processedData = data.map(item => ({
           ...item,
           quantity: parseFloat(item.quantity) || 0,
@@ -149,12 +144,10 @@ const IngredientList = () => {
     fetchIngredients();
   }, []);
 
-  // Calculate total cost whenever ingredients change
   useEffect(() => {
     calculateTotalCost(ingredients);
   }, [ingredients]);
 
-  // Check for low stock items whenever ingredients change
   useEffect(() => {
     if (ingredients.length > 0) {
       checkLowStockItems(ingredients);
@@ -163,7 +156,6 @@ const IngredientList = () => {
 
   const calculateTotalCost = (ingredientList) => {
     const total = ingredientList.reduce((sum, ingredient) => {
-      // Ensure price and quantity are treated as numbers
       const price = parseFloat(ingredient.price) || 0;
       const quantity = parseFloat(ingredient.quantity) || 0;
       return sum + (price * quantity);
@@ -173,11 +165,9 @@ const IngredientList = () => {
   };
 
   const checkLowStockItems = (ingredients) => {
-    // Filter for items with quantity below threshold
     const lowItems = ingredients.filter(item => {
       const quantity = parseFloat(item.quantity);
       const threshold = parseFloat(item.threshold);
-      // Only return true if both values are valid numbers and quantity is below threshold
       return !isNaN(quantity) && !isNaN(threshold) && threshold > 0 && quantity < threshold;
     });
     
@@ -190,14 +180,12 @@ const IngredientList = () => {
   };
 
   const handleSave = (updatedIngredient) => {
-    // Update local state immediately for better UX
     setIngredients(prevIngredients =>
       prevIngredients.map(ingredient =>
         ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
       )
     );
 
-    // Then update server
     fetch(`http://localhost:3001/raw-ingredients/${updatedIngredient.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -221,9 +209,7 @@ const IngredientList = () => {
     })
     .then((res) => res.json())
     .then((addedIngredient) => {
-      // Update the ingredients list with the new ingredient from the server
       setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
-      // The useEffect hook will handle calculating the new total cost
     })
     .catch((err) => console.error("Error adding ingredient:", err));
 
@@ -231,9 +217,7 @@ const IngredientList = () => {
   };
 
   const handleDelete = (id) => {
-    // Update local state first for immediate response
     setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
-    // The useEffect hook will handle recalculating the total cost
 
     fetch(`http://localhost:3001/raw-ingredients/${id}`, {
       method: "DELETE",
@@ -241,7 +225,6 @@ const IngredientList = () => {
     .catch((err) => console.error("Error deleting ingredient:", err));
   };
 
-  // Close notification
   const closeNotification = () => {
     setNotification(null);
   };
@@ -258,27 +241,29 @@ const IngredientList = () => {
           <button className="close-btn" onClick={closeNotification}>×</button>
         </div>
       )}
+      
+      <div className="search-container">
         <input
-        type="text"
-        placeholder="Search for an ingredient..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
-      />
+          type="text"
+          placeholder="Search for an ingredient..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+        />
+        {/* Display message if no ingredients found */}
+        {filteredIngredients.length === 0 && searchQuery && (
+          <span style={{ color: 'red', marginLeft: '10px' }}>X No ingredient found</span>
+        )}
+      </div>
 
       {filteredIngredients.map((ingredient) => (
-        <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
-      ))}
-      
-      {ingredients.map((ingredient) => (
         <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
       ))}
     
       <div className="add-ingredient-form">
         <input type="text" placeholder="Name" value={newIngredient.name} onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })} />
         <input type="text" placeholder="Amount" value={newIngredient.quantity} onChange={(e) => setNewIngredient({ ...newIngredient, quantity: e.target.value })} />
-        {/* Replace the unit input with a dropdown */}
         <select
-          name="Unit/Measrument"
+          name="Unit/Measurement"
           value={newIngredient.unit}
           onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}
         >
