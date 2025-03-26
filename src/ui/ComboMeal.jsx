@@ -11,8 +11,8 @@ const ComboMeal = () => {
   const [savedCombos, setSavedCombos] = useState([]);
   const [tax, setTax] = useState('');
   const [totalCostSale, setTotalCostSale] = useState('');
-  const [searchQuery, setSearchQuery] = useState(''); 
-  const [showDollarSavings, setShowDollarSavings] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showDollarSavings, setShowDollarSavings] = useState(false); // New state for toggling profits display
   
   const fetchRawIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
@@ -97,7 +97,6 @@ const ComboMeal = () => {
     return selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
   };
 
-  // Updated calculateSavings function
   const calculateSavings = () => {
     const originalTotal = calculateOriginalTotal();
     const totalAfterTax = parseFloat(totalCostSale) || 0;
@@ -158,6 +157,8 @@ const ComboMeal = () => {
   const filteredAssembledMeals = assembledMeals.filter(meal =>
     meal.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const savings = calculateSavings();
 
   return (
     <div className="combo-meal-container">
@@ -246,8 +247,8 @@ const ComboMeal = () => {
                 />
               </div>
               {comboPrice && (
-                <p onClick={() => setShowDollarSavings(!showDollarSavings)} style={{ cursor: 'pointer' }}> 
-                Savings: {showDollarSavings ? `$${savings.dollar}` : `${savings.percentage}%`}
+                <p onClick={() => setShowDollarSavings(!showDollarSavings)} style={{ cursor: 'pointer' }}>
+                  Savings: {showDollarSavings ? `$${savings.dollar}` : `${savings.percentage}%`}
                 </p>
               )}
             </div>
@@ -274,13 +275,16 @@ const ComboMeal = () => {
               {savedCombos.map(combo => {
                 const originalTotal = combo.meals.reduce((sum, item) => sum + item.sellingPrice, 0);
                 const savings = originalTotal ? ((combo.price - originalTotal) / originalTotal * 100).toFixed(1) : 0;
+                const dollarSavings = (combo.price - originalTotal).toFixed(2);
                 return (
                   <tr key={combo.id}>
                     <td>{combo.name}</td>
                     <td>{combo.meals.map(item => item.name).join(', ')}</td>
                     <td>${originalTotal.toFixed(2)}</td>
                     <td>${combo.price.toFixed(2)}</td>
-                    <td>{savings}%</td>
+                    <td onClick={() => setShowDollarSavings(!showDollarSavings)} style={{ cursor: 'pointer' }}>
+                      {showDollarSavings ? `$${dollarSavings}` : `${savings}%`}
+                    </td>
                     <td>
                       <button onClick={() => handleDeleteCombo(combo.id)}>Delete</button>
                     </td>
