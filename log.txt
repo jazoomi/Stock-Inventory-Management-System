@@ -137,5 +137,8 @@ time spent: 1 hour
 Task 4: Test Cases for Combo Meal. Added 4 test cases that test different parts of the search bar
 planned time: 1 hour
 time spent: 1 hour
+Task 5: Updated savings/profit formula and added functionality where the user cna click on the profit percentage and switch between % and $ profit earned
+planned time: 1 hour
+time spent: 30mins
 
 	
