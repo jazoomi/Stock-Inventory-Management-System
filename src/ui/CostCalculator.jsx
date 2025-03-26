@@ -59,7 +59,23 @@ const CostCalculator = () => {
         "Displays total profit margin."
     }
 
-]}
+].map(({ key, formula, explanation }) => (
+  <div
+    className="formula-box"
+    key={key}
+    onClick={() => toggleExplanation(key)}
+    style={{
+      border: expanded[key] ? "2px solid blue" : "2px solid transparent",
+      padding: "10px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      transition: "border 0.3s ease-in-out"
+    }}
+  >
+    <h3>{key.replace(/([A-Z])/g, " $1").trim()} Calculation</h3>
+    <code>{expanded[key] ? explanation : formula}</code>
+  </div>
+))}
     </div>
   );
 };
