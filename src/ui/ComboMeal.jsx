@@ -158,6 +158,14 @@ const ComboMeal = () => {
    .catch(err => console.error("Error deleting combo:", err));
    };  
 
+   const filteredRawIngredients = rawIngredients.filter(ingredient =>
+    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredAssembledMeals = assembledMeals.filter(meal =>
+    meal.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="combo-meal-container">
       <h2>Create Combo Meal</h2>
