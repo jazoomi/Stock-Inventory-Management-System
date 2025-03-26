@@ -30,6 +30,19 @@ const CostCalculator = () => {
       formula: "totalCost = originalCost + (originalCost * taxRate)",
       explanation: "Determines the total cost of the combo with tax."
     },
+    {
+      key: "ingredientCost",
+      formula: "totalIngredientCost = P * Q",
+      explanation: "Stores ingredient prices and calculates their total cost in a meal."
+    },
+    
+
+
+
+
+
+
+
 
 
 
