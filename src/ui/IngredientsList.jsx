@@ -235,6 +235,9 @@ const IngredientList = () => {
 
   return (
     <div className="ingredient-list">
+
+    <h1 className="centered">Add Ingredients</h1>
+
       {notification && (
         <div className="notification">
           <p>{notification}</p>
@@ -298,6 +301,11 @@ const IngredientList = () => {
       <div className="total-cost">
         <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
       </div>
+
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+
     </div>
   );
 };
