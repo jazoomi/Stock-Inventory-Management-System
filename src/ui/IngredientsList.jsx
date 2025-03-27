@@ -116,11 +116,13 @@ const IngredientList = () => {
     quantity: "",
     unit: "",
     price: "",
-    threshold: ""
+    threshold: "",
+    unitSpecification: ""
   });
   const [totalCost, setTotalCost] = useState(0);
   const [notification, setNotification] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState(null);
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
@@ -195,6 +197,21 @@ const IngredientList = () => {
   };
 
   const handleAddIngredient = () => {
+    if (!newIngredient.name || !newIngredient.quantity || !newIngredient.unit || !newIngredient.price || !newIngredient.threshold) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    if (newIngredient.unit === "other" && !newIngredient.unitSpecification) {
+      setError("Please specify unit");
+      return;
+    }
+
+    if (!/^\d*\.?\d*$/.test(newIngredient.quantity) || !/^\d*\.?\d*$/.test(newIngredient.price) || !/^\d*\.?\d*$/.test(newIngredient.threshold)) {
+      setError("Quantity, price, and threshold must be numbers");
+      return;
+    }
+
     const preparedIngredient = {
       ...newIngredient,
       price: parseFloat(newIngredient.price) || 0,
@@ -210,10 +227,11 @@ const IngredientList = () => {
     .then((res) => res.json())
     .then((addedIngredient) => {
       setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
+      setError(null);
     })
     .catch((err) => console.error("Error adding ingredient:", err));
 
-    setNewIngredient({ name: "", quantity: "", unit: "", price: "", threshold: "" });
+    setNewIngredient({ name: "", quantity: "", unit: "", price: "", threshold: "", unitSpecification: "" });
   };
 
   const handleDelete = (id) => {
@@ -293,6 +311,7 @@ const IngredientList = () => {
         )}
         <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
         <input type="text" placeholder="Threshold" value={newIngredient.threshold} onChange={(e) => setNewIngredient({ ...newIngredient, threshold: e.target.value })} />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button onClick={handleAddIngredient}>Add Ingredient</button>
         <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients}/>
@@ -302,9 +321,9 @@ const IngredientList = () => {
         <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
       </div>
 
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
+      <p> </p>
+      <p> </p>
+      <p> </p>
 
     </div>
   );
