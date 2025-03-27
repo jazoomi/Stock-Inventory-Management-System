@@ -162,7 +162,7 @@ const ComboMeal = () => {
 
   return (
     <div className="combo-meal-container">
-      <h2>Create Combo Meal</h2>
+      <h1>Create Combo Meal</h1>
       <div className="combo-form">
         <input
           type="text"
@@ -320,9 +320,14 @@ const ComboMeal = () => {
                 }
               }} 
             />
+
           </div>
         </div>
       </div>
+
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
     </div>
   );  
 };
