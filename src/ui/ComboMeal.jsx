@@ -22,7 +22,8 @@ const ComboMeal = () => {
         const ingredients = data.map(item => ({
           id: item.id,
           name: item.name,
-          sellingPrice: parseFloat(item.price) * parseFloat(item.quantity),
+          price: parseFloat(item.price),
+          quantity: parseFloat(item.quantity),
           type: "raw"
         }));
         setRawIngredients(ingredients);
@@ -37,7 +38,7 @@ const ComboMeal = () => {
         const meals = data.map(m => ({
           id: m.id,
           name: m.name,
-          sellingPrice: parseFloat(m.price),
+          price: parseFloat(m.price),
           type: "assembled"
         }));
         setAssembledMeals(meals);
@@ -68,7 +69,13 @@ const ComboMeal = () => {
 
   useEffect(() => {
     if (!manualPriceEdit) {
-      const total = selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
+      const total = selectedItems.reduce((sum, item) => {
+        if (item.type === "raw") {
+          return sum + item.price;
+        } else {
+          return sum + item.price;
+        }
+      }, 0);
       setComboPrice(total.toFixed(2));
     }
   }, [selectedItems, manualPriceEdit]);
@@ -97,7 +104,13 @@ const ComboMeal = () => {
   };
 
   const calculateOriginalTotal = () => {
-    return selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
+    return selectedItems.reduce((sum, item) => {
+      if (item.type === "raw") {
+        return sum + item.price;
+      } else {
+        return sum + item.price;
+      }
+    }, 0);
   };
 
   const calculateSavings = () => {
@@ -206,7 +219,7 @@ const ComboMeal = () => {
                   onChange={() => toggleRawSelection(ingredient)}
                 />
               </div>
-              <p>Price: ${ingredient.sellingPrice.toFixed(2)}</p>
+              <p>Price: ${ingredient.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -228,7 +241,7 @@ const ComboMeal = () => {
                   onChange={() => toggleAssembledSelection(meal)}
                 />
               </div>
-              <p>Price: ${meal.sellingPrice.toFixed(2)}</p>
+              <p>Price: ${meal.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
@@ -278,7 +291,13 @@ const ComboMeal = () => {
             </thead>
             <tbody>
               {savedCombos.map(combo => {
-                const originalTotal = combo.meals.reduce((sum, item) => sum + item.sellingPrice, 0);
+                const originalTotal = combo.meals.reduce((sum, item) => {
+                  if (item.type === "raw") {
+                    return sum + item.price;
+                  } else {
+                    return sum + item.price;
+                  }
+                }, 0);
                 const savings = originalTotal ? ((combo.price - originalTotal) / originalTotal * 100).toFixed(1) : 0;
                 const dollarSavings = (combo.price - originalTotal).toFixed(2);
                 return (
