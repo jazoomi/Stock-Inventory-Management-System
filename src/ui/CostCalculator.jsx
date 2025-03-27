@@ -10,7 +10,7 @@ const CostCalculator = () => {
 
   return (
     <div className="cost-calculator">
-      <h2>Cost Calculation Formulas</h2>
+      <h1>Cost Calculation Formulas</h1>
 
 {[
     {
