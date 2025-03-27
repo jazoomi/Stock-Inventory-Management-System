@@ -326,7 +326,7 @@ const AssembledIngredients = () => {
       {assembledMeals.length > 0 && (
         <div
           style={{
-            border: "2px solid #3853dc",
+            border: "2px solidrgb(10, 166, 10)",
             padding: "10px",
             width: "300px",
             marginTop: "20px",
