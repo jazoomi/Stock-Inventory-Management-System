@@ -13,7 +13,8 @@ const ComboMeal = () => {
   const [totalCostSale, setTotalCostSale] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDollarSavings, setShowDollarSavings] = useState(false); // New state for toggling profits display
-  
+  const [manualPriceEdit, setManualPriceEdit] = useState(false); // New state to track manual price edit
+
   const fetchRawIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
@@ -66,9 +67,11 @@ const ComboMeal = () => {
   const selectedItems = [...selectedRawIngredients, ...selectedAssembledMeals];
 
   useEffect(() => {
-    const total = selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
-    setComboPrice(total.toFixed(2));
-  }, [selectedItems]);
+    if (!manualPriceEdit) {
+      const total = selectedItems.reduce((sum, item) => sum + item.sellingPrice, 0);
+      setComboPrice(total.toFixed(2));
+    }
+  }, [selectedItems, manualPriceEdit]);
 
   const updateTotalCostSale = (comboPrice, tax) => {
     const price = parseFloat(comboPrice) || 0;
@@ -138,6 +141,7 @@ const ComboMeal = () => {
       setComboPrice('');
       setTax('');
       setTotalCostSale('');
+      setManualPriceEdit(false);
     })
     .catch(err => console.error("Error saving combo:", err));
   };
@@ -241,6 +245,7 @@ const ComboMeal = () => {
                   onChange={(e) => {
                     if (/^\d*\.?\d*$/.test(e.target.value)) {
                       setComboPrice(e.target.value);
+                      setManualPriceEdit(true);
                       updateTotalCostSale(e.target.value, tax);
                     }
                   }}
@@ -325,9 +330,9 @@ const ComboMeal = () => {
         </div>
       </div>
 
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
+      <p> </p>
+      <p> </p>
+      <p> </p>
     </div>
   );  
 };
