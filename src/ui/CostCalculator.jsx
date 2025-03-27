@@ -65,7 +65,7 @@ const CostCalculator = () => {
     key={key}
     onClick={() => toggleExplanation(key)}
     style={{
-      border: expanded[key] ? "2px solid #ffb74d" : "2px solid transparent",
+      border: expanded[key] ? "2px solid #f09813" : "2px solid transparent",
       padding: "10px",
       borderRadius: "5px",
       cursor: "pointer",
@@ -76,6 +76,11 @@ const CostCalculator = () => {
     <code>{expanded[key] ? explanation : formula}</code>
   </div>
 ))}
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
     </div>
   );
 };
