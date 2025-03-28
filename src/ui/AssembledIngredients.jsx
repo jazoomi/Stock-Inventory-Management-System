@@ -54,8 +54,10 @@ const AssembledIngredients = () => {
         selectedIngredients.filter((item) => item.id !== ingredient.id)
       );
     } else {
-      setSelectedIngredients([...selectedIngredients, ingredient]),
-      { ...ingredient, servingAmount: 1 } // set default
+      setSelectedIngredients([
+        ...selectedIngredients,
+        { ...ingredient, servingAmount: 1 }
+      ]);
     }
   };
 
@@ -311,7 +313,7 @@ const AssembledIngredients = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Ingredients (Name & Cost)</th>
+                <th>Ingredients (Name & Serving Amount)</th>
                 <th>Preparation Price ($)</th>
                 <th>Percentage (%)</th>
                 <th>Selling Price ($)</th>
@@ -326,9 +328,10 @@ const AssembledIngredients = () => {
                     <ul>
                       {meal.ingredients.map((ingredient) => (
                         <li key={ingredient.id}>
-                          {ingredient.name} - $
-                          {ingredient.price.toFixed(2)}{" "}
-                          {ingredient.unit ? `per ${ingredient.unit}` : ""}
+                          {ingredient.servingAmount} x{" "}
+                          {ingredient.name} -{" "} 
+                          {ingredient.serving} {" "}
+                          {ingredient.unit} per serving
                         </li>
                       ))}
                     </ul>
