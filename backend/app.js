@@ -49,37 +49,37 @@ app.get("/combo", (req, res) => {
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
     console.log("Incoming ingredient:", req.body);
-    const { name, quantity, unit, price, threshold} = req.body;
+    const { name, quantity, unit, price, threshold, serving} = req.body;
 
-    if (!name || !quantity || !unit || !price ) {
+    if (!name || !quantity || !unit || !price || !serving ) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price, threshold) VALUES(?, ?, ?, ?, ?)";
-    const params = [name, quantity, unit, price, threshold];
+    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price, threshold, serving) VALUES(?, ?, ?, ?, ?, ?)";
+    const params = [name, quantity, unit, price, threshold, serving];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, quantity, unit, price, threshold});
+        res.status(201).json({ id: this.lastID, name, quantity, unit, price, threshold, serving});
     });
     
 });
 //make post for assemlbed ingredients
 app.post("/assembled-ingredients", (req, res) => {
-    const { name, quantity, recipe, price} = req.body;
+    const { name, quantity, recipe, price, servingAmount} = req.body;
 
-    if (!name || !quantity || !recipe || !price) {
-        return res.status(400).json({error: "Enter all fields (name, quantity, recipe and price)"});
+    if (!name || !quantity || !recipe || !price || !servingAmount) {
+        return res.status(400).json({error: "Enter all fields (name, quantity, recipe, price, and serving amount)"});
     }
-    const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price, serving) VALUES(?, ?, ?, ?, ?)";
-    const params = [name, quantity, recipe, price, serving];
+    const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price, servingAmount) VALUES(?, ?, ?, ?, ?)";
+    const params = [name, quantity, recipe, price, servingAmount];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, quantity, recipe, price, serving});
+        res.status(201).json({ id: this.lastID, name, quantity, recipe, price, servingAmount});
     });
     
 });
@@ -90,14 +90,14 @@ app.post("/combo", (req, res) => {
     if (!name || !items || !price) {
         return res.status(400).json({error: "Enter all fields (name, items, and price)"});
     }
-    const sql = "INSERT INTO combo (name, items, price, serving) VALUES(?, ?, ?, ?)";
-    const params = [name, items, price, serving];
+    const sql = "INSERT INTO combo (name, items, price) VALUES(?, ?, ?)";
+    const params = [name, items, price];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, items, price, serving});
+        res.status(201).json({ id: this.lastID, name, items, price});
     });
     
 });
@@ -154,12 +154,12 @@ app.delete("/combo/:id", (req, res) => {
 
 app.put("/raw-ingredients/:id", (req, res) => {
     const {id} = req.params;
-    const {name, quantity, unit, price, threshold} = req.body;
+    const {name, quantity, unit, price, threshold, serving} = req.body;
     if (!name || !quantity || !unit || !price || !threshold){
         return res.status(400).json({error: "Please put all info"});
     }
-    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ?, threshold = ? WHERE id = ?";
-    const params = [name, quantity, unit, price, threshold, id];
+    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ?, threshold = ?, serving = ? WHERE id = ?";
+    const params = [name, quantity, unit, price, threshold, serving, id];
 
     db.run(sql, params, function (err) {
         if (err){
@@ -168,19 +168,19 @@ app.put("/raw-ingredients/:id", (req, res) => {
         if (this.changes === 0){
             return res.status(404).json({error: "did not find raw ingredient with that id"});
         }
-        res.status(200).json({message: "Raw ingredients updated successfully:", id, name, quantity, unit, price, threshold})
+        res.status(200).json({message: "Raw ingredients updated successfully:", id, name, quantity, unit, price, threshold, serving})
 
     });
 });
 
 app.put("/assembled-ingredients/:id", (req, res) => {
     const {id} = req.params;
-    const {name, quantity, recipe, price, serving} = req.body;
-    if (!name || !quantity || !recipe || !price){
+    const {name, quantity, recipe, price, servingAmount} = req.body;
+    if (!name || !quantity || !recipe || !price || !servingAmount){
         return res.status(400).json({error: "Pls put all info"});
     }
-    const sql = "UPDATE assembled_ingredients set name = ?, quantity = ?, recipe = ?, price = ?, serving = ? WHERE id = ?";
-    const params = [name, quantity, recipe, price, serving, id];
+    const sql = "UPDATE assembled_ingredients set name = ?, quantity = ?, recipe = ?, price = ?, servingAmount = ? WHERE id = ?";
+    const params = [name, quantity, recipe, price, servingAmount, id];
 
     db.run(sql, params, function (err) {
         if (err){
@@ -189,7 +189,7 @@ app.put("/assembled-ingredients/:id", (req, res) => {
         if (this.changes === 0){
             return res.status(404).json({error: "did not find assembled ingredient with that id"});
         }
-        res.status(200).json({message: "assembled ingredients updated successfully:", id, name, quantity, recipe, price, serving})
+        res.status(200).json({message: "assembled ingredients updated successfully:", id, name, quantity, recipe, price, servingAmount})
 
     });
 });
