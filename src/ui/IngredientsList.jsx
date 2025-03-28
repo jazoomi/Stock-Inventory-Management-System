@@ -65,6 +65,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
               <option value="">Please Select</option>
               <option value="g">g</option>
               <option value="kg">kg</option>
+              <option value="lbs">lbs</option>
               <option value="mL">mL</option>
               <option value="L">L</option>
               <option value="slices">slices</option>
@@ -291,6 +292,7 @@ const IngredientList = () => {
           <option value="">Please Select</option>
           <option value="g">g</option>
           <option value="kg">kg</option>
+          <option value="lbs">lbs</option>
           <option value="mL">mL</option>
           <option value="L">L</option>
           <option value="slices">slices</option>
