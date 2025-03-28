@@ -220,8 +220,9 @@ app.get("/export-raw-ingredients", (req, res) => {
     db.all("SELECT name, quantity, unit, price, threshold FROM raw_ingredients", [], (err,rows) =>{
         if (err){
             res.status(500).json({ error: err.message});
-            return;        }
-    });
+            return;        
+        }
+    
     const worksheet = XLSX.utils.json_to_sheet(rows); //formats data for the work book
     const workbook = XLSX.utils.book_new(); //creats the workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, "Raw Ingredients");
@@ -233,7 +234,8 @@ app.get("/export-raw-ingredients", (req, res) => {
             res.status(500).json({ error: "file download failed"});
         }
         
-    })
-})
+        });
+    });
+});
 
 export default app;
