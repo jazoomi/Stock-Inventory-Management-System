@@ -109,6 +109,9 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
     </div>
   );
 };
+const exportToExcel = () => {
+  window.location.href = "http://localhost:3001/export-raw-ingredients";
+};
 
 const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
@@ -315,6 +318,7 @@ const IngredientList = () => {
         <button onClick={handleAddIngredient}>Add Ingredient</button>
         <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients}/>
+        <button onClick={exportToExcel}>Export to Excel</button>
       </div>
 
         {[...filteredIngredients].reverse().map((ingredient) => (
