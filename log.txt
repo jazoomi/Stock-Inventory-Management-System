@@ -151,7 +151,8 @@ planned time for task: 10 min
 Time spent on task: 10 min
 
 Ryan: 
-Task: fixed bug of threshold not appearing when adding ingredients. schema and app.js files were updated to fix the bug
+Task: fixed bug of threshold not appearing when adding ingredients. schema and app.js files were updated to fix the bug.
+Addresses bug report #1 by Gyeongbae Choi
 planned time for task: n/a
 Time spent on task: 45 mins
 
