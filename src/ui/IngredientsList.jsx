@@ -264,11 +264,11 @@ const IngredientList = () => {
           <button className="close-btn" onClick={closeNotification}>×</button>
         </div>
       )}
-      
+
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search for an ingredient..."
+          placeholder="Search ingredients..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
         />
@@ -278,9 +278,6 @@ const IngredientList = () => {
         )}
       </div>
 
-      {filteredIngredients.map((ingredient) => (
-        <IngredientCard key={ingredient.id} ingredient={ingredient} onSave={handleSave} onDelete={handleDelete} />
-      ))}
     
       <div className="add-ingredient-form">
         <input type="text" placeholder="Name" value={newIngredient.name} onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })} />
@@ -319,6 +316,15 @@ const IngredientList = () => {
         <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients}/>
       </div>
+
+        {[...filteredIngredients].reverse().map((ingredient) => (
+        <IngredientCard
+          key={ingredient.id}
+          ingredient={ingredient}
+          onSave={handleSave}
+          onDelete={handleDelete}
+        />
+      ))}
   
       <div className="total-cost">
         <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
