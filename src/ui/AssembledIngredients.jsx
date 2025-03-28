@@ -54,7 +54,8 @@ const AssembledIngredients = () => {
         selectedIngredients.filter((item) => item.id !== ingredient.id)
       );
     } else {
-      setSelectedIngredients([...selectedIngredients, ingredient]);
+      setSelectedIngredients([...selectedIngredients, ingredient]),
+      { ...ingredient, servingAmount: 1 } // set default
     }
   };
 
@@ -158,6 +159,16 @@ const AssembledIngredients = () => {
     setSelectedIngredients(meal.ingredients);
   };
 
+  const handleServingChange = (id, newServing) => {
+    setSelectedIngredients(prev =>
+      prev.map(ingredient =>
+        ingredient.id === id
+          ? { ...ingredient, servingAmount: parseInt(newServing) }
+          : ingredient
+      )
+    );
+  };
+
   const filteredIngredients = ingredients.filter(ingredient =>
     ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -245,6 +256,7 @@ const AssembledIngredients = () => {
           <tr>
             <th>Name</th>
             <th>Price</th>
+            <th>Serving Amount</th>
             <th>Unit</th>
           </tr>
         </thead>
@@ -253,6 +265,21 @@ const AssembledIngredients = () => {
             <tr key={ingredient.id}>
               <td>{ingredient.name}</td>
               <td>${ingredient.price.toFixed(2)}</td>
+              <td>{ingredient.serving} x{" "}
+                <select
+                  value={ingredient.servingAmount}
+                  onChange={(e) => handleServingChange(ingredient.id, e.target.value)}
+                >
+                  {Array.from({ length: 10 }, (_, i) => {
+                    const value = i + 1;
+                    return (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    );
+                  })}
+                </select>
+              </td>
               <td>{ingredient.unit}</td>
             </tr>
           ))}

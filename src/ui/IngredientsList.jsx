@@ -61,7 +61,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
         <>
           <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
           <div className="ingredient-details">
-            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Stock" />
+            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
             <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
               <option value="">Units</option>
               <option value="g">g</option>
@@ -98,8 +98,9 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
         <>
           <h3>{ingredient.name}</h3>
           <div className="ingredient-details">
-            <p>{ingredient.quantity} {ingredient.unit}</p>
-            <p>${parseFloat(ingredient.price).toFixed(2)}</p>
+            <p>Amount: {ingredient.quantity} {ingredient.unit}</p>
+            <p>Serving Size: {ingredient.serving} {ingredient.unit}</p>
+            <p>Price: ${parseFloat(ingredient.price).toFixed(2)}</p>
           </div>
           <div className="threshold-info">
             <p>Threshold: {ingredient.threshold} {ingredient.unit}</p>

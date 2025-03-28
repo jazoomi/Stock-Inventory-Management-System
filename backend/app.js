@@ -67,19 +67,19 @@ app.post("/raw-ingredients", (req, res) => {
 });
 //make post for assemlbed ingredients
 app.post("/assembled-ingredients", (req, res) => {
-    const { name, quantity, recipe, price, servingAmount} = req.body;
+    const { name, quantity, recipe, price} = req.body;
 
-    if (!name || !quantity || !recipe || !price || !servingAmount) {
-        return res.status(400).json({error: "Enter all fields (name, quantity, recipe, price, and serving amount)"});
+    if (!name || !quantity || !recipe || !price) {
+        return res.status(400).json({error: "Enter all fields (name, quantity, recipe, and price)"});
     }
-    const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price, servingAmount) VALUES(?, ?, ?, ?, ?)";
-    const params = [name, quantity, recipe, price, servingAmount];
+    const sql = "INSERT INTO assembled_ingredients (name, quantity, recipe, price) VALUES(?, ?, ?, ?)";
+    const params = [name, quantity, recipe, price];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, quantity, recipe, price, servingAmount});
+        res.status(201).json({ id: this.lastID, name, quantity, recipe, price});
     });
     
 });

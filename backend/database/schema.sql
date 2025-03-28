@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS assembled_ingredients(
     name TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     recipe TEXT NOT NULL, -- raw ingredients combined 
-    price FLOAT NOT NULL, -- combinging prices of raws
-    servingAmount FLOAT NOT NULL
+    price FLOAT NOT NULL -- combinging prices of raws
     
 );
 -- combo deals table
