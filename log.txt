@@ -157,7 +157,7 @@ planned time for task: n/a
 Time spent on task: 45 mins
 
 Ryan:
-Task: added import template to download on home page
+Task: added import template to download on home page. Bug report #1 by Vrinda Ashwar will not be a concern anymore after this addition
 planned time for task: 30 mins
 Time spent on task: 30 mins
 	

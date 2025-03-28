@@ -118,7 +118,7 @@ app.delete("/raw-ingredients/:id", (req, res) => {
     });
 });
 
-//delete for raw 
+//delete for assembled 
 app.delete("/assembled-ingredients/:id", (req, res) => {
     const {id} = req.params; // takes the id from the endpoint param and deconstructs it
 
@@ -135,7 +135,7 @@ app.delete("/assembled-ingredients/:id", (req, res) => {
     });
 });
 
-//delete for raw 
+//delete for combo 
 app.delete("/combo/:id", (req, res) => {
     const {id} = req.params; // takes the id from the endpoint param and deconstructs it
 

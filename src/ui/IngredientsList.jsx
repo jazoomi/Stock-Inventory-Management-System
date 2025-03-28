@@ -247,6 +247,17 @@ const IngredientList = () => {
 
   const closeNotification = () => {
     setNotification(null);
+    fetch(`http://localhost:3001/raw-ingredients/${id}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to delete ingredient");
+      fetchIngredients(); // 👈 re-sync with backend
+    })
+    .catch((err) => {
+      console.error("Error deleting ingredient:", err);
+      // Optionally show an error notification
+    });
   };
 
   const filteredIngredients = ingredients.filter(ingredient =>
