@@ -1,7 +1,15 @@
 import express from "express"; // express framework for http requests and responses
 import db from "./database/db.js"; // getting the database connection that was exported in the other file
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express(); //creating the express app
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files (your downloadable Excel file)
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(express.json()); //middleware for parse JSON request bodies
 

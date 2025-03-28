@@ -154,4 +154,9 @@ Ryan:
 Task: fixed bug of threshold not appearing when adding ingredients. schema and app.js files were updated to fix the bug
 planned time for task: n/a
 Time spent on task: 45 mins
+
+Ryan:
+Task: added import template to download on home page
+planned time for task: 30 mins
+Time spent on task: 30 mins
 	

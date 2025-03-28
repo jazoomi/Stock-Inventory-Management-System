@@ -37,6 +37,18 @@ const Home = () => (
   <div className="home-container">
     <h1>Welcome to the Ingredients Manager</h1>
     <p>Select a page from the navigation bar above.</p>
+
+    <div className="template-download">
+      <h2>Will you be importing your ingredients?</h2>
+      <p>You can download the pre-formatted Excel file below, fill in your ingredients, and import it using the Ingredient List page.</p>
+      <a
+        href="http://localhost:3001/ingredient-template.xlsx"
+        download
+        className="download-button"
+      >
+        Download Import Template
+      </a>
+    </div>
   </div>
 );
 
