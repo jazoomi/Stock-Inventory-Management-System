@@ -40,19 +40,20 @@ app.get("/combo", (req, res) => {
 
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
-    const { name, quantity, unit, price} = req.body;
+    console.log("Incoming ingredient:", req.body);
+    const { name, quantity, unit, price, threshold} = req.body;
 
-    if (!name || !quantity || !unit || !price) {
+    if (!name || !quantity || !unit || !price ) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price) VALUES(?, ?, ?, ?)";
-    const params = [name, quantity, unit, price];
+    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price, threshold) VALUES(?, ?, ?, ?, ?)";
+    const params = [name, quantity, unit, price, threshold];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, quantity, unit, price});
+        res.status(201).json({ id: this.lastID, name, quantity, unit, price, threshold});
     });
     
 });
@@ -145,12 +146,12 @@ app.delete("/combo/:id", (req, res) => {
 
 app.put("/raw-ingredients/:id", (req, res) => {
     const {id} = req.params;
-    const {name, quantity, unit, price} = req.body;
-    if (!name || !quantity || !unit || !price){
-        return res.status(400).json({error: "Pls put all info"});
+    const {name, quantity, unit, price, threshold} = req.body;
+    if (!name || !quantity || !unit || !price || !threshold){
+        return res.status(400).json({error: "Please put all info"});
     }
-    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ? WHERE id = ?";
-    const params = [name, quantity, unit, price, id];
+    const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ?, threshold = ? WHERE id = ?";
+    const params = [name, quantity, unit, price, threshold, id];
 
     db.run(sql, params, function (err) {
         if (err){
@@ -159,7 +160,7 @@ app.put("/raw-ingredients/:id", (req, res) => {
         if (this.changes === 0){
             return res.status(404).json({error: "did not find raw ingredient with that id"});
         }
-        res.status(200).json({message: "Raw ingredients updated successfully:", id, name, quantity, unit, price})
+        res.status(200).json({message: "Raw ingredients updated successfully:", id, name, quantity, unit, price, threshold})
 
     });
 });

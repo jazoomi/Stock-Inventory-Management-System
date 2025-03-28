@@ -52,9 +52,9 @@ const ImportIngredients = ({ refreshIngredients }) => {
 
                 // Convert the data to match the API field names
                 const formattedData = jsonData.map(({ Name, Amount, "Unit/Measurement": Unit, Price, Threshold }) => ({
-                    name: parseFloat (Name) || 0,
+                    name: Name,
                     quantity: parseFloat (Amount) || 0,
-                    unit: parseFloat (Unit) || 0,
+                    unit: Unit,
                     price: parseFloat (Price) || 0,
                     threshold: parseFloat(Threshold) || 0
                 }));

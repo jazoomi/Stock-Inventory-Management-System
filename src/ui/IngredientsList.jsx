@@ -129,6 +129,7 @@ const IngredientList = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => {
+        console.log("Fetched from backend:", data);
         const processedData = data.map(item => ({
           ...item,
           quantity: parseFloat(item.quantity) || 0,
@@ -219,7 +220,7 @@ const IngredientList = () => {
       quantity: parseFloat(newIngredient.quantity) || 0,
       threshold: parseFloat(newIngredient.threshold) || 0,
     };
-
+    
     fetch("http://localhost:3001/raw-ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -249,7 +250,7 @@ const IngredientList = () => {
   };
 
   const filteredIngredients = ingredients.filter(ingredient =>
-    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ingredient.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

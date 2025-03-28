@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS raw_ingredients(
     name TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     unit TEXT,
-    price FLOAT NOT NULL
+    price FLOAT NOT NULL,
+    threshold INTEGER
 
 );
 -- assembled ingredients table
