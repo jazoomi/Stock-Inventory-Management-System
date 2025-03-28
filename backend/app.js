@@ -49,19 +49,19 @@ app.get("/combo", (req, res) => {
 //make post for raw ingredients
 app.post("/raw-ingredients", (req, res) => {
     console.log("Incoming ingredient:", req.body);
-    const { name, quantity, unit, price, threshold, serving} = req.body;
+    const { name, quantity, unit, serving, price, threshold} = req.body;
 
     if (!name || !quantity || !unit || !price || !serving ) {
         return res.status(400).json({error: "Enter all fields (name, quantity, unit and price)"});
     }
-    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, price, threshold, serving) VALUES(?, ?, ?, ?, ?, ?)";
-    const params = [name, quantity, unit, price, threshold, serving];
+    const sql = "INSERT INTO raw_ingredients (name, quantity, unit, serving, price, threshold) VALUES(?, ?, ?, ?, ?, ?)";
+    const params = [name, quantity, unit, serving, price, threshold];
 
     db.run(sql, params, function (err) {
         if (err){
             return res.status(500).json({error: err.message});
         }
-        res.status(201).json({ id: this.lastID, name, quantity, unit, price, threshold, serving});
+        res.status(201).json({ id: this.lastID, name, quantity, unit, serving, price, threshold});
     });
     
 });

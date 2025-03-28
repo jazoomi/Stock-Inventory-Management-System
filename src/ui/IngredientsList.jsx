@@ -13,7 +13,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
       setEditedIngredient({ ...editedIngredient, [name]: "" });
       return;
     }
-    if (name === "price" || name === "quantity" || name === "threshold") {
+    if (name === "price" || name === "quantity" || name === "threshold" || name === "serving") {
       if (/^\d*\.?\d*$/.test(value)) {
         setEditedIngredient({ ...editedIngredient, [name]: value });
       }
@@ -30,6 +30,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
           price: parseFloat(editedIngredient.price) || 0,
           quantity: parseFloat(editedIngredient.quantity) || 0,
           threshold: parseFloat(editedIngredient.threshold) || 0,
+          serving: parseFloat(editedIngredient.serving) || 0,
         };
         onSave(savedIngredient);
       }
@@ -60,9 +61,9 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
         <>
           <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
           <div className="ingredient-details">
-            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
+            <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Stock" />
             <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
-              <option value="">Please Select</option>
+              <option value="">Units</option>
               <option value="g">g</option>
               <option value="kg">kg</option>
               <option value="lbs">lbs</option>
@@ -85,6 +86,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
               />
             )}
 
+            <input type="text" name="serving" value={editedIngredient.serving} onChange={handleChange} placeholder="Serving" />
             <input type="text" name="price" value={editedIngredient.price} onChange={handleChange} placeholder="Price" />
           </div>
           <div className="threshold-container">
@@ -117,6 +119,7 @@ const IngredientList = () => {
     quantity: "",
     unit: "",
     price: "",
+    serving: "",
     threshold: "",
     unitSpecification: ""
   });
@@ -129,12 +132,13 @@ const IngredientList = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched from backend:", data);
+        // console.log("Fetched from backend:", data);
         const processedData = data.map(item => ({
           ...item,
           quantity: parseFloat(item.quantity) || 0,
           threshold: parseFloat(item.threshold) || 0,
-          price: parseFloat(item.price) || 0
+          price: parseFloat(item.price) || 0,
+          serving: parseFloat(item.serving) || 0
         }));
         
         setIngredients(processedData);
@@ -199,7 +203,7 @@ const IngredientList = () => {
   };
 
   const handleAddIngredient = () => {
-    if (!newIngredient.name || !newIngredient.quantity || !newIngredient.unit || !newIngredient.price || !newIngredient.threshold) {
+    if (!newIngredient.name || !newIngredient.quantity || !newIngredient.unit || !newIngredient.serving || !newIngredient.price || !newIngredient.threshold) {
       setError("Please fill in all fields");
       return;
     }
@@ -209,13 +213,14 @@ const IngredientList = () => {
       return;
     }
 
-    if (!/^\d*\.?\d*$/.test(newIngredient.quantity) || !/^\d*\.?\d*$/.test(newIngredient.price) || !/^\d*\.?\d*$/.test(newIngredient.threshold)) {
-      setError("Quantity, price, and threshold must be numbers");
+    if (!/^\d*\.?\d*$/.test(newIngredient.quantity) || !/^\d*\.?\d*$/.test(newIngredient.serving) || !/^\d*\.?\d*$/.test(newIngredient.price) || !/^\d*\.?\d*$/.test(newIngredient.threshold)) {
+      setError("Quantity, serving, price, and threshold must be numbers");
       return;
     }
 
     const preparedIngredient = {
       ...newIngredient,
+      serving: parseFloat(newIngredient.serving) || 0,
       price: parseFloat(newIngredient.price) || 0,
       quantity: parseFloat(newIngredient.quantity) || 0,
       threshold: parseFloat(newIngredient.threshold) || 0,
@@ -233,7 +238,7 @@ const IngredientList = () => {
     })
     .catch((err) => console.error("Error adding ingredient:", err));
 
-    setNewIngredient({ name: "", quantity: "", unit: "", price: "", threshold: "", unitSpecification: "" });
+    setNewIngredient({ name: "", quantity: "", unit: "", serving: "", price: "", threshold: "", unitSpecification: "" });
   };
 
   const handleDelete = (id) => {
@@ -287,7 +292,7 @@ const IngredientList = () => {
           value={newIngredient.unit}
           onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}
         >
-          <option value="">Please Select</option>
+          <option value="">Units</option>
           <option value="g">g</option>
           <option value="kg">kg</option>
           <option value="lbs">lbs</option>
@@ -309,6 +314,7 @@ const IngredientList = () => {
             onChange={(e) => setNewIngredient({ ...newIngredient, unitSpecification: e.target.value })}
           />
         )}
+        <input type="text" placeholder="Serving" value={newIngredient.serving} onChange={(e) => setNewIngredient({ ...newIngredient, serving: e.target.value })} />
         <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
         <input type="text" placeholder="Threshold" value={newIngredient.threshold} onChange={(e) => setNewIngredient({ ...newIngredient, threshold: e.target.value })} />
         {error && <p style={{ color: 'red' }}>{error}</p>}
