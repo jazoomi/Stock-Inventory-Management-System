@@ -134,6 +134,9 @@ const ComboMeal = () => {
   const filteredMeals = assembledMeals.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()));
   const savings = calculateSavings();
 
+  // Check if there are no results
+  const noResults = filteredRaw.length === 0 && filteredMeals.length === 0;
+
   return (
     <div className="combo-meal-container">
       <h1 className="centered">Create Combo Meal</h1>
@@ -146,6 +149,10 @@ const ComboMeal = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
+
+      {noResults && (
+        <p style={{ color: 'red' }}>No Ingredient Found</p>
+      )}
 
       <div className="combo-main-container">
         <div className="combo-sidebar two-columns">
