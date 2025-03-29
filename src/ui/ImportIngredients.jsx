@@ -51,10 +51,11 @@ const ImportIngredients = ({ refreshIngredients }) => {
                 const jsonData = XLSX.utils.sheet_to_json(sheet);
 
                 // Convert the data to match the API field names
-                const formattedData = jsonData.map(({ Name, Amount, "Unit/Measurement": Unit, Price, Threshold }) => ({
+                const formattedData = jsonData.map(({ Name, Amount, "Unit/Measurement": Unit, Serving, Price, Threshold }) => ({
                     name: Name,
                     quantity: parseFloat (Amount) || 0,
                     unit: Unit,
+                    serving: parseFloat(Serving) || 0,
                     price: parseFloat (Price) || 0,
                     threshold: parseFloat(Threshold) || 0
                 }));
