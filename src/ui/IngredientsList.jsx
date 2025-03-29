@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./IngredientList.css";
+import "./styles/IngredientList.css";
 import ImportIngredients from "./ImportIngredients";
 import IngredientCard from "./IngredientCard";
 

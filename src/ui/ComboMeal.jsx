@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ComboMeal.css';
+import './styles/ComboMeal.css';
 
 const ComboMeal = () => {
   const [rawIngredients, setRawIngredients] = useState([]);
