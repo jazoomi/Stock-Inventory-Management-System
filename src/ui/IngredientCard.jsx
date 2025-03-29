@@ -1,10 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./styles/IngredientCard.css"
+import React, { useRef, useEffect, useState } from "react";
+import "./styles/IngredientCard.css";
 
-const IngredientCard = ({ ingredient, onSave, onDelete }) => {
-  const [isEditing, setIsEditing] = useState(false);
+const IngredientCard = ({ ingredient, onSave, onDelete, isEditing, setIsEditing }) => {
   const [editedIngredient, setEditedIngredient] = useState({ ...ingredient });
   const cardRef = useRef(null);
+
+  useEffect(() => {
+    setEditedIngredient({ ...ingredient });
+  }, [ingredient]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +55,7 @@ const IngredientCard = ({ ingredient, onSave, onDelete }) => {
 
   return (
     <div
-      className={`ingredient-card ${isLow ? 'low-stock' : ''}`}
+      className={`ingredient-card ${isLow ? "low-stock" : ""}`}
       ref={cardRef}
       onClick={() => !isEditing && setIsEditing(true)}
     >
