@@ -1,0 +1,23 @@
+.ingredient-summary-card {
+    border: 1px solid #D1A981;
+    background-color: #FFF8E7;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .ingredient-summary-card:hover {
+    background-color: #f2e4c2;
+  }
+  
+  .ingredient-summary-card.low-stock {
+    border-color: #f44336;
+    background-color: #ffefef;
+  }
+  
+  .ingredient-summary-card.selected {
+    border-color: #007bff;
+    background-color: #e6f3ff;
+  }
+  
