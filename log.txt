@@ -176,3 +176,8 @@ Task: Added serving field in ingredients list and save to db. Add serving amount
 with specified serving sizes
 planned time for task: 3 hours
 Time spent on task: 2.5 hours
+
+Sadiq: 
+task: added an export feature for raw ingredients
+planned time: 1 day
+time spent: 3 hours
