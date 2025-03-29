@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/IngredientList.css";
 import ImportIngredients from "./ImportIngredients";
 import IngredientCard from "./IngredientCard";
 import IngredientSummaryCard from "./IngredientSummaryCard";
+import AddIngredient from "./AddIngredient"; // ✅ updated import name
 
 const exportToExcel = () => {
   window.location.href = "http://localhost:3001/export-raw-ingredients";
@@ -10,20 +11,11 @@ const exportToExcel = () => {
 
 const IngredientList = () => {
   const [ingredients, setIngredients] = useState([]);
-  const [newIngredient, setNewIngredient] = useState({
-    name: "",
-    quantity: "",
-    unit: "",
-    price: "",
-    serving: "",
-    threshold: "",
-    unitSpecification: ""
-  });
   const [totalCost, setTotalCost] = useState(0);
   const [notification, setNotification] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [error, setError] = useState(null);
   const [selectedIngredientId, setSelectedIngredientId] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
@@ -50,12 +42,7 @@ const IngredientList = () => {
 
   useEffect(() => {
     calculateTotalCost(ingredients);
-  }, [ingredients]);
-
-  useEffect(() => {
-    if (ingredients.length > 0) {
-      checkLowStockItems(ingredients);
-    }
+    checkLowStockItems(ingredients);
   }, [ingredients]);
 
   const calculateTotalCost = (ingredientList) => {
@@ -96,30 +83,7 @@ const IngredientList = () => {
     }).catch((err) => console.error("Error updating ingredient:", err));
   };
 
-  const handleAddIngredient = () => {
-    if (!newIngredient.name || !newIngredient.quantity || !newIngredient.unit || !newIngredient.serving || !newIngredient.price || !newIngredient.threshold) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    if (newIngredient.unit === "other" && !newIngredient.unitSpecification) {
-      setError("Please specify unit");
-      return;
-    }
-
-    if (!/^\d*\.?\d*$/.test(newIngredient.quantity) || !/^\d*\.?\d*$/.test(newIngredient.serving) || !/^\d*\.?\d*$/.test(newIngredient.price) || !/^\d*\.?\d*$/.test(newIngredient.threshold)) {
-      setError("Quantity, serving, price, and threshold must be numbers");
-      return;
-    }
-
-    const preparedIngredient = {
-      ...newIngredient,
-      serving: parseFloat(newIngredient.serving) || 0,
-      price: parseFloat(newIngredient.price) || 0,
-      quantity: parseFloat(newIngredient.quantity) || 0,
-      threshold: parseFloat(newIngredient.threshold) || 0,
-    };
-
+  const handleAddIngredient = (preparedIngredient) => {
     fetch("http://localhost:3001/raw-ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -128,11 +92,8 @@ const IngredientList = () => {
       .then((res) => res.json())
       .then((addedIngredient) => {
         setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
-        setError(null);
       })
       .catch((err) => console.error("Error adding ingredient:", err));
-
-    setNewIngredient({ name: "", quantity: "", unit: "", serving: "", price: "", threshold: "", unitSpecification: "" });
   };
 
   const handleDelete = (id) => {
@@ -177,41 +138,19 @@ const IngredientList = () => {
         )}
       </div>
 
-      <div className="add-ingredient-form">
-        <input type="text" placeholder="Name" value={newIngredient.name} onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })} />
-        <input type="text" placeholder="Amount" value={newIngredient.quantity} onChange={(e) => setNewIngredient({ ...newIngredient, quantity: e.target.value })} />
-        <select value={newIngredient.unit} onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}>
-          <option value="">Units</option>
-          <option value="g">g</option>
-          <option value="kg">kg</option>
-          <option value="lbs">lbs</option>
-          <option value="mL">mL</option>
-          <option value="L">L</option>
-          <option value="slices">slices</option>
-          <option value="units">units</option>
-          <option value="cups">cups</option>
-          <option value="Oz">Oz</option>
-          <option value="other">Other - specify</option>
-        </select>
-
-        {newIngredient.unit === "other" && (
-          <input
-            type="text"
-            name="unitSpecification"
-            placeholder="Specify unit"
-            value={newIngredient.unitSpecification}
-            onChange={(e) => setNewIngredient({ ...newIngredient, unitSpecification: e.target.value })}
-          />
-        )}
-        <input type="text" placeholder="Serving" value={newIngredient.serving} onChange={(e) => setNewIngredient({ ...newIngredient, serving: e.target.value })} />
-        <input type="text" placeholder="Price" value={newIngredient.price} onChange={(e) => setNewIngredient({ ...newIngredient, price: e.target.value })} />
-        <input type="text" placeholder="Threshold" value={newIngredient.threshold} onChange={(e) => setNewIngredient({ ...newIngredient, threshold: e.target.value })} />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button onClick={handleAddIngredient}>Add Ingredient</button>
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={() => setShowAddModal(true)}>+ Add Ingredient</button>
         <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients} />
         <button onClick={exportToExcel}>Export to Excel</button>
       </div>
+
+      {showAddModal && (
+        <AddIngredient
+          onClose={() => setShowAddModal(false)}
+          onAdd={handleAddIngredient}
+        />
+      )}
 
       <div className="ingredient-main-container">
         <div className="ingredient-sidebar">
