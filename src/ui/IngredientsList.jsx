@@ -117,7 +117,7 @@ const IngredientList = () => {
 
   return (
     <div className="ingredient-list">
-      <h1 className="centered">Add Ingredients</h1>
+      <h1 className="centered">Ingredients</h1>
 
       {notification && (
         <div className="notification">
