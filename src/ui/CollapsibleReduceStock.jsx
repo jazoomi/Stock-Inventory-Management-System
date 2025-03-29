@@ -170,7 +170,7 @@ const CollapsibleReduceStock = ({ onStockUpdated }) => {
   return (
     <div className="reduce-stock-wrapper">
       <button onClick={() => setShowSection((prev) => !prev)}>
-        {showSection ? "Hide Reduce Stock" : "Reduce Stock by Meal Sold"}
+        {showSection ? "Hide Reduce Stock" : "Reduce Stock by Meals/Combos"}
       </button>
 
       {showSection && (
