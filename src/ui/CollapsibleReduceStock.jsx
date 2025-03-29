@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/CollapsibleReduceStock.css";
 
-const CollapsibleReduceStock = () => {
+const CollapsibleReduceStock = ({ onStockUpdated }) => {
   const [showSection, setShowSection] = useState(false);
   const [assembledMeals, setAssembledMeals] = useState([]);
   const [comboMeals, setComboMeals] = useState([]);
@@ -112,6 +112,10 @@ const CollapsibleReduceStock = () => {
     }
 
     alert("Stock successfully reduced.");
+    if (onStockUpdated) {
+        onStockUpdated();
+      }
+    console.log()
   };
 
   return (
