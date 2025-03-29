@@ -3,7 +3,7 @@ import "./styles/IngredientList.css";
 import ImportIngredients from "./ImportIngredients";
 import IngredientCard from "./IngredientCard";
 import IngredientSummaryCard from "./IngredientSummaryCard";
-import AddIngredient from "./AddIngredient"; // ✅ updated import name
+import AddIngredient from "./AddIngredient"; // renamed modal component
 
 const exportToExcel = () => {
   window.location.href = "http://localhost:3001/export-raw-ingredients";
@@ -138,9 +138,8 @@ const IngredientList = () => {
         )}
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div className="action-buttons">
         <button onClick={() => setShowAddModal(true)}>+ Add Ingredient</button>
-        <p>Or</p>
         <ImportIngredients refreshIngredients={fetchIngredients} />
         <button onClick={exportToExcel}>Export to Excel</button>
       </div>
