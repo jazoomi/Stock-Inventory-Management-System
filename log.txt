@@ -158,7 +158,7 @@ Time spent on task: 2 hours
 Ryan:
 Task: added threshold to import feature
 planned time for task: 10 min
-Time spent on task: 10 min
+Time spent on task: 15 min
 
 Ryan: 
 Task: fixed bug of threshold not appearing when adding ingredients. schema and app.js files were updated to fix the bug.
@@ -171,3 +171,8 @@ Task: added import template to download on home page. Bug report #1 by Vrinda As
 planned time for task: 30 mins
 Time spent on task: 30 mins
 	
+Ryan:
+Task: Added serving field in ingredients list and save to db. Add serving amount to assembled meals so user can create meals 
+with specified serving sizes
+planned time for task: 3 hours
+Time spent on task: 2.5 hours
