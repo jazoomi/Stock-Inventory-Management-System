@@ -157,7 +157,7 @@ app.delete("/combo/:id", (req, res) => {
 app.put("/raw-ingredients/:id", (req, res) => {
     const {id} = req.params;
     const {name, quantity, unit, price, threshold, serving} = req.body;
-    if (!name || !quantity || !unit || !price || !threshold){
+    if (!name || quantity === undefined || quantity === null || !unit || !price || !threshold){
         return res.status(400).json({error: "Please put all info"});
     }
     const sql = "UPDATE raw_ingredients set name = ?, quantity = ?, unit = ?, price = ?, threshold = ?, serving = ? WHERE id = ?";
