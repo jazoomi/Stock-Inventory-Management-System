@@ -121,8 +121,8 @@ const CollapsibleReduceStock = () => {
       </button>
 
       {showSection && (
-        <div className="reduce-stock-columns">
-          <div className="column">
+        <div className="reduce-stock-columns-boxed">
+          <div className="boxed-column">
             <h4>Assembled Meals</h4>
             {assembledMeals.map((meal) => (
               <div key={meal.id} className="stock-item">
@@ -149,7 +149,7 @@ const CollapsibleReduceStock = () => {
             ))}
           </div>
 
-          <div className="column">
+          <div className="boxed-column">
             <h4>Combo Meals</h4>
             {comboMeals.map((combo) => (
               <div key={combo.id} className="stock-item">
