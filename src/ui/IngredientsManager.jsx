@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import IngredientList from './IngredientsList';
 import AssembledIngredients from "./AssembledIngredients";
 
 const IngredientsManager = () => {
