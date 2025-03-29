@@ -217,7 +217,7 @@ app.put("/combo/:id", (req, res) => {
     });
 });
 app.get("/export-raw-ingredients", (req, res) => {
-    db.all("SELECT name, quantity, unit, price, threshold FROM raw_ingredients", [], (err,rows) =>{
+    db.all("SELECT name, quantity, unit, price, threshold, serving FROM raw_ingredients", [], (err,rows) =>{
         if (err){
             res.status(500).json({ error: err.message});
             return;        
