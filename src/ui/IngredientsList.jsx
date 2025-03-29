@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles/IngredientList.css";
 import ImportIngredients from "./ImportIngredients";
 import IngredientCard from "./IngredientCard";
+import IngredientSummaryCard from "./IngredientSummaryCard";
 
 const exportToExcel = () => {
   window.location.href = "http://localhost:3001/export-raw-ingredients";
@@ -22,12 +23,12 @@ const IngredientList = () => {
   const [notification, setNotification] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
+  const [selectedIngredientId, setSelectedIngredientId] = useState(null);
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => {
-        // console.log("Fetched from backend:", data);
         const processedData = data.map(item => ({
           ...item,
           quantity: parseFloat(item.quantity) || 0,
@@ -35,7 +36,7 @@ const IngredientList = () => {
           price: parseFloat(item.price) || 0,
           serving: parseFloat(item.serving) || 0
         }));
-        
+
         setIngredients(processedData);
         calculateTotalCost(processedData);
         checkLowStockItems(processedData);
@@ -63,7 +64,6 @@ const IngredientList = () => {
       const quantity = parseFloat(ingredient.quantity) || 0;
       return sum + (price * quantity);
     }, 0);
-    
     setTotalCost(total);
   };
 
@@ -73,7 +73,7 @@ const IngredientList = () => {
       const threshold = parseFloat(item.threshold);
       return !isNaN(quantity) && !isNaN(threshold) && threshold > 0 && quantity < threshold;
     });
-    
+
     if (lowItems.length > 0) {
       const itemNames = lowItems.map(item => item.name).join(', ');
       setNotification(`Low stock alert: ${itemNames}`);
@@ -93,8 +93,7 @@ const IngredientList = () => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedIngredient),
-    })
-    .catch((err) => console.error("Error updating ingredient:", err));
+    }).catch((err) => console.error("Error updating ingredient:", err));
   };
 
   const handleAddIngredient = () => {
@@ -120,29 +119,29 @@ const IngredientList = () => {
       quantity: parseFloat(newIngredient.quantity) || 0,
       threshold: parseFloat(newIngredient.threshold) || 0,
     };
-    
+
     fetch("http://localhost:3001/raw-ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(preparedIngredient),
     })
-    .then((res) => res.json())
-    .then((addedIngredient) => {
-      setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
-      setError(null);
-    })
-    .catch((err) => console.error("Error adding ingredient:", err));
+      .then((res) => res.json())
+      .then((addedIngredient) => {
+        setIngredients(prevIngredients => [...prevIngredients, addedIngredient]);
+        setError(null);
+      })
+      .catch((err) => console.error("Error adding ingredient:", err));
 
     setNewIngredient({ name: "", quantity: "", unit: "", serving: "", price: "", threshold: "", unitSpecification: "" });
   };
 
   const handleDelete = (id) => {
     setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
+    if (selectedIngredientId === id) setSelectedIngredientId(null);
 
     fetch(`http://localhost:3001/raw-ingredients/${id}`, {
       method: "DELETE",
-    })
-    .catch((err) => console.error("Error deleting ingredient:", err));
+    }).catch((err) => console.error("Error deleting ingredient:", err));
   };
 
   const closeNotification = () => {
@@ -153,10 +152,11 @@ const IngredientList = () => {
     ingredient.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const selectedIngredient = ingredients.find(ing => ing.id === selectedIngredientId);
+
   return (
     <div className="ingredient-list">
-
-    <h1 className="centered">Add Ingredients</h1>
+      <h1 className="centered">Add Ingredients</h1>
 
       {notification && (
         <div className="notification">
@@ -170,23 +170,17 @@ const IngredientList = () => {
           type="text"
           placeholder="Search ingredients..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {/* Display message if no ingredients found */}
         {filteredIngredients.length === 0 && searchQuery && (
           <span style={{ color: 'red', marginLeft: '10px' }}>X No ingredient found</span>
         )}
       </div>
 
-    
       <div className="add-ingredient-form">
         <input type="text" placeholder="Name" value={newIngredient.name} onChange={(e) => setNewIngredient({ ...newIngredient, name: e.target.value })} />
         <input type="text" placeholder="Amount" value={newIngredient.quantity} onChange={(e) => setNewIngredient({ ...newIngredient, quantity: e.target.value })} />
-        <select
-          name="Unit/Measurement"
-          value={newIngredient.unit}
-          onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}
-        >
+        <select value={newIngredient.unit} onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}>
           <option value="">Units</option>
           <option value="g">g</option>
           <option value="kg">kg</option>
@@ -215,19 +209,35 @@ const IngredientList = () => {
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button onClick={handleAddIngredient}>Add Ingredient</button>
         <p>Or</p>
-        <ImportIngredients refreshIngredients={fetchIngredients}/>
+        <ImportIngredients refreshIngredients={fetchIngredients} />
         <button onClick={exportToExcel}>Export to Excel</button>
       </div>
 
-        {[...filteredIngredients].reverse().map((ingredient) => (
-        <IngredientCard
-          key={ingredient.id}
-          ingredient={ingredient}
-          onSave={handleSave}
-          onDelete={handleDelete}
-        />
-      ))}
-  
+      <div className="ingredient-main-container">
+        <div className="ingredient-sidebar">
+          {[...filteredIngredients].reverse().map((ingredient) => (
+            <IngredientSummaryCard
+              key={ingredient.id}
+              ingredient={ingredient}
+              isSelected={ingredient.id === selectedIngredientId}
+              onClick={() => setSelectedIngredientId(ingredient.id)}
+            />
+          ))}
+        </div>
+
+        <div className="ingredient-detail-panel">
+          {selectedIngredient ? (
+            <IngredientCard
+              ingredient={selectedIngredient}
+              onSave={handleSave}
+              onDelete={handleDelete}
+            />
+          ) : (
+            <p>Select an ingredient to view details.</p>
+          )}
+        </div>
+      </div>
+
       <div className="total-cost">
         <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
       </div>
