@@ -144,6 +144,15 @@ Task 6: Updated UI design of app. More edits will be done. Did more updates to n
 planned time: 2 hour
 time spent: 2 hour
 
+- - - - - - - Mar 27 - - - - - - -
+Vrinda: 
+Task: Updated ingredient list so that user is not able to add ingredients unless all fields are filled
+Planned time: 1 hour
+Time spent on task: 1 hour
+
+Task: Fixed 2 combo meal bugs - user should be able to edit price andindivial ingredient correctly updated
+Planned time: 3 hours
+Time spent on task: 2 hours
 
 - - - - - - - Mar 28 - - - - - - -
 Ryan:
