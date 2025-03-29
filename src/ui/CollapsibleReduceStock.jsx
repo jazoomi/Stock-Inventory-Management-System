@@ -62,31 +62,55 @@ const CollapsibleReduceStock = ({ onStockUpdated }) => {
 
   const handleBulkReduce = async () => {
     let updatedIngredients = [...ingredients];
+    let didReduce = false;
   
+    // Check and apply reductions for assembled meals
     for (const meal of assembledMeals) {
       const quantity = selectedAssembled[meal.id];
       if (!quantity) continue;
+  
+      let canReduce = true;
+  
+      for (const ingredient of meal.recipe.ingredients) {
+        const deduction = parseFloat((ingredient.serving * ingredient.servingAmount * quantity).toFixed(2));
+        const match = updatedIngredients.find((i) => i.id === ingredient.id);
+        if (!match || match.quantity < deduction) {
+          alert(`Not enough stock to reduce for assembled meal: ${meal.name}`);
+          canReduce = false;
+          break;
+        }
+      }
+  
+      if (!canReduce) continue;
   
       for (const ingredient of meal.recipe.ingredients) {
         const deduction = parseFloat((ingredient.serving * ingredient.servingAmount * quantity).toFixed(2));
         const match = updatedIngredients.find((i) => i.id === ingredient.id);
         if (match) {
-            match.quantity = parseFloat(Math.max(0, match.quantity - deduction).toFixed(2));
+          match.quantity = parseFloat((match.quantity - deduction).toFixed(2));
+          didReduce = true;
         }
       }
     }
   
+    // Check and apply reductions for combo meals
     for (const combo of comboMeals) {
       const quantity = selectedCombo[combo.id];
       if (!quantity) continue;
   
+      let canReduce = true;
+      let reductions = [];
+  
       for (const item of combo.meals) {
         if (item.type === "raw") {
           const match = updatedIngredients.find((i) => i.id === item.id);
-          if (match) {
-            // Deduct based on quantity sold
-            const deduction = parseFloat(((match.serving || 1) * quantity).toFixed(2));
-            match.quantity = parseFloat(Math.max(0, match.quantity - deduction).toFixed(2));
+          const deduction = parseFloat(((match?.serving || 1) * quantity).toFixed(2));
+          if (!match || match.quantity < deduction) {
+            alert(`Not enough stock to reduce for combo: ${combo.name}`);
+            canReduce = false;
+            break;
+          } else {
+            reductions.push({ id: match.id, deduction });
           }
         } else if (item.type === "assembled") {
           const meal = assembledMeals.find((m) => m.id === item.id);
@@ -95,13 +119,31 @@ const CollapsibleReduceStock = ({ onStockUpdated }) => {
           for (const ingredient of meal.recipe.ingredients) {
             const deduction = parseFloat((ingredient.serving * ingredient.servingAmount * quantity).toFixed(2));
             const match = updatedIngredients.find((i) => i.id === ingredient.id);
-            if (match) {
-                match.quantity = parseFloat(Math.max(0, match.quantity - deduction).toFixed(2));
+            if (!match || match.quantity < deduction) {
+              alert(`Not enough stock to reduce for combo: ${combo.name}`);
+              canReduce = false;
+              break;
+            } else {
+              reductions.push({ id: match.id, deduction });
             }
           }
         }
+  
+        if (!canReduce) break;
+      }
+  
+      if (!canReduce) continue;
+  
+      // Apply reductions
+      for (const { id, deduction } of reductions) {
+        const match = updatedIngredients.find((i) => i.id === id);
+        if (match) {
+          match.quantity = parseFloat((match.quantity - deduction).toFixed(2));
+          didReduce = true;
+        }
       }
     }
+  
     // Push updates to server
     for (const ing of updatedIngredients) {
       await fetch(`http://localhost:3001/raw-ingredients/${ing.id}`, {
@@ -110,12 +152,19 @@ const CollapsibleReduceStock = ({ onStockUpdated }) => {
         body: JSON.stringify(ing),
       });
     }
-
-    alert("Stock successfully reduced.");
+  
+    if (didReduce) {
+      alert("Stock successfully reduced.");
+    }
+  
     if (onStockUpdated) {
         onStockUpdated();
       }
-    console.log()
+
+    // Reset selections
+    setSelectedAssembled({});
+    setSelectedCombo({});  
+    setShowSection(false);
   };
 
   return (

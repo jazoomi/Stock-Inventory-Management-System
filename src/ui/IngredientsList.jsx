@@ -17,12 +17,6 @@ const IngredientList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIngredientId, setSelectedIngredientId] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  // const [assembledMeals, setAssembledMeals] = useState([]);
-  // const [selectedMealId, setSelectedMealId] = useState("");
-  // const [saleQuantity, setSaleQuantity] = useState(1);
-  // const [comboMeals, setComboMeals] = useState([]);
-  // const [selectedComboId, setSelectedComboId] = useState("");
-  // const [comboSaleQuantity, setComboSaleQuantity] = useState(1);
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
@@ -53,95 +47,6 @@ const IngredientList = () => {
   }, [ingredients]);
 
   
-
-  //Define reduce assembled meal logic
-  // const handleLogSale = async () => {
-  //   const meal = assembledMeals.find((m) => m.id == selectedMealId);
-  //   if (!meal || !saleQuantity) return;
-
-  //   for (const ingredient of meal.recipe.ingredients) {
-  //     const amountToDeduct = ingredient.serving * ingredient.servingAmount * saleQuantity;
-
-  //     const matchingRaw = ingredients.find((ing) => ing.id === ingredient.id);
-  //     if (!matchingRaw) continue;
-
-  //     const updatedQuantity = Math.max(0, matchingRaw.quantity - amountToDeduct);
-
-  //     await fetch(`http://localhost:3001/raw-ingredients/${ingredient.id}`, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ ...matchingRaw, quantity: updatedQuantity }),
-  //     });
-  //   }
-
-  //   fetchIngredients();
-  //   alert("Stock updated based on sale.");
-  // };
-
-  // const handleLogComboSale = async () => {
-  //   const combo = comboMeals.find((c) => c.id == selectedComboId);
-  //   if (!combo || !comboSaleQuantity) return;
-  
-  //   for (const item of combo.meals) {
-  //     if (item.type === "assembled") {
-  //       const meal = assembledMeals.find((m) => m.id === item.id);
-  //       if (!meal) continue;
-  
-  //       for (const ingredient of meal.recipe.ingredients) {
-  //         const amountToDeduct = ingredient.serving * ingredient.servingAmount * comboSaleQuantity;
-  //         const raw = ingredients.find((ing) => ing.id === ingredient.id);
-  //         if (!raw) continue;
-  
-  //         const updatedQty = Math.max(0, raw.quantity - amountToDeduct);
-  //         await fetch(`http://localhost:3001/raw-ingredients/${raw.id}`, {
-  //           method: "PUT",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: JSON.stringify({ ...raw, quantity: updatedQty }),
-  //         });
-  //       }
-  //     } else if (item.type === "raw") {
-  //       const raw = ingredients.find((ing) => ing.id === item.id);
-  //       if (!raw) continue;
-  
-  //       const updatedQty = Math.max(0, raw.quantity - comboSaleQuantity);
-  //       await fetch(`http://localhost:3001/raw-ingredients/${raw.id}`, {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ ...raw, quantity: updatedQty }),
-  //       });
-  //     }
-  //   }
-  
-  //   fetchIngredients();
-  //   alert("Stock updated for combo meal sale.");
-  // };
-
-  //Fetch assembled meals in useEffect
-  // useEffect(() => {
-  //   fetch("http://localhost:3001/assembled-ingredients")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const parsed = data.map((meal) => ({
-  //         ...meal,
-  //         recipe: JSON.parse(meal.recipe),
-  //       }));
-  //       setAssembledMeals(parsed);
-  //     });
-  // }, []);
-
-  // //Fetch combo meals in useEffect
-  // useEffect(() => {
-  //   fetch("http://localhost:3001/combo")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       const parsed = data.map(combo => ({
-  //         ...combo,
-  //         meals: JSON.parse(combo.items),
-  //       }));
-  //       setComboMeals(parsed);
-  //     });
-  // }, []);
-
   const calculateTotalCost = (ingredientList) => {
     const total = ingredientList.reduce((sum, ingredient) => {
       const price = parseFloat(ingredient.price) || 0;
@@ -240,47 +145,6 @@ const IngredientList = () => {
         <ImportIngredients refreshIngredients={fetchIngredients} />
         <button onClick={exportToExcel}>Export to Excel</button>
       </div>
-
-      {/* ui for log sales based on meals */}
-      
-      {/* <div className="log-sales" style={{ display: "flex", alignItems: "center", gap: "20px", flexWrap: "wrap", marginTop: "20px" }}> */}
-      {/* Assembled Meal Selection */}
-      {/* <select value={selectedMealId} onChange={(e) => setSelectedMealId(e.target.value)}>
-        <option value="">Select Assembled Meal</option>
-        {assembledMeals.map(meal => (
-          <option key={meal.id} value={meal.id}>{meal.name}</option>
-        ))}
-      </select>
-      <input
-        type="number"
-        min={1}
-        value={saleQuantity}
-        onChange={(e) => setSaleQuantity(parseInt(e.target.value) || 1)}
-        placeholder="Qty"
-        style={{ width: "60px" }}
-      />
-      <button onClick={handleLogSale}>Reduce Stock</button> */}
-
-      {/* Divider */}
-      {/* <span style={{ fontWeight: "bold" }}>/</span> */}
-
-      {/* Combo Meal Selection */}
-      {/* <select value={selectedComboId} onChange={(e) => setSelectedComboId(e.target.value)}>
-        <option value="">Select Combo Meal</option>
-        {comboMeals.map(combo => (
-          <option key={combo.id} value={combo.id}>{combo.name}</option>
-        ))}
-      </select>
-      <input
-        type="number"
-        min={1}
-        value={comboSaleQuantity}
-        onChange={(e) => setComboSaleQuantity(parseInt(e.target.value) || 1)}
-        placeholder="Qty"
-        style={{ width: "60px" }}
-      />
-      <button onClick={handleLogComboSale}>Reduce Stock</button>
-    </div> */}
 
       {showAddModal && (
         <AddIngredient
