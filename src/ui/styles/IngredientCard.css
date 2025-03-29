@@ -1,0 +1,32 @@
+/* Ingredient Card */
+.ingredient-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #D1A981;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    width: 280px;
+    background-color: #FFFAF0;
+    text-align: left;
+    min-height: 80px;
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+  
+  .ingredient-card.low-stock {
+    border: 2px solid #f44336;
+    background-color: rgba(244, 67, 54, 0.05);
+  }
+
+  /* Threshold Input */
+.threshold-container input {
+    width: 80px;
+    border: 1px solid #D1A981;
+    background: #FFF3E0;
+  }
+  
+  .threshold-container span {
+    font-size: 0.8rem;
+    color: #777;
+  }

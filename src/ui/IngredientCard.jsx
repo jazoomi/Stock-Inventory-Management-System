@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./styles/IngredientList.css";
+import "./styles/IngredientCard.css"
 
 const IngredientCard = ({ ingredient, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
