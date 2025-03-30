@@ -3,7 +3,8 @@ import "./styles/IngredientList.css";
 import ImportIngredients from "./ImportIngredients";
 import IngredientCard from "./IngredientCard";
 import IngredientSummaryCard from "./IngredientSummaryCard";
-import AddIngredient from "./AddIngredient"; // renamed modal component
+import AddIngredient from "./AddIngredient";
+import CollapsibleReduceStock from "./CollapsibleReduceStock";
 
 const exportToExcel = () => {
   window.location.href = "http://localhost:3001/export-raw-ingredients";
@@ -16,6 +17,7 @@ const IngredientList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIngredientId, setSelectedIngredientId] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // NEW
 
   const fetchIngredients = () => {
     fetch("http://localhost:3001/raw-ingredients")
@@ -98,7 +100,10 @@ const IngredientList = () => {
 
   const handleDelete = (id) => {
     setIngredients(prevIngredients => prevIngredients.filter(ingredient => ingredient.id !== id));
-    if (selectedIngredientId === id) setSelectedIngredientId(null);
+    if (selectedIngredientId === id) {
+      setSelectedIngredientId(null);
+      setIsEditing(false);
+    }
 
     fetch(`http://localhost:3001/raw-ingredients/${id}`, {
       method: "DELETE",
@@ -151,6 +156,8 @@ const IngredientList = () => {
         />
       )}
 
+      <CollapsibleReduceStock onStockUpdated={fetchIngredients} />
+
       <div className="ingredient-main-container">
         <div className="ingredient-sidebar">
           {[...filteredIngredients].reverse().map((ingredient) => (
@@ -158,7 +165,10 @@ const IngredientList = () => {
               key={ingredient.id}
               ingredient={ingredient}
               isSelected={ingredient.id === selectedIngredientId}
-              onClick={() => setSelectedIngredientId(ingredient.id)}
+              onClick={() => {
+                setSelectedIngredientId(ingredient.id);
+                setIsEditing(false); 
+              }}
             />
           ))}
         </div>
@@ -169,6 +179,8 @@ const IngredientList = () => {
               ingredient={selectedIngredient}
               onSave={handleSave}
               onDelete={handleDelete}
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
             />
           ) : (
             <p>Select an ingredient to view details.</p>

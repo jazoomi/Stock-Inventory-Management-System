@@ -1,0 +1,42 @@
+.reduce-stock-columns-boxed {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+  flex-wrap: wrap; /* allow wrapping on small screens */
+}
+
+.boxed-column {
+  flex: 1 1 45%; /* grow/shrink as needed, base width is 45% */
+  max-width: 600px;
+  min-width: 300px;
+  background-color: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.stock-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.stock-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.stock-item label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.stock-item input[type="number"] {
+  width: 70px;
+  padding: 4px;
+  font-size: 14px;
+}
