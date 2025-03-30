@@ -197,7 +197,12 @@ task: Add dashboard with key metrics (total food cost, average markup, highest p
 planned time: 1 day
 time spent: 4 hours
 
-Johnmark;
+Johnmark:
 task: fix error message in search bar ComboMeal.jsx file
 planned time: 20 mins
 time spent: 10mins
+
+Johnmark:
+task: fixed dashboard format
+planned time: 20mins
+time spent: 20mins
