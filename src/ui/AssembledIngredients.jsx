@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./styles/AssembledIngredients.css";
 
 const AssembledIngredients = () => {
   const [ingredients, setIngredients] = useState([]);
@@ -6,21 +7,18 @@ const AssembledIngredients = () => {
   const [mealName, setMealName] = useState("");
   const [mealMarkup, setMealMarkup] = useState("");
   const [assembledMeals, setAssembledMeals] = useState([]);
-  const [editMeal, setEditMeal] = useState(null); // Track which meal is being edited
+  const [editMeal, setEditMeal] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 1. Fetch raw ingredients from DB
   useEffect(() => {
     fetch("http://localhost:3001/raw-ingredients")
       .then((res) => res.json())
       .then((data) => setIngredients(data))
       .catch((err) => console.error("Error fetching ingredients:", err));
 
-    // Also fetch assembled meals from DB
     fetchAssembledMeals();
   }, []);
 
-  // 2. Helper to fetch assembled meals from DB
   const fetchAssembledMeals = () => {
     fetch("http://localhost:3001/assembled-ingredients")
       .then((res) => res.json())
@@ -47,7 +45,6 @@ const AssembledIngredients = () => {
       .catch((err) => console.error("Error fetching assembled meals:", err));
   };
 
-  // 3. Toggle ingredient selection
   const toggleIngredient = (ingredient) => {
     if (selectedIngredients.some((item) => item.id === ingredient.id)) {
       setSelectedIngredients(
@@ -61,7 +58,6 @@ const AssembledIngredients = () => {
     }
   };
 
-  // 4. Calculate total price of selected raw ingredients
   const calculateTotalPrice = () => {
     return selectedIngredients.reduce(
       (total, ingredient) => total + ingredient.price,
@@ -69,19 +65,15 @@ const AssembledIngredients = () => {
     );
   };
 
-  // 5. Calculate selling price based on markup
   const calculateSellingPrice = () => {
     const totalPrice = calculateTotalPrice();
     const markup = parseFloat(mealMarkup) || 0;
     return totalPrice + totalPrice * (markup / 100);
   };
 
-  // 6. Create or update an assembled meal
   const handleAssembleMeal = () => {
     if (!mealName || selectedIngredients.length === 0 || mealMarkup === "") {
-      alert(
-        "Please enter a meal name, select at least one ingredient, and provide a markup."
-      );
+      alert("Please enter a meal name, select at least one ingredient, and provide a markup.");
       return;
     }
 
@@ -105,12 +97,7 @@ const AssembledIngredients = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Error updating assembled meal");
-          }
-          return res.json();
-        })
+        .then((res) => res.json())
         .then(() => {
           fetchAssembledMeals();
           setEditMeal(null);
@@ -122,12 +109,7 @@ const AssembledIngredients = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Error creating assembled meal");
-          }
-          return res.json();
-        })
+        .then((res) => res.json())
         .then(() => {
           fetchAssembledMeals();
         })
@@ -139,21 +121,14 @@ const AssembledIngredients = () => {
     setSelectedIngredients([]);
   };
 
-  // 7. Delete a meal from DB
   const handleDeleteMeal = (id) => {
     fetch(`http://localhost:3001/assembled-ingredients/${id}`, {
       method: "DELETE",
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Error deleting assembled meal");
-        }
-        fetchAssembledMeals();
-      })
+      .then(() => fetchAssembledMeals())
       .catch((err) => console.error(err));
   };
 
-  // 8. Start editing a meal
   const handleEditMeal = (meal) => {
     setEditMeal(meal);
     setMealName(meal.name);
@@ -176,37 +151,9 @@ const AssembledIngredients = () => {
   );
 
   return (
-    <div>
+    <div className="assembled-container">
       <h2>Assemble a Meal</h2>
 
-      {/* Meal Name and markup */}
-      <div>
-        <label>
-          Meal Name:
-          <input
-            type="text"
-            placeholder="Meal Name"
-            value={mealName}
-            onChange={(e) => setMealName(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Markup (%):
-          <input
-            type="text"
-            placeholder="Markup (%)"
-            value={mealMarkup}
-            onChange={(e) => {
-              if (/^\d*\.?\d*$/.test(e.target.value)) {
-                setMealMarkup(e.target.value);
-              }
-            }}
-          />
-        </label>
-      </div>
-
-      {/* Add search bar */}
       <div className="search-container">
         <input
           type="text"
@@ -214,15 +161,13 @@ const AssembledIngredients = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        {/* Display message if no ingredients found */}
         {filteredIngredients.length === 0 && searchQuery && (
-          <span style={{ color: 'red', marginLeft: '10px' }}> No ingredient found</span>
+          <span className="no-results">No ingredient found</span>
         )}
       </div>
 
-      {/* Ingredient Selection Table */}
       <h3>Select Ingredients</h3>
-      <table border="1" style={{ width: "100%", marginBottom: "20px" }}>
+      <table className="ingredient-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -240,9 +185,7 @@ const AssembledIngredients = () => {
               <td>
                 <input
                   type="checkbox"
-                  checked={selectedIngredients.some(
-                    (item) => item.id === ingredient.id
-                  )}
+                  checked={selectedIngredients.some((item) => item.id === ingredient.id)}
                   onChange={() => toggleIngredient(ingredient)}
                 />
               </td>
@@ -251,9 +194,8 @@ const AssembledIngredients = () => {
         </tbody>
       </table>
 
-      {/* Show selected ingredients */}
       <h3>Selected Ingredients</h3>
-      <table border="1" style={{ width: "100%", marginBottom: "20px" }}>
+      <table className="ingredient-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -267,19 +209,17 @@ const AssembledIngredients = () => {
             <tr key={ingredient.id}>
               <td>{ingredient.name}</td>
               <td>${ingredient.price.toFixed(2)}</td>
-              <td>{ingredient.serving} x{" "}
+              <td>
+                {ingredient.serving} x{" "}
                 <select
                   value={ingredient.servingAmount}
                   onChange={(e) => handleServingChange(ingredient.id, e.target.value)}
                 >
-                  {Array.from({ length: 10 }, (_, i) => {
-                    const value = i + 1;
-                    return (
-                      <option key={value} value={value}>
-                        {value}
-                      </option>
-                    );
-                  })}
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
                 </select>
               </td>
               <td>{ingredient.unit}</td>
@@ -289,35 +229,49 @@ const AssembledIngredients = () => {
       </table>
 
       {selectedIngredients.length > 0 && (
-        <div>
-          <p>
-            <strong>Total Ingredients:</strong>{" "}
-            {selectedIngredients.map((ingredient) => ingredient.name).join(", ")}
-          </p>
-          <p>
-            <strong>Total Cost:</strong> ${calculateTotalPrice().toFixed(2)}
-          </p>
-        </div>
+        <>
+          <div className="summary-box">
+            <p><strong>Total Ingredients:</strong> {selectedIngredients.map((i) => i.name).join(", ")}</p>
+            <p><strong>Total Cost:</strong> ${calculateTotalPrice().toFixed(2)}</p>
+          </div>
+
+          <div className="input-group under-summary">
+            <input
+              type="text"
+              placeholder="Meal Name"
+              value={mealName}
+              onChange={(e) => setMealName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Markup (%)"
+              value={mealMarkup}
+              onChange={(e) => {
+                if (/^\d*\.?\d*$/.test(e.target.value)) {
+                  setMealMarkup(e.target.value);
+                }
+              }}
+            />
+          </div>
+
+          <button className="save-btn" onClick={handleAssembleMeal}>
+            {editMeal ? "Update Meal" : "Save Meal"}
+          </button>
+        </>
       )}
 
-      {/* Save or Update Meal */}
-      <button onClick={handleAssembleMeal}>
-        {editMeal ? "Update Meal" : "Save Meal"}
-      </button>
-
-      {/* Assembled Meals Table */}
       {assembledMeals.length > 0 && (
         <div>
           <h3>Assembled Meals</h3>
-          <table border="1">
+          <table className="ingredient-table">
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Ingredients (Name & Serving Amount)</th>
-                <th>Preparation Price ($)</th>
-                <th>Markup (%)</th>
-                <th>Selling Price ($)</th>
-                <th>Action</th>
+                <th>Ingredients</th>
+                <th>Preparation Price</th>
+                <th>Markup</th>
+                <th>Selling Price</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -326,12 +280,9 @@ const AssembledIngredients = () => {
                   <td>{meal.name}</td>
                   <td>
                     <ul>
-                      {meal.ingredients.map((ingredient) => (
-                        <li key={ingredient.id}>
-                          {ingredient.servingAmount} x{" "}
-                          {ingredient.name} -{" "} 
-                          {ingredient.serving} {" "}
-                          {ingredient.unit} per serving
+                      {meal.ingredients.map((ing) => (
+                        <li key={ing.id}>
+                          {ing.servingAmount} x {ing.name} – {ing.serving} {ing.unit}
                         </li>
                       ))}
                     </ul>
@@ -341,51 +292,18 @@ const AssembledIngredients = () => {
                   <td>${meal.sellingPrice.toFixed(2)}</td>
                   <td>
                     <button onClick={() => handleEditMeal(meal)}>Edit</button>
-                    <button onClick={() => handleDeleteMeal(meal.id)}>
-                      Delete
-                    </button>
+                    <button onClick={() => handleDeleteMeal(meal.id)}>Delete</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      )}
 
-      {/* Display Total Preparation, Selling Price, and Margin */}
-      {assembledMeals.length > 0 && (
-        <div
-          style={{
-            border: "2px solid rgb(243, 190, 17)",
-            padding: "10px",
-            width: "300px",
-            marginTop: "20px",
-            borderRadius: "10px",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
-          <p>
-            Total Preparation Price = $
-            {assembledMeals
-              .reduce((sum, meal) => sum + meal.preparationPrice, 0)
-              .toFixed(2)}
-          </p>
-          <p>
-            Total Selling Price = $
-            {assembledMeals
-              .reduce((sum, meal) => sum + meal.sellingPrice, 0)
-              .toFixed(2)}
-          </p>
-          <p>
-            Total Margin = $
-            {assembledMeals
-              .reduce(
-                (sum, meal) => sum + (meal.sellingPrice - meal.preparationPrice),
-                0
-              )
-              .toFixed(2)}
-          </p>
+          <div className="totals-box">
+            <p>Total Preparation Price = ${assembledMeals.reduce((sum, m) => sum + m.preparationPrice, 0).toFixed(2)}</p>
+            <p>Total Selling Price = ${assembledMeals.reduce((sum, m) => sum + m.sellingPrice, 0).toFixed(2)}</p>
+            <p>Total Margin = ${assembledMeals.reduce((sum, m) => sum + (m.sellingPrice - m.preparationPrice), 0).toFixed(2)}</p>
+          </div>
         </div>
       )}
     </div>
