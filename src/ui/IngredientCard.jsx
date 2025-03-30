@@ -60,10 +60,19 @@ const IngredientCard = ({ ingredient, onSave, onDelete, isEditing, setIsEditing 
       onClick={() => !isEditing && setIsEditing(true)}
     >
       {isEditing ? (
-        <>
-          <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
-          <div className="ingredient-details">
+        <div className="ingredient-edit-form">
+          <label>
+            Name:
+            <input type="text" name="name" value={editedIngredient.name} onChange={handleChange} autoFocus />
+          </label>
+
+          <label>
+            Quantity:
             <input type="text" name="quantity" value={editedIngredient.quantity} onChange={handleChange} placeholder="Amount" />
+          </label>
+
+          <label>
+            Unit:
             <select name="unit" value={editedIngredient.unit} onChange={handleChange}>
               <option value="">Units</option>
               <option value="g">g</option>
@@ -77,7 +86,11 @@ const IngredientCard = ({ ingredient, onSave, onDelete, isEditing, setIsEditing 
               <option value="Oz">Oz</option>
               <option value="other">Other - specify</option>
             </select>
-            {editedIngredient.unit === "other" && (
+          </label>
+
+          {editedIngredient.unit === "other" && (
+            <label>
+              Specify Unit:
               <input
                 type="text"
                 name="unitSpecification"
@@ -85,22 +98,32 @@ const IngredientCard = ({ ingredient, onSave, onDelete, isEditing, setIsEditing 
                 value={editedIngredient.unitSpecification}
                 onChange={handleChange}
               />
-            )}
-            <input type="text" name="serving" value={editedIngredient.serving} onChange={handleChange} placeholder="Serving" />
+            </label>
+          )}
+
+          <label>
+            Serving Size:
+            <input type="text" name="serving" value={editedIngredient.serving} onChange={handleChange} />
+          </label>
+
+          <label>
+            Price per Serving:
             <input type="text" name="price" value={editedIngredient.price} onChange={handleChange} placeholder="Price" />
-          </div>
-          <div className="threshold-container">
+          </label>
+
+          <label className="threshold-group">
+            Threshold:
             <input type="text" name="threshold" value={editedIngredient.threshold} onChange={handleChange} placeholder="Threshold" />
-            <span>Notify when below this amount</span>
-          </div>
-        </>
+            <span className="note">Notify when below this amount</span>
+          </label>
+        </div>
       ) : (
         <>
           <h3>{ingredient.name}</h3>
           <div className="ingredient-details">
             <p>Amount: {ingredient.quantity} {ingredient.unit}</p>
             <p>Serving Size: {ingredient.serving} {ingredient.unit}</p>
-            <p>Price: ${parseFloat(ingredient.price).toFixed(2)}</p>
+            <p>Price per Serving: ${parseFloat(ingredient.price).toFixed(2)}</p>
           </div>
           <div className="threshold-info">
             <p>Threshold: {ingredient.threshold} {ingredient.unit}</p>

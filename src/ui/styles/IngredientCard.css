@@ -30,3 +30,40 @@
     font-size: 0.8rem;
     color: #777;
   }
+
+  .ingredient-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ingredient-edit-form label {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .ingredient-edit-form input,
+  .ingredient-edit-form select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 4px;
+  }
+  
+  .threshold-group {
+    position: relative;
+  }
+  
+  .threshold-group .note {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 4px;
+  }
+  
