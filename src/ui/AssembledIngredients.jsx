@@ -4,7 +4,7 @@ const AssembledIngredients = () => {
   const [ingredients, setIngredients] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [mealName, setMealName] = useState("");
-  const [mealPercentage, setMealPercentage] = useState("");
+  const [mealMarkup, setMealMarkup] = useState("");
   const [assembledMeals, setAssembledMeals] = useState([]);
   const [editMeal, setEditMeal] = useState(null); // Track which meal is being edited
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +38,7 @@ const AssembledIngredients = () => {
             name: item.name,
             sellingPrice: parseFloat(item.price) || 0,
             preparationPrice: parsedRecipe.preparationPrice || 0,
-            percentage: parsedRecipe.percentage || "",
+            markup: parsedRecipe.markup || "",
             ingredients: parsedRecipe.ingredients || [],
           };
         });
@@ -69,18 +69,18 @@ const AssembledIngredients = () => {
     );
   };
 
-  // 5. Calculate selling price based on percentage
+  // 5. Calculate selling price based on markup
   const calculateSellingPrice = () => {
     const totalPrice = calculateTotalPrice();
-    const percentage = parseFloat(mealPercentage) || 0;
-    return totalPrice + totalPrice * (percentage / 100);
+    const markup = parseFloat(mealMarkup) || 0;
+    return totalPrice + totalPrice * (markup / 100);
   };
 
   // 6. Create or update an assembled meal
   const handleAssembleMeal = () => {
-    if (!mealName || selectedIngredients.length === 0 || mealPercentage === "") {
+    if (!mealName || selectedIngredients.length === 0 || mealMarkup === "") {
       alert(
-        "Please enter a meal name, select at least one ingredient, and provide a percentage."
+        "Please enter a meal name, select at least one ingredient, and provide a markup."
       );
       return;
     }
@@ -94,7 +94,7 @@ const AssembledIngredients = () => {
       recipe: JSON.stringify({
         ingredients: selectedIngredients,
         preparationPrice: preparationPrice,
-        percentage: mealPercentage,
+        markup: mealMarkup,
       }),
       price: sellingPrice,
     };
@@ -135,7 +135,7 @@ const AssembledIngredients = () => {
     }
 
     setMealName("");
-    setMealPercentage("");
+    setMealMarkup("");
     setSelectedIngredients([]);
   };
 
@@ -157,7 +157,7 @@ const AssembledIngredients = () => {
   const handleEditMeal = (meal) => {
     setEditMeal(meal);
     setMealName(meal.name);
-    setMealPercentage(meal.percentage);
+    setMealMarkup(meal.markup);
     setSelectedIngredients(meal.ingredients);
   };
 
@@ -179,7 +179,7 @@ const AssembledIngredients = () => {
     <div>
       <h2>Assemble a Meal</h2>
 
-      {/* Meal Name and Percentage */}
+      {/* Meal Name and markup */}
       <div>
         <label>
           Meal Name:
@@ -192,14 +192,14 @@ const AssembledIngredients = () => {
         </label>
         <br />
         <label>
-          Percentage (%):
+          Markup (%):
           <input
             type="text"
-            placeholder="Percentage (%)"
-            value={mealPercentage}
+            placeholder="Markup (%)"
+            value={mealMarkup}
             onChange={(e) => {
               if (/^\d*\.?\d*$/.test(e.target.value)) {
-                setMealPercentage(e.target.value);
+                setMealMarkup(e.target.value);
               }
             }}
           />
@@ -315,7 +315,7 @@ const AssembledIngredients = () => {
                 <th>Name</th>
                 <th>Ingredients (Name & Serving Amount)</th>
                 <th>Preparation Price ($)</th>
-                <th>Percentage (%)</th>
+                <th>Markup (%)</th>
                 <th>Selling Price ($)</th>
                 <th>Action</th>
               </tr>
@@ -337,7 +337,7 @@ const AssembledIngredients = () => {
                     </ul>
                   </td>
                   <td>${meal.preparationPrice.toFixed(2)}</td>
-                  <td>{meal.percentage}%</td>
+                  <td>{meal.markup}%</td>
                   <td>${meal.sellingPrice.toFixed(2)}</td>
                   <td>
                     <button onClick={() => handleEditMeal(meal)}>Edit</button>
@@ -356,12 +356,13 @@ const AssembledIngredients = () => {
       {assembledMeals.length > 0 && (
         <div
           style={{
-            border: "2px solidrgb(10, 166, 10)",
+            border: "2px solid rgb(243, 190, 17)",
             padding: "10px",
             width: "300px",
             marginTop: "20px",
             borderRadius: "10px",
             fontWeight: "bold",
+            textAlign: "center",
           }}
         >
           <p>

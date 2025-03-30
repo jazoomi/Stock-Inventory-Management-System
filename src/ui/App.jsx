@@ -4,6 +4,7 @@ import IngredientList from "./IngredientsList";
 import IngredientsManager from "./IngredientsManager";
 import ComboMeal from "./ComboMeal";
 import CostCalculator from "./CostCalculator";
+import Dashboard from "./Dashboard";
 
 function App() {
   const [activePage, setActivePage] = useState("home");
@@ -12,7 +13,6 @@ function App() {
     <div className="app-container">
       {/* Navigation Bar */}
       <nav className="top-nav">
-
         <button onClick={() => setActivePage("home")}>Home</button>
         <button onClick={() => setActivePage("ingredient-list")}>Ingredient List</button>
         <button onClick={() => setActivePage("ingredients-manager")}>Recipe Manager</button>
@@ -22,12 +22,22 @@ function App() {
 
       {/* Render the active page */}
       <div className="page-content">
-        {activePage === "home" && <Home />}
+        {activePage === "home" && (
+          <>
+            <Home />
+            <div style={{ marginTop: "20px" }}>
+              <div className="home-container">
+                <Dashboard />
+              </div>
+            </div>
+          </>
+        )}
         {activePage === "ingredient-list" && <IngredientList />}
         {activePage === "ingredients-manager" && <IngredientsManager />}
         {activePage === "combo-meal" && <ComboMeal />}
         {activePage === "cost-calculator" && <CostCalculator />}
       </div>
+
     </div>
   );
 }
