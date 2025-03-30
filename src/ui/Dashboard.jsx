@@ -155,30 +155,34 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h2 style={{ fontSize: "40px", fontWeight: "bold" }}>Dashboard</h2>
-      <p><strong>Total Assembled Meals:</strong> {assembledMeals.length}</p>
-      <p><strong>Total Food Cost:</strong> ${totalFoodCost.toFixed(2)}</p>
-      <p><strong>Average Markup:</strong> {averageMarkup.toFixed(2)}%</p>
-      {highestProfitItem && (
-        <p>
-          <strong>Highest Profit Item:</strong> {highestProfitItem.name} (${(highestProfitItem.sellingPrice - highestProfitItem.preparationPrice).toFixed(2)} profit)
-        </p>
-      )}
+<div>
+    <h2 style={{ fontSize: "40px", fontWeight: "bold" }}>Dashboard</h2>
+    <p><strong>Total Assembled Meals:</strong> {assembledMeals.length}</p>
+    <p><strong>Total Food Cost:</strong> ${totalFoodCost.toFixed(2)}</p>
+    <p><strong>Average Markup:</strong> {averageMarkup.toFixed(2)}%</p>
+    {highestProfitItem && (
+      <p>
+        <strong>Highest Profit Item:</strong> {highestProfitItem.name} (${(highestProfitItem.sellingPrice - highestProfitItem.preparationPrice).toFixed(2)} profit)
+      </p>
+    )}
 
-      {/* Chart for highest markup meals */}
-      <div style={{ marginTop: "30px" }}>
+    {/* Charts Container */}
+    <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", marginTop: "30px" }}>
+      
+      {/* Chart for highest profit items */}
+      <div style={{ width: "45%" }}>
         <h3>Top 3 Highest Profit Items</h3>
-        <Bar data={highestProfitChartData} options={chartOptions} style={{ height: "200px", width: "70%" }} />
+        <Bar data={highestProfitChartData} options={chartOptions} />
       </div>
 
-      {/* Chart for lowest profit meals */}
-      <div style={{ marginTop: "30px" }}>
+      {/* Chart for lowest profit items */}
+      <div style={{ width: "45%" }}>
         <h3>Top 3 Lowest Profit Items</h3>
-        <Bar key={JSON.stringify(lowestProfitMeals)} data={lowestProfitChartData} options={chartOptions} style={{ height: "200px", width: "70%" }} />
+        <Bar key={JSON.stringify(lowestProfitMeals)} data={lowestProfitChartData} options={chartOptions} />
       </div>
 
     </div>
+  </div>
   );
 };
 
