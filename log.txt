@@ -186,3 +186,8 @@ time spent: 3 hours
 Task: added bulk reduce stock based on meals and combos, tested and added validation
 planned time: 1 day
 time spent: 4 hours
+
+Joseph: 
+task: Add dashboard with key metrics (total food cost, average markup, highest profit items) and bar charts with highest and lowest profit items.
+planned time: 1 day
+time spent: 4 hours
