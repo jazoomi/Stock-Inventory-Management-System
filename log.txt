@@ -123,23 +123,28 @@ Time spent on task: 5 min
 
 
 
-- - - - - - Meeting Mar 24 - - - - - - -
+- - - - - - Mar 24 - - - - - - -
 Johnmark:
 Task 1: Updated Cost Calculator tab
 planned time: 1 hour
 time spent on task: 30mins
+
 Task 2: Fix alignment issue with app
 planned time: 2 hours
 time spent: ~ 1 hour
+
 Task 3: Create search bar for IngredientsList, RecipeManager and ComboMeals. Search for diff ingredients, recipes or combos. Will notify if any of them arent there.
 planned time: 2 hours
 time spent: 1 hour
+
 Task 4: Test Cases for Combo Meal. Added 4 test cases that test different parts of the search bar
 planned time: 1 hour
 time spent: 1 hour
+
 Task 5: Updated savings/profit formula and added functionality where the user can click on the profit percentage and switch between % and $ profit earned
 planned time: 1 hour
 time spent: 30mins
+
 Task 6: Updated UI design of app. More edits will be done. Did more updates to nav bar, and boxes
 planned time: 2 hour
 time spent: 2 hour
@@ -191,3 +196,8 @@ Joseph:
 task: Add dashboard with key metrics (total food cost, average markup, highest profit items) and bar charts with highest and lowest profit items.
 planned time: 1 day
 time spent: 4 hours
+
+Johnmark;
+task: fix error message in search bar ComboMeal.jsx file
+planned time: 20 mins
+time spent: 10mins
