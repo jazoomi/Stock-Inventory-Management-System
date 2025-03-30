@@ -47,20 +47,15 @@ const AssembledIngredients = () => {
 
   const toggleIngredient = (ingredient) => {
     if (selectedIngredients.some((item) => item.id === ingredient.id)) {
-      setSelectedIngredients(
-        selectedIngredients.filter((item) => item.id !== ingredient.id)
-      );
+      setSelectedIngredients(selectedIngredients.filter((item) => item.id !== ingredient.id));
     } else {
-      setSelectedIngredients([
-        ...selectedIngredients,
-        { ...ingredient, servingAmount: 1 }
-      ]);
+      setSelectedIngredients([...selectedIngredients, { ...ingredient, servingAmount: 1 }]);
     }
   };
 
   const calculateTotalPrice = () => {
     return selectedIngredients.reduce(
-      (total, ingredient) => total + ingredient.price,
+      (total, ingredient) => total + ingredient.price * ingredient.servingAmount,
       0
     );
   };
@@ -91,34 +86,25 @@ const AssembledIngredients = () => {
       price: sellingPrice,
     };
 
-    if (editMeal) {
-      fetch(`http://localhost:3001/assembled-ingredients/${editMeal.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          fetchAssembledMeals();
-          setEditMeal(null);
-        })
-        .catch((err) => console.error(err));
-    } else {
-      fetch("http://localhost:3001/assembled-ingredients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          fetchAssembledMeals();
-        })
-        .catch((err) => console.error(err));
-    }
+    const url = editMeal
+      ? `http://localhost:3001/assembled-ingredients/${editMeal.id}`
+      : "http://localhost:3001/assembled-ingredients";
+    const method = editMeal ? "PUT" : "POST";
 
-    setMealName("");
-    setMealMarkup("");
-    setSelectedIngredients([]);
+    fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        fetchAssembledMeals();
+        setEditMeal(null);
+        setMealName("");
+        setMealMarkup("");
+        setSelectedIngredients([]);
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleDeleteMeal = (id) => {
@@ -171,8 +157,7 @@ const AssembledIngredients = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Price</th>
-            <th>Unit</th>
+            <th>Price per Unit</th>
             <th>Select</th>
           </tr>
         </thead>
@@ -180,8 +165,7 @@ const AssembledIngredients = () => {
           {filteredIngredients.map((ingredient) => (
             <tr key={ingredient.id}>
               <td>{ingredient.name}</td>
-              <td>${ingredient.price.toFixed(2)}</td>
-              <td>{ingredient.unit}</td>
+              <td>${ingredient.price.toFixed(2)} / {ingredient.unit}</td>
               <td>
                 <input
                   type="checkbox"
@@ -199,16 +183,17 @@ const AssembledIngredients = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Price</th>
+            <th>Total Price</th>
             <th>Serving Amount</th>
-            <th>Unit</th>
           </tr>
         </thead>
         <tbody>
           {selectedIngredients.map((ingredient) => (
             <tr key={ingredient.id}>
               <td>{ingredient.name}</td>
-              <td>${ingredient.price.toFixed(2)}</td>
+              <td>
+                ${(ingredient.price * ingredient.servingAmount).toFixed(2)} ({ingredient.price.toFixed(2)} x {ingredient.servingAmount})
+              </td>
               <td>
                 {ingredient.serving} x{" "}
                 <select
@@ -222,7 +207,6 @@ const AssembledIngredients = () => {
                   ))}
                 </select>
               </td>
-              <td>{ingredient.unit}</td>
             </tr>
           ))}
         </tbody>
