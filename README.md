@@ -27,3 +27,10 @@ Here, users can combine ingredients to form recipes, selecting ingredients and s
 ## Combo Creator
 ![Image](https://github.com/user-attachments/assets/95312fcb-dd4b-48e6-a165-2b31752f69c6)
 Users can combine assembled and raw ingredients to create a combo, applying a markdown to give value to their customers.
+
+# Iteration 3
+This iteration came with various major user storises to wrap up the project. These include:
+- Ability to Import / Export ingredients.
+- Dashboard metrics to show highest / lopwest profit items.
+- More cohesion between pages
+- Updated UI
