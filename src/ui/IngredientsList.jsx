@@ -189,7 +189,7 @@ const IngredientList = () => {
       </div>
 
       <div className="total-cost">
-        <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
+        <h2>Total Value: ${totalCost.toFixed(2)}</h2>
       </div>
     </div>
   );
