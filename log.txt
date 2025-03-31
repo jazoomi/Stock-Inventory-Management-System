@@ -187,6 +187,16 @@ task: added an export feature for raw ingredients
 planned time: 1 day
 time spent: 3 hours
 
+Nickrod:
+Task: Refactoring ingredients page
+Planned time: 3 hours
+Time spent: 3 hours
+
+Nickrod:
+Task: Updating ingredients page UI
+Planned time: 1 day
+Time spent: 1 day
+
 - - - - - - - Mar 29 - - - - - - -
 Task: added bulk reduce stock based on meals and combos, tested and added validation
 planned time: 1 day
@@ -206,3 +216,20 @@ Johnmark:
 task: fixed dashboard format
 planned time: 20mins
 time spent: 20mins
+
+Nickrod:
+Task: Styled recipe page
+Planned time: 3 hours
+Time spent: 3 hours
+
+Nickrod:
+Task: Styled combo page
+Planned time: 3 hours
+Time spent: 3 hours
+
+- - - - - - - Mar 30 - - - - - - -
+
+Nickrod:
+Task: Fix combo logic
+Planned time: 6 hours
+Time spent: 4 hours
