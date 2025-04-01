@@ -240,3 +240,8 @@ Joseph (Gyeongbae Choi):
 task: Update Wiki
 planned time: 1 hour
 time spent: 1 hour
+
+Nickrod:
+Task: Update ReadMe
+Planned Time: 30 mins
+Time spent: 30 mins
