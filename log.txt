@@ -234,7 +234,7 @@ Task: Fix combo logic
 Planned time: 6 hours
 Time spent: 4 hours
 
-- - - - - - - Mar 30 - - - - - - -
+- - - - - - - Mar 31 - - - - - - -
 
 Joseph (Gyeongbae Choi): 
 task: Update Wiki
