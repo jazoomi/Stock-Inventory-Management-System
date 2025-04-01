@@ -233,3 +233,10 @@ Nickrod:
 Task: Fix combo logic
 Planned time: 6 hours
 Time spent: 4 hours
+
+- - - - - - - Mar 30 - - - - - - -
+
+Joseph (Gyeongbae Choi): 
+task: Update Wiki
+planned time: 1 hour
+time spent: 1 hour
