@@ -1,3 +1,6 @@
+
+
+
 Stock Inventory Managment System
 
 >> once the repository is cloned, cd into repo, and run the following:
@@ -11,8 +14,10 @@ npm run build
 # Run Electron in development mode
 npm run dev:electron
 ```
-A customizable stock inventory Management software for business' to use to keep track of inventory.
+A customizable stock inventory Management software for business' to use to keep track of inventory used by Uncle Sal.
 
+Preview:
+<video https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673></video>
 # Features
 
 ## Ingredient Manager
