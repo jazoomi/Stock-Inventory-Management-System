@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5
-
 # Stock Inventory Management System
 
 A customizable desktop stock inventory management software built for businesses to track inventory metrics effortlessly.
