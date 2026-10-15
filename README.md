@@ -1,36 +1,60 @@
-Stock Inventory Managment System
+# Stock Inventory Management System
 
->> once the repository is cloned, cd into repo, and run the following:
-```sh
-# Install dependencies
+A customizable desktop stock inventory management software built for businesses to track inventory metrics effortlessly.
+
+## 🚀 Live Demo & Walkthrough
+[![Live Video Demo](https://shields.io)](https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5)
+
+> 💡 **System Note:** This application runs natively on the desktop via Electron. You can view a complete functional walkthrough in the [Interactive App Demo Video](https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5).
+
+
+---
+
+### 🛠️ Built With
+* **Runtime Framework:** Electron (Desktop App Environment)
+* **Build System & Bundler:** Vite
+* **Frontend Architecture:** HTML5, CSS3, JavaScript / TypeScript
+* **Testing Framework:** Jest
+* **Code Styling & Quality:** ESLint
+
+---
+
+### 💻 Installation & Local Run Instructions
+
+To run this desktop app locally, clone the repository, navigate into the project directory, and run the following commands:
+
+```bash
+# Install all required project dependencies
 npm i
 
-# Build the project
+# Build the production assets
 npm run build
 
-# Run Electron in development mode
+# Boot the application in Electron development mode
 npm run dev:electron
 ```
-A customizable stock inventory Management software for business' to use to keep track of inventory.
+
+---
 
 # Features
 
 ## Ingredient Manager
-![Image](https://github.com/user-attachments/assets/47030042-d800-4b6a-8076-8b280041c66c)
-This is where users add, edit, and delete ingredients. Ingredients can be imported/exported to and from excel, and stock can be reduced based on ingredients used in recipes/combos.
+![Ingredient Manager Interface](https://github.com/user-attachments/assets/47030042-d800-4b6a-8076-8b280041c66c)
+This is where users add, edit, and delete ingredients. Ingredients can be imported/exported to and from Excel, and stock can be reduced dynamically based on ingredients consumed by active recipes and combo meals.
 
 ## Recipe Creator
-![Image](https://github.com/user-attachments/assets/a8a9fd50-2e74-4a45-bc7d-69913f7b047f)
-Here, users can combine ingredients to form recipes, selecting ingredients and serving sizes to form the assembled items.
-
+![Recipe Creator Interface](https://github.com/user-attachments/assets/a8a9fd50-2e74-4a45-bc7d-69913f7b047f)
+Here, users can combine individual raw ingredients to form full menu items, customizing serving sizes and calculating accurate batch assembly costs.
 
 ## Combo Creator
-![Image](https://github.com/user-attachments/assets/95312fcb-dd4b-48e6-a165-2b31752f69c6)
-Users can combine assembled and raw ingredients to create a combo, applying a markdown to give value to their customers.
+![Combo Creator Interface](https://github.com/user-attachments/assets/95312fcb-dd4b-48e6-a165-2b31752f69c6)
+Users can seamlessly bundle assembled meals alongside raw standalone ingredients to build dynamic combos, applying configurable custom percentage markdowns to maximize customer value profiles.
 
-# Iteration 3
-This iteration came with various major user storises to wrap up the project. These include:
-- Ability to Import / Export ingredients.
-- Dashboard metrics to show highest / lopwest profit items.
-- More cohesion between pages
-- Updated UI
+---
+
+# Key Milestone Updates (Iteration 3)
+This deployment addresses critical core epic stories to finalize business logic requirements:
+- **Data Portability:** Added comprehensive Excel Import / Export utilities for bulk inventory updates.
+- **Analytics Dashboard:** Integrated profit metric calculations to visually surface the highest and lowest margin assets.
+- **Unified UX Flow:** Enhanced interface cohesion across workspace modules.
+- **Modernized UI:** Refined layouts and interactive components for smoother navigation.
