@@ -7,8 +7,6 @@ A customizable desktop stock inventory management software built for businesses 
 
 > 💡 **System Note:** This application runs natively on the desktop via Electron. You can view a complete functional walkthrough in the [Interactive App Demo Video](https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673).
 
-### Preview Walkthrough:
-<video src="https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673" width="100%"></video>
 
 ---
 
