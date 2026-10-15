@@ -1,11 +1,15 @@
+
+
+https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5
+
 # Stock Inventory Management System
 
 A customizable desktop stock inventory management software built for businesses to track inventory metrics effortlessly.
 
 ## 🚀 Live Demo & Walkthrough
-[![Live Video Demo](https://shields.io)](https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673)
+[![Live Video Demo](https://shields.io)](https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5)
 
-> 💡 **System Note:** This application runs natively on the desktop via Electron. You can view a complete functional walkthrough in the [Interactive App Demo Video](https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673).
+> 💡 **System Note:** This application runs natively on the desktop via Electron. You can view a complete functional walkthrough in the [Interactive App Demo Video](https://github.com/user-attachments/assets/b7989f1d-1d8f-454a-8565-e6174f7caaf5).
 
 
 ---
