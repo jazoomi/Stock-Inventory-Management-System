@@ -1,4 +1,30 @@
+# Stock Inventory Management System
 
+A customizable stock inventory Management software for keeping track of inventory.
+
+## 🚀 Live Demo & Walkthrough
+[![Live Video Demo](https://shields.io)](https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673)
+
+> 💡 **System Note:** Watch the full [Interactive App Demo Here](https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673).
+
+### Preview:
+<video src="https://github.com/user-attachments/assets/3a563b3f-7b68-4318-a6bd-2780c7907673"></video>
+
+---
+
+### 💻 Installation & Local Run Instructions
+
+Run the following commands after cloning:
+
+```bash
+npm i
+npm run build
+npm run dev:electron
+```
+
+---
+
+# Features
 
 
 Stock Inventory Managment System
