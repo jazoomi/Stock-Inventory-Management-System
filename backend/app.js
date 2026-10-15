@@ -226,15 +226,13 @@ app.get("/export-raw-ingredients", (req, res) => {
     const worksheet = XLSX.utils.json_to_sheet(rows); //formats data for the work book
     const workbook = XLSX.utils.book_new(); //creats the workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, "Raw Ingredients");
-    const filepath = path.join(__dirname, "../raw_ingredients.xlsx");
-    XLSX.writeFile(workbook, filepath);
-
-    res.download(filepath, "raw_ingredients.xlsx", (err) => {
-        if (err) {
-            res.status(500).json({ error: "file download failed"});
-        }
-        
-        });
+    
+    // Write file to buffer instead of disk to avoid file locking issues
+    const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    
+    res.setHeader("Content-Disposition", "attachment; filename=raw_ingredients.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.send(buffer);
     });
 });
 
