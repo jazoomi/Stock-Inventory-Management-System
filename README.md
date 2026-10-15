@@ -12,10 +12,15 @@ A customizable desktop stock inventory management software built for businesses 
 
 ### 🛠️ Built With
 * **Runtime Framework:** Electron (Desktop App Environment)
+* **Frontend:** React 19, JavaScript (ES Modules), HTML5, CSS3, Material UI (MUI), Chart.js
+* **Backend:** Node.js, Express.js (RESTful API)
+* **Database:** SQLite (SQL, parameterized queries)
+* **Data Import/Export:** SheetJS (Excel .xlsx)
 * **Build System & Bundler:** Vite
-* **Frontend Architecture:** HTML5, CSS3, JavaScript / TypeScript
-* **Testing Framework:** Jest
+* **Testing Framework:** Jest, Supertest (unit, API, and integration tests)
 * **Code Styling & Quality:** ESLint
+
+📐 See [ARCHITECTURE.md](ARCHITECTURE.md) for the system design, database schema, and full REST API reference.
 
 ---
 
